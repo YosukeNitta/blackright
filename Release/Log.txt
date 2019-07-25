@@ -1,0 +1,222 @@
+0:システムの情報を出力します
+1:	ＤＸライブラリ Ver3.13d
+1:	論理プロセッサの数 : 4
+1:	ＯＳ  Windows8 ( Build 9200  )
+101:	現時点のＣＰＵ動作速度：大体2.27GHz
+101:	ＭＭＸ命令を使用します
+101:	ＳＳＥ命令が使用可能です
+101:	ＳＳＥ２命令が使用可能です
+102:	ＣＰＵベンダ：GenuineIntel
+102:	ＣＰＵ名：Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+103:ＣＯＭの初期化... 成功しました
+106:メモリ総量:8098.22MB  空きメモリ領域:6234.32MB 
+106:タイマーの精度を検査します
+107:精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
+107: パフォーマンスカウンターを使用します タイマー精度 : 2240.909000 KHz 
+107: ソフトの二重起動検査... 二重起動はされていませんでした
+108:ウインドウクラスを登録します... 登録に成功しました
+109:ウインドウモード起動用のウインドウを作成します
+110:ウインドウの作成に成功しました
+110:ウインドウを表示します
+119:ＩＭＥを無効にしました
+120:ウインドウスタイルをウインドウモード用に変更します... 完了
+139:DirectInput関係初期化処理
+139:	XInput DLL の読み込み中... 成功
+140:	DirectInput7 の取得中... 成功
+147:		引き続き初期化処理... 初期化成功
+160:	ジョイパッドの初期化... 
+165:	ジョイパッドの初期化は正常に終了しました
+166:	マウスデバイスの初期化... 初期化成功
+166:	キーボードデバイスの初期化... 初期化成功
+167:DirectInput 関連の初期化は正常に終了しました
+168:DirectSound の初期化を行います
+168:DirectSound インターフェースの取得を行います....  成功
+169:引き続きインターフェースの初期化処理...  成功
+198:	DirectSound デバイスを列挙します
+199:		モジュール名:                 ドライバ記述:プライマリ サウンド ドライバー 
+199:		モジュール名:{0.0.0.00000000}.{40bbc9c7-39fe-49f3-9c20-da7d4cb174b5}  ドライバ記述:スピーカー (Realtek High Definition Audio) 
+199:	最大サンプリングレート:200.00KHz 最小サンプリングレート:0.10KHz 
+199:	総サウンドメモリ領域:0.00KB 空きサウンドメモリ領域:0.00KB 
+
+199:	利用可能サンプリング精度
+200:	 プライマリ １６bit = OK  ８bit = OK 
+200:	 セカンダリ １６bit = OK  ８bit = OK 
+
+200:	利用可能チャンネル
+200:	 プライマリ MONO = OK  STEREO = OK 
+200:	 セカンダリ MONO = OK  STEREO = OK 
+
+201:DirectSound の初期化は正常に終了しました
+203:DirectDraw オブジェクトの取得を行います....  成功
+205:引き続き初期化処理... 初期化に成功しました
+213:IDirect3D9Ex オブジェクトを取得します.... 成功
+214:IDirect3DDevice9Ex オブジェクトを取得します.... ハードウエア頂点演算を使用します
+459:成功
+459:Driver:igdumdim32.dll  Description:Intel(R) HD Graphics Family
+459:画面のフォーマットは D3DFMT_X8R8G8B8 です
+459:16bit Zバッファフォーマットは D3DFMT_D16 です
+460:24bit Zバッファフォーマットは D3DFMT_D24X8 です
+460:32bit Zバッファフォーマットは D3DFMT_D24X8 です
+460:16bit カラーフォーマットは D3DFMT_R5G6B5 です
+460:32bit カラーフォーマットは D3DFMT_X8R8G8B8 です
+460:アルファ付き 16bit カラーフォーマットは D3DFMT_A4R4G4B4 です
+461:アルファ付き 32bit カラーフォーマットは D3DFMT_A8R8G8B8 です
+461:アルファテスト用 16bit カラーフォーマットは D3DFMT_A1R5G5B5 です
+461:アルファテスト用 32bit カラーフォーマットは D3DFMT_A8R8G8B8 です
+461:ＤＸＴ１テクスチャフォーマットはD3DFMT_DXT1 です
+461:ＤＸＴ２テクスチャフォーマットはD3DFMT_DXT2 です
+461:ＤＸＴ３テクスチャフォーマットはD3DFMT_DXT3 です
+462:ＤＸＴ４テクスチャフォーマットはD3DFMT_DXT4 です
+462:ＤＸＴ５テクスチャフォーマットはD3DFMT_DXT5 です
+462:描画用 16bit カラーフォーマットは D3DFMT_R5G6B5 です
+462:描画用 32bit カラーフォーマットは D3DFMT_X8R8G8B8 です
+462:描画用アルファ付き 32bit カラーフォーマットは D3DFMT_A8R8G8B8 です
+462:描画用ABGR整数16ビット型カラーフォーマットは D3DFMT_A16B16G16R16 です
+463:描画用ABGR浮動小数点16ビット型カラーフォーマットは D3DFMT_A16B16G16R16F です
+463:描画用ABGR浮動小数点32ビット型カラーフォーマットは D3DFMT_A32B32G32R32F です
+463:描画用１チャンネル整数8ビット型カラーフォーマットは D3DFMT_A8R8G8B8 です
+463:描画用１チャンネル整数16ビット型カラーフォーマットは D3DFMT_G16R16 です
+463:描画用１チャンネル浮動小数点16ビット型カラーフォーマットは D3DFMT_R16F です
+463:描画用１チャンネル浮動小数点32ビット型カラーフォーマットは D3DFMT_R32F です
+464:描画用２チャンネル整数8ビット型カラーフォーマットは D3DFMT_A8B8G8R8 です
+464:描画用２チャンネル整数16ビット型カラーフォーマットは D3DFMT_G16R16 です
+464:描画用２チャンネル浮動小数点16ビット型カラーフォーマットは D3DFMT_G16R16F です
+464:描画用２チャンネル浮動小数点32ビット型カラーフォーマットは D3DFMT_G32R32F です
+464:一度に描画できるプリミティブの最大数:1048575
+465:対応している最大頂点インデックス:16777215
+465:同時にレンダリングできるバッファの数:4
+465:最大テクスチャサイズ　幅:8192 高さ:8192
+465:テクスチャステージテンポラリレジスタ：使用可
+465:減算合成のハードウェア対応：ネイティブ
+465:ハードウェア頂点シェーダーバージョンコード：300
+466:エミュレーション頂点シェーダーバージョンコード：エミュレーション無し
+466:ピクセルシェーダーバージョンコード：300
+478:バックバッファロック転送の時間:1407nsec  一時的な描画可能バッファを使用した転送の時間:1655nsec
+478:バックバッファロックを使用します
+479:Ｚバッファを作成します.... 成功
+664:プログラマブルシェーダーを使用します
+
+746:フォントの初期化を行います
+747:フォントの初期化は正常に終了しました
+747:文字コードバッファの初期化を行います... 完了しました
+806:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+806:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+806:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+807:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+807:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+807:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\01.mp3
+808:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\menu.mp3
+808:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\menu.mp3
+808:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\select.mp3
+808:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\music\select.mp3
+809:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\01_swing.wav
+809:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\01_swing.wav
+809:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\02_swing.wav
+809:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\02_swing.wav
+810:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\03_swing.wav
+810:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\03_swing.wav
+810:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\04_step.wav
+810:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\04_step.wav
+811:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\05_bstep.wav
+811:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\05_bstep.wav
+811:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\06_chaku.wav
+811:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\06_chaku.wav
+812:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\07_walk.wav
+812:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\07_walk.wav
+812:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\08_down.wav
+812:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\08_down.wav
+813:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\09_catch.wav
+813:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\09_catch.wav
+813:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\10_hit.wav
+813:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\10_hit.wav
+814:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\11_hit.wav
+814:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\11_hit.wav
+814:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\12_hit.wav
+814:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\12_hit.wav
+815:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\13_slash.wav
+815:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\13_slash.wav
+815:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\14_hitH.wav
+815:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\14_hitH.wav
+816:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\15_slash2.wav
+816:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\15_slash2.wav
+816:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\16_guard.wav
+816:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\16_guard.wav
+817:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\17_guard.wav
+817:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\17_guard.wav
+817:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\18_guard.wav
+817:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\18_guard.wav
+818:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\19_push.wav
+818:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\19_push.wav
+818:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\21_swingA.wav
+818:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\21_swingA.wav
+819:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\22_spin.wav
+819:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\22_spin.wav
+819:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\23_wind.wav
+819:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\23_wind.wav
+820:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\25_super.wav
+820:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\25_super.wav
+820:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\26_sliding.wav
+820:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\26_sliding.wav
+821:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\27_turn.wav
+821:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\27_turn.wav
+821:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\28_catch.wav
+821:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\28_catch.wav
+822:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\29_tReject.wav
+822:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\29_tReject.wav
+822:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\30_freeze.wav
+822:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\30_freeze.wav
+823:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\31_gauge.wav
+823:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\31_gauge.wav
+823:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\32_throwB.wav
+823:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\32_throwB.wav
+824:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\33_crash.wav
+824:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\33_crash.wav
+824:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\35_enter.wav
+824:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\35_enter.wav
+825:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\35_enter.wav
+825:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\35_enter.wav
+825:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\36_cursor.wav
+825:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\36_cursor.wav
+826:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\37_cancel.wav
+826:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\37_cancel.wav
+826:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\38_bomb.wav
+826:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\38_bomb.wav
+827:右記のファイルのオープンに失敗しました：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\39_aura.wav
+827:右記の音声ファイルのロードに失敗しました_1：C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\sound\39_aura.wav
+828:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\02_hit2.png のロードに失敗しました
+828:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\21_fire2.png がありません
+829:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\03_slash.png がありません
+829:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\01_hit.png のロードに失敗しました
+830:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\20_fire.png がありません
+830:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\18_wave2.png がありません
+830:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\19_wave.png がありません
+831:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\15_wave.png がありません
+831:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\16_wave.png がありません
+832:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\17_right.png がありません
+832:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\12_guard2.png のロードに失敗しました
+832:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\11_guard.png のロードに失敗しました
+833:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\cursor.png がありません
+833:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\10_right.png がありません
+833:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\08_shot.png がありません
+833:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\key.png のロードに失敗しました
+834:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\15_wave.png がありません
+834:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\06_air.png のロードに失敗しました
+834:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\button.png のロードに失敗しました
+835:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\fontP.png がありません
+835:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\05.png のロードに失敗しました
+835:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\Effect\07_hydro.png がありません
+858:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\title.png がありません
+859:画像ファイル C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Release\ob\tlogo.png がありません
+1960:ウインドウを閉じようとしています
+1970:ウインドウが破棄されようとしています
+1970:ソフトを終了する準備が整いました
+1977:フォントの初期化を行います
+1978:フォントの初期化は正常に終了しました
+1985:Direct3DDevice9 の解放 2
+1989:d3d9.dll の解放 1
+1990:DirectInput 関連の終了処理... 完了
+2000:DirectSound の終了処理は正常に終了しました
+2064:
+2064:Alloc memory dump
+2064:	Total size:0(0.000kb)  Alloc num:0
+2065:

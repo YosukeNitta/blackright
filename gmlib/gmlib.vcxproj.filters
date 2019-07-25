@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\FileLoader">
+      <UniqueIdentifier>{439ab06d-4106-4ef3-8f2e-88f0ed9ac311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\PathManager">
+      <UniqueIdentifier>{7ef7453d-279f-4a4f-8b76-ea294a41bfa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Thread">
+      <UniqueIdentifier>{2787c431-f691-4ce6-8ed4-bb2c98b54f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Socket">
+      <UniqueIdentifier>{364d1e2e-f085-4f61-b321-14573e08b299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Server">
+      <UniqueIdentifier>{d08f86ab-3bf7-492f-91ba-f116e87d7a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プリコンパイル済みヘッダ">
+      <UniqueIdentifier>{6b55435b-9f04-4283-a649-d5f23cd02455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{ff232e39-8f95-4f3d-9631-5e937eaa9813}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\FileLoader\CArchiveLoader.cpp">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileLoader\CFileLoader.cpp">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileLoader\CVirtualFileLoader.cpp">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PathManager\CPathManager.cpp">
+      <Filter>ソース ファイル\PathManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PathManager\IPathManager.cpp">
+      <Filter>ソース ファイル\PathManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Thread\CThread.cpp">
+      <Filter>ソース ファイル\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Socket\CSocket.cpp">
+      <Filter>ソース ファイル\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Server\CServer.cpp">
+      <Filter>ソース ファイル\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>プリコンパイル済みヘッダ</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\FileLoader\CArchiveLoader.h">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileLoader\CFileLoader.h">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileLoader\CVirtualFileLoader.h">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileLoader\IFileLoader.h">
+      <Filter>ソース ファイル\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PathManager\CPathManager.h">
+      <Filter>ソース ファイル\PathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PathManager\IPathManager.h">
+      <Filter>ソース ファイル\PathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\CThread.h">
+      <Filter>ソース ファイル\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\IThread.h">
+      <Filter>ソース ファイル\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Socket\CSocket.h">
+      <Filter>ソース ファイル\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Socket\ISocket.h">
+      <Filter>ソース ファイル\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Server\CServer.h">
+      <Filter>ソース ファイル\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Server\IServer.h">
+      <Filter>ソース ファイル\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>プリコンパイル済みヘッダ</Filter>
+    </ClInclude>
+    <ClInclude Include="gmlib.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

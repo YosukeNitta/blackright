@@ -1,0 +1,19 @@
+[Data]
+gsize = 2.0;
+xsize = 52;
+ysize = 160;
+life = 1050;
+walk.f = 1.9;
+walk.b = -2.0;
+run.f = 3.6, -3.8;
+run.b = -2.9, -4.0;
+jump.y = -9.2; -8.8
+jump.a = -7.0; -7.0
+jump.f = 2.3, 3.2;
+jump.b = -2.4;
+yaccel = 0.42;
+airjump = 1;
+airdash = 0;
+combolate = 0.10;
+clmax = 0.60;
+clmin = 0.18;

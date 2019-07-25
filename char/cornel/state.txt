@@ -1,0 +1,13 @@
+//
+[State 41]
+sflg	= 2;
+ctrl	= 1;
+
+[State 42]
+sflg	= 2;
+ctrl	= 1;
+
+[State 43]
+sflg	= 2;
+ctrl	= 1;
+//

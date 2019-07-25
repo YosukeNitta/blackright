@@ -1,0 +1,64 @@
+// ジャンプ移行
+[State 40]
+sflg	= 0;
+ctrl	= 0;
+
+// 垂直
+[State 41]
+sflg	= 2;
+ctrl	= 1;
+
+// 前
+[State 42]
+sflg	= 2;
+ctrl	= 1;
+
+// 後ろ
+[State 43]
+sflg	= 2;
+ctrl	= 1;
+
+// 空中ジャンプ移行
+[State 45]
+sflg	= 2;
+ctrl	= 0;
+
+// 落下
+[State 46]
+sflg	= 2;
+ctrl	= 1;
+
+// 着地
+[State 47]
+sflg	= 0;
+ctrl	= 0;
+
+// 立ガード
+[State 50]
+sflg	= 0;
+ctrl	= 0;
+
+trigger1 = time == 0;
+lock = 1;
+advancing = false;
+
+// 屈ガード
+[State 51]
+sflg	= 1;
+ctrl	= 0;
+
+// 空ガード
+[State 52]
+sflg	= 2;
+ctrl	= 0;
+
+// 空ガード
+[State 55]
+sflg	= 0;
+ctrl	= 0;
+
+// 空投げ抜け
+[State 56]
+sflg	= 2;
+ctrl	= 0;
+//

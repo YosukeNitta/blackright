@@ -1,0 +1,106 @@
+// ボタン入力チェック
+// ボタン配置をいじる場合はここで
+
+int P2_BCheck()
+{
+	// 1ボタン	A
+	if (P2_BSet(1) || P2_BSet(5) || P2_BSet(6)){
+		P2_B[1] += 1;
+	}
+	else{
+		P2_B[1] = 0;
+	}
+	// 2ボタン	B
+	if (P2_BSet(2) || P2_BSet(5) || P2_BSet(6)){
+		P2_B[2] += 1;
+	}
+	else{
+		P2_B[2] = 0;
+	}
+	// 3ボタン	C
+	if (P2_BSet(3) || P2_BSet(6)){
+		P2_B[3] += 1;
+	}
+	else{
+		P2_B[3] = 0;
+	}
+	// 4ボタン	D
+	if (P2_BSet(4)){
+		P2_B[4] += 1;
+	}
+	else{
+		P2_B[4] = 0;
+	}
+	// 5ボタン	A+B
+	if (P2_BSet(5)){
+		P2_B[5] += 1;
+	}
+	else{
+		P2_B[5] = 0;
+	}
+	// 6ボタン	A+B+C
+	if (P2_BSet(6)){
+		P2_B[6] += 1;
+	}
+	else{
+		P2_B[6] = 0;
+	}
+	// 7ボタン	PAUSE
+	if (P2_BSet(7)){
+		P2_B[7] += 1;
+	}
+	else{
+		P2_B[7] = 0;
+	}
+	// 8ボタン  トレモ(1)
+	if (P2_BSet(8)){
+		P2_B[8] += 1;
+	}
+	else{
+		P2_B[8] = 0;
+	}
+	// 9ボタン  トレモ(2)
+	if (P2_BSet(9)){
+		P2_B[9] += 1;
+	}
+	else{
+		P2_B[9] = 0;
+	}
+	// 10ボタン  未定
+	if (P2_BSet(10)){
+		P2_B[10] += 1;
+	}
+	else{
+		P2_B[10] = 0;
+	}
+	// P2の 上要素 が押されていたら
+	if (m_P_Input[1] & PAD_INPUT_UP){
+		P2_B[108] += 1;
+	}
+	else{
+		P2_B[108] = 0;
+	}
+	// 下
+	if (m_P_Input[1] & PAD_INPUT_DOWN){
+		P2_B[102] += 1;
+	}
+	else{
+		P2_B[102] = 0;
+	}
+	// 左
+	if (m_P_Input[1] & PAD_INPUT_LEFT){
+		P2_B[104] += 1;
+	}
+	else{
+		P2_B[104] = 0;
+	}
+	// 右
+	if ((m_P_Input[1] & pad[106]) || 
+		(CheckHitKey(key[co_k[1][3]]) != 0)){
+		P2_B[106] += 1;
+	}
+	else{
+		P2_B[106] = 0;
+	}
+	return 0;	// 終わりっ！閉廷！
+}

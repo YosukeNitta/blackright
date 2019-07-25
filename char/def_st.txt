@@ -1,0 +1,13 @@
+[State 5]
+sflg = 0; // 状態 0..立ち 1..しゃがみ 2..空中
+ctrl = 1; // 操作の可否
+
+velSet = 0,0
+
+if(time == 0)
+lock = 1
+
+if(time >= animelem)
+lock = 0, nextanim(0)
+
+;== 終了スペース(とっておく) ==

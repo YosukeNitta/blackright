@@ -1,0 +1,137 @@
+	//----------------
+	//
+	// 停止条件：離れすぎ（端々）、近すぎ（半々）
+	// 
+	//
+	//----------------
+	// 次に備えScXを今の位置に（※必須）
+	ScXPoint = S.ScroolX;
+	mDist = 0;
+
+	int left;
+	float mDistP = SCREEN_WIDTH / 2;		// カメラ移動する条件の距離（320）
+	float mDist1, mDist2;
+
+	// 左にいるプレイヤー
+	if (P1.XPos < P2.XPos)left = 1;
+	else{ left = 2; }
+
+	mDist1 = P2.XPos - P1.XPos;
+	mDist2 = P1.XPos - P2.XPos;
+	if (mDist1 > mDist2)mDist = mDist1;
+	else{ mDist = mDist2; }
+
+
+	if (mDist > mDistP){
+		if (left == 1){ // 1Pが左
+			ScXPoint = P1.XPos - (SCREEN_WIDTH / 2) + (mDist / 2);
+		}
+		else if (left == 2){ // 1Pが左
+			ScXPoint = P2.XPos - (SCREEN_WIDTH / 2) + (mDist / 2);
+		}
+	}
+
+	
+	// 離れすぎの場合、スクロールなし
+	if (P2.XPos < P1.XPos){
+		if ((SCREEN_WIDTH - GAMENHAJI * 2 <= P2.XPos - P1.XPos) ||
+			(SCREEN_WIDTH - GAMENHAJI * 2 <= P1.XPos - P2.XPos))
+		{
+			ScXPoint = S.ScroolX;
+		}
+	}
+	
+	
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////
+
+//----------------
+	//
+	// 停止条件：離れすぎ（端々）、近すぎ（半々）
+	// 
+	//
+	//----------------
+	// 次に備えScXを今の位置に（※必須）
+	ScXPoint = S.ScroolX;
+	mDist = 0;
+
+	int left;
+	float mDistP = SCREEN_WIDTH / 2;		// カメラ移動する条件の距離（320）
+	float mDist1, mDist2;
+
+	// 左にいるプレイヤー
+	if (P1.XPos < P2.XPos)left = 1;
+	else{ left = 2; }
+
+	mDist1 = P2.XPos - P1.XPos;
+	mDist2 = P1.XPos - P2.XPos;
+	if (mDist1 > mDist2)mDist = mDist1;
+	else{ mDist = mDist2; }
+
+
+	if (mDist > mDistP){
+		if (left == 1){ // 1Pが左
+			ScXPoint = P1.XPos - (SCREEN_WIDTH / 2) + (mDist / 2);
+		}
+		else if (left == 2){ // 1Pが左
+			ScXPoint = P2.XPos - (SCREEN_WIDTH / 2) + (mDist / 2);
+		}
+	}
+
+	
+	// 離れすぎの場合、スクロールなし
+	if (P2.XPos < P1.XPos){
+		if ((SCREEN_WIDTH - GAMENHAJI * 2 <= P2.XPos - P1.XPos) ||
+			(SCREEN_WIDTH - GAMENHAJI * 2 <= P1.XPos - P2.XPos))
+		{
+			ScXPoint = S.ScroolX;
+		}
+	}
+
+
+/////////////////////////////////////////////////////
+
+	//----------------
+	//
+	// 離れる条件：画面の4/5の距離より近くなる
+	// 近づく条件：どちらかが近づく距離にいる
+	//
+	//----------------
+	// 次に備えScXを今の位置に
+	ScXPoint = S.ScroolX;
+
+	float mDist = GAMENHAJI * 3;		// カメラ移動する条件の距離
+	float mSDist = mDist * 2;			// カメラが接近する条件
+
+	// 1P
+	if (P1.XPos < S.ScroolX + mDist){
+		ScXPoint = P1.XPos - mDist;
+	}
+	else if (P1.XPos > S.ScroolX + SCREEN_WIDTH - mDist){
+		ScXPoint = P1.XPos + mDist - SCREEN_WIDTH;
+	}
+	// 2P
+	if (P2.XPos < S.ScroolX + mDist){
+		ScXPoint = P2.XPos - mDist;
+	}
+	else if (P2.XPos > S.ScroolX + SCREEN_WIDTH - mDist){
+		ScXPoint = P2.XPos + mDist - SCREEN_WIDTH;
+	}
+	
+	// 離れすぎィ！
+	if ((SCREEN_WIDTH - mSDist <= P1.XPos - P2.XPos) ||
+		(SCREEN_WIDTH - mSDist <= P2.XPos - P1.XPos))
+	{
+		ScXPoint = S.ScroolX;
+	}
+
+
+////////////////////////////////////////////////

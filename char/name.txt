@@ -1,0 +1,8 @@
+[Characters]
+ein;
+cornel;
+bouncer;
+helios;
+dan;
+/syuichi;
+/eriku;

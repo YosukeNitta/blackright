@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\モード選択">
+      <UniqueIdentifier>{5b54c78d-ba8a-4dd9-a2fc-19b46f31d7bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\数値設定">
+      <UniqueIdentifier>{c47ad812-2934-4ff3-ab94-9340c074a4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\システム設定">
+      <UniqueIdentifier>{88fc74c7-70ad-4313-8a55-b27b082151ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\数値計算">
+      <UniqueIdentifier>{a31c6b0a-5ed3-4fdb-8ba6-0313767e9a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\描画関連">
+      <UniqueIdentifier>{6f93fe31-455b-4d83-9e51-105f0b8adc57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\数値計算\メイン計算">
+      <UniqueIdentifier>{945ef436-d388-4248-93b1-38fb2505e7e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\数値計算\サブ計算">
+      <UniqueIdentifier>{8c94cd28-0af9-4926-9e29-ad0194edc604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\数値計算\サブ計算\ダメージ計算">
+      <UniqueIdentifier>{602df13e-0e90-494c-b968-aaba28f1fae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\数値計算\サブ計算\システム計算">
+      <UniqueIdentifier>{7af561b0-1ab5-4ff2-b30a-2c38a31b518f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\システム関連">
+      <UniqueIdentifier>{fe364edb-2f2d-4515-be06-9635f9b9fde4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プリコンパイル済みヘッダ">
+      <UniqueIdentifier>{e7e9af40-51f5-4c4b-a933-313ffab97357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ネットワーク関連">
+      <UniqueIdentifier>{f0968cf9-662a-4de3-84e6-5919050eb143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\システム関連\キャラクター別">
+      <UniqueIdentifier>{c848d35e-0208-4b8c-8526-24063b02291a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\システム関連\キャラクター別\共通">
+      <UniqueIdentifier>{5bd01bc1-48a6-4700-8b5e-787011877c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\システム関連\キャラクター別\ステート">
+      <UniqueIdentifier>{4c91c3a8-b3cc-4e03-929c-74f9c4564f39}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Select.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Key.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDraw.cpp">
+      <Filter>ソース ファイル\描画関連</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectDraw.cpp">
+      <Filter>ソース ファイル\描画関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>ソース ファイル\描画関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Versus.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>ソース ファイル\数値計算\メイン計算</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\数値計算\メイン計算</Filter>
+    </ClCompile>
+    <ClCompile Include="SubDamage.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\ダメージ計算</Filter>
+    </ClCompile>
+    <ClCompile Include="SubDamSet.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\ダメージ計算</Filter>
+    </ClCompile>
+    <ClCompile Include="HelDamage.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\ダメージ計算</Filter>
+    </ClCompile>
+    <ClCompile Include="SubState.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\システム計算</Filter>
+    </ClCompile>
+    <ClCompile Include="SubSystem.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\システム計算</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeCount.cpp">
+      <Filter>ソース ファイル\数値計算\サブ計算\システム計算</Filter>
+    </ClCompile>
+    <ClCompile Include="SameParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Load.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Struct.cpp">
+      <Filter>ソース ファイル\数値計算\メイン計算</Filter>
+    </ClCompile>
+    <ClCompile Include="Hantei.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Traning.cpp">
+      <Filter>ソース ファイル\数値計算\メイン計算</Filter>
+    </ClCompile>
+    <ClCompile Include="Order.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Pause.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Air.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Pict.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Result.cpp">
+      <Filter>ソース ファイル\数値計算\メイン計算</Filter>
+    </ClCompile>
+    <ClCompile Include="GHitbox.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Status.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\共通</Filter>
+    </ClCompile>
+    <ClCompile Include="Def.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="EinParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="CorParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="BouParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="HelParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="EriParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="StateData.cpp">
+      <Filter>ソース ファイル\数値計算</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>プリコンパイル済みヘッダ</Filter>
+    </ClCompile>
+    <ClCompile Include="Replay.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Connect.cpp">
+      <Filter>ソース ファイル\システム関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Arcade.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="HydParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Define.h">
+      <Filter>ヘッダー ファイル\数値設定</Filter>
+    </ClInclude>
+    <ClInclude Include="PSet.h">
+      <Filter>ヘッダー ファイル\数値設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Char.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Mode.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="SSet.h">
+      <Filter>ヘッダー ファイル\数値設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Define2.h">
+      <Filter>ヘッダー ファイル\数値設定</Filter>
+    </ClInclude>
+    <ClInclude Include="SData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>プリコンパイル済みヘッダ</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Replay.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Arcade.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

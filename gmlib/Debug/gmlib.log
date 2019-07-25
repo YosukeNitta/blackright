@@ -1,0 +1,13 @@
+﻿  stdafx.cpp
+  CThread.cpp
+  CSocket.cpp
+c:\users\okaemon\downloads\socket\gmlib\src\socket\csocket.cpp(131): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1850): note: 'inet_addr' の宣言を確認してください
+  CServer.cpp
+  IPathManager.cpp
+  CPathManager.cpp
+  CVirtualFileLoader.cpp
+  CFileLoader.cpp
+  CArchiveLoader.cpp
+  コードを生成中...
+  gmlib.vcxproj -> C:\Users\okaemon\Downloads\Socket\Debug\gmlib.lib

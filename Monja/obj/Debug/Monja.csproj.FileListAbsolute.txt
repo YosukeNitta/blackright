@@ -1,0 +1,8 @@
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\bin\Debug\Monja.exe.config
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\bin\Debug\Monja.exe
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\bin\Debug\Monja.pdb
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\obj\Debug\Monja.Form1.resources
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\obj\Debug\Monja.Properties.Resources.resources
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\obj\Debug\Monja.csproj.GenerateResource.Cache
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\obj\Debug\Monja.exe
+C:\Users\okaemon\Documents\Visual Studio 2013\Projects\block2_network\Monja\obj\Debug\Monja.pdb
