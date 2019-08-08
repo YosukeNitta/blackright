@@ -257,6 +257,7 @@ int VOStart(int ch, int num, int percent)
 
 void PVoiceSet(int pside, int name)
 {
+	/*
 	// ‰¹—Ê‚Ìİ’è
 	for (int i = 0; i < SE_MAX; i++){
 		pVoice[pside - 1][i] = voice[name][i];
@@ -309,7 +310,7 @@ void PVoiceSet(int pside, int name)
 	for (int i = 0; i < SE_MAX; i++){
 		ChangeVolumeSoundMem(setS*1.5, pVoice[pside - 1][i]);
 	}
-
+	*/
 }
 
 

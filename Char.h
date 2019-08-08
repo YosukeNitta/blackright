@@ -73,7 +73,7 @@ void GHitbox();
 void HelperKurai();
 void GetP_GHitbox(Player GP1);
 void GetS_GHitbox(System_t GS);
-void GetA_GHitbox(Air GA[STATE_MAX], int side);
+void GetA_GHitbox(Air GA[STATE_MAX], int pSide);
 void GetPI_GHitbox(Pict GPI[PICT_MAX][IMAGE2_MAX], int side);
 void GetN_GHitBox(std::vector<Name_t>GN);
 //void GetPI_GHitbox(Pict GPI[][], int side);
@@ -193,7 +193,7 @@ void Load1_Pict();
 // Airê›íË
 //
 //=====================
-void load_air(int na);
+void load_air(int na, int pSide);
 // AirÇ™P1ÇéÊìæ
 void GetP_Air(Player GP1);
 void GetName();

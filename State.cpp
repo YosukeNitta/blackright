@@ -605,7 +605,7 @@ void CharLoad()
 		P1.XPos = GAMENHAJI + 5, P2.XPos = GAMENHAJI + 85;
 	}
 
-	
+	// ヘルパー初期化
 	for (int i = 0; i < HM; i++){
 		H1[i].var = false;
 		H1[i].A.damage = 0;
@@ -1431,6 +1431,7 @@ void Load_State()
 
 // 画像、判定のデータを読み込み
 // Load_2（air）はここで解決
+// airの読み込みが目的ではない
 void LoadPict()
 {
 	
@@ -1441,14 +1442,18 @@ void LoadPict()
 	}
 
 	// アニメ時間取得
-	P1 = GetAnimElem(P1);
-	P2 = GetAnimElem(P2);
+	//P1 = GetAnimElem(P1);
+	//P2 = GetAnimElem(P2);
 
 	// 判定
 	GetP_GHitbox(P1);
-	load_GHitBox();
+	load_GHitBox();	// airにair2の内容をセット
 	GetP_GHitbox(P2);
 	load_GHitBox();
+
+	// アニメ時間取得
+	P1 = GetAnimElem(P1);
+	P2 = GetAnimElem(P2);
 
 	// コモンステータス
 
@@ -1473,7 +1478,7 @@ void fLoad_State()
 		Load1_Pict();	// vector作る
 		// air取得
 		for (int i = 0; i < Character_Max(); i++){
-			load_air(i);	// アニメ
+			load_air(i, 1);	// アニメ@@
 			load_pict(i, 1);	// 画像
 								// ポトレ読み込むだけなので、1P限定にする
 		}

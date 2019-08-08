@@ -73,7 +73,7 @@ int Pause()
 
 		// 選択項目の数を取得
 		kettei = 0, SPoint = 0,
-		SentakuNum = 4;
+		SentakuNum = 5;
 
 		//通常メニュー
 		SNum = 3;
@@ -184,10 +184,8 @@ int Pause()
 					if (inputDOWN == 1) SPoint++, SEStart(36);
 					if (SPoint < 0)SPoint = SentakuNum + selectMax - 1;
 					if (SPoint > SentakuNum + selectMax - 1)SPoint = 0;
-
 				}
 				
-
 				// トレモ設定
 				TraningSet();
 
@@ -198,31 +196,32 @@ int Pause()
 					kettei = 0;
 					return 1;
 				}
-				// キャラセレに戻る
-				else if ((kettei == 1) && (SPoint == selectMax + 1))
-				{
-					kettei = 0;
-					return 2;
-				}
 				// コマンド表
-				else if ((kettei == 1) && (SPoint == selectMax + 2))
+				else if ((kettei == 1) && (SPoint == selectMax + 1))
 				{
 					kettei = 0;
 					ComList = 1;
 				}
-				// メニューに戻る
+				// 対戦画面に戻る
+				else if (((kettei == 1) && (SPoint == selectMax + 2)) || (P1_BInput(2) == 1) || (P1_BInput(7) == 1))
+				{
+					kettei = 0;
+					return 4;
+				}
+				// キャラセレに戻る
 				else if ((kettei == 1) && (SPoint == selectMax + 3))
+				{
+					kettei = 0;
+					return 2;
+				}
+				// メニューに戻る
+				else if ((kettei == 1) && (SPoint == selectMax + 4))
 				{
 					kettei = 0;
 					Load_1 = 0;
 					return 3;
 				}
-				// 対戦画面に戻る
-				else if ((P1_BInput(2) == 1) || (P1_BInput(7) == 1))
-				{
-					kettei = 0;
-					return 4;
-				}
+				
 
 				// 描画
 				if (P1_BInput(4) == 0)
@@ -242,15 +241,20 @@ int Pause()
 						TrainingList();
 						//DrawString(0, 0, "D押しっぱで項目を消す", Cr);
 						DrawString(TxtDist, TxtDist * (selectMax + 1) + (drawPos * TxtDist), "ポジションリセット", Cr);
-						DrawString(TxtDist, TxtDist * (selectMax + 2) + (drawPos * TxtDist), "キャラクターセレクトに戻る", Cr);
-						DrawString(TxtDist, TxtDist * (selectMax + 3) + (drawPos * TxtDist), "コマンド表", Cr);
-						if (drawPos == -1)	// ずらす
-							DrawString(TxtDist, TxtDist * (selectMax + 4) + (drawPos * TxtDist), "メニューに戻る", Cr);
+						DrawString(TxtDist, TxtDist * (selectMax + 2) + (drawPos * TxtDist), "コマンド表", Cr);
+						DrawString(TxtDist, TxtDist * (selectMax + 3) + (drawPos * TxtDist), "戦闘画面へ戻る", Cr);
+						
+						if (drawPos < 0)	// ずらす
+						DrawString(TxtDist, TxtDist * (selectMax + 4) + (drawPos * TxtDist), "キャラクターセレクトに戻る", Cr);
+						if (drawPos < -1)	// ずらす
+							DrawString(TxtDist, TxtDist * (selectMax + 5) + (drawPos * TxtDist), "メニューに戻る", Cr);
 
 						// 項目位置の四角
 						if (drawPos == 0)
 							DrawBox(SCREEN_W - 20, 20, SCREEN_W, 20 + pageBoxSize, Cr, true);
 						else if (drawPos == -1)
+							DrawBox(SCREEN_W - 20, 40, SCREEN_W, 40 + pageBoxSize, Cr, true);
+						else if (drawPos == -2)
 							DrawBox(SCREEN_W - 20, SCREEN_H - 20 - pageBoxSize, SCREEN_W, SCREEN_H - 20, Cr, true);
 					}
 					// カーソル描画
@@ -383,8 +387,11 @@ void TraningSet()
 			}
 
 			// 描画位置
-			if ((SPoint == drawMax) && (drawPos == 0))drawPos = -1;
-			else if ((SPoint == 0) && (drawPos == -1))drawPos = 0;
+			if ((SPoint > drawMax - 1) && (drawPos > -1))drawPos = -1;
+			else if ((SPoint > drawMax) && (drawPos > -2))drawPos = -2;
+			
+			if ((SPoint == 0) && (drawPos != 0))drawPos = 0;
+			else if ((SPoint == 1) && (drawPos < -1))drawPos = -1;
 		}
 
 		{
@@ -565,19 +572,24 @@ void TrainingList()
 		nx = 0 + drawPos;
 
 		nx++;
-		if (drawPos == 0)
-		{	// ずらす
+		
+		if (drawPos >= 0) {
+			// ずらす
 			DrawString(30, TxtDist * nx, "体力", Cr);
 			if (S.T_Life == 0)DrawString(160, TxtDist * nx, "自動回復", Oran);
 			else { DrawString(160, TxtDist * nx, "通常", Cr); }
+			
 		}
+		
 		nx++;
-
-		DrawString(30, TxtDist * nx, "パワーゲージ", Cr);
-		if (S.T_Power == 0)DrawString(160, TxtDist * nx, "自動回復", Oran);
-		else if (S.T_Power == 1){ DrawString(160, TxtDist * nx, "1ゲージ", Cr); }
-		else if (S.T_Power == 2){ DrawString(160, TxtDist * nx, "2ゲージ", Cr); }
-		else if (S.T_Power == 3){ DrawString(160, TxtDist * nx, "通常", Cr); }
+		
+		if (drawPos >= -1) {
+			DrawString(30, TxtDist * nx, "パワーゲージ", Cr);
+			if (S.T_Power == 0)DrawString(160, TxtDist * nx, "自動回復", Oran);
+			else if (S.T_Power == 1) { DrawString(160, TxtDist * nx, "1ゲージ", Cr); }
+			else if (S.T_Power == 2) { DrawString(160, TxtDist * nx, "2ゲージ", Cr); }
+			else if (S.T_Power == 3) { DrawString(160, TxtDist * nx, "通常", Cr); }
+		}
 
 		nx++;
 

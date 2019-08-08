@@ -16,8 +16,7 @@ using namespace std;
 //ﾃﾞｰﾀ定義部------------------------------------------------
 static Air air[2][STATE_MAX];
 
-//static Air air2[CHARACTERS_MAX][STATE_MAX];	// 保存用
-static vector<vector<Air>>air2;	// これに全てのキャラの判定
+//static vector<vector<Air>>air2;	// これに全てのキャラの判定
 
 static Pict pic[2][PICT_MAX][IMAGE2_MAX];
 
@@ -254,8 +253,9 @@ void GetH_GHitbox(Helper GH1[], Helper GH2[])
 
 }
 
-void GetA_GHitbox(Air GA[STATE_MAX], int side)
+void GetA_GHitbox(Air GA[STATE_MAX], int pSide)
 {
+	/*
 	// AIR2作成
 	air2.push_back(std::vector<Air>());
 	air2[side].reserve(STATE_MAX);	// 容量を確保
@@ -268,6 +268,14 @@ void GetA_GHitbox(Air GA[STATE_MAX], int side)
 	for (int n = 0; n < STATE_MAX; n++){
 		air2[side][n].setup();
 		air2[side][n] = GA[n];
+	}
+	*/
+
+	// AIR変数準備 //
+	// 初期化＆代入
+	for (int n = 0; n < STATE_MAX; n++) {
+		air[pSide - 1][n].setup();
+		air[pSide - 1][n] = GA[n];
 	}
 }
 
@@ -288,13 +296,14 @@ void GetN_GHitBox(vector<Name_t>GN)
 	}
 }
 
+// P1の名前からair2を探して、animElemを取得する
 Player GetAnimElem(Player GP1)
 {
 	for (int n = 0; n < Character_Max(); n++) {
 		// セットスタート
 		if (GP1.Name == N[n].name) {
 			for (int n1 = 0; n1 < STATE_MAX; n1++) {
-				GP1.animElem[n1] = air2[n][n1].aTime;
+				GP1.animElem[n1] = air[GP1.PSide - 1][n1].aTime;	// @@
 			}
 			break;
 		}
@@ -304,14 +313,19 @@ Player GetAnimElem(Player GP1)
 	return GP1;
 }
 
+// 保存していたair2から、Name-1の判定をもってくる
+// それをairにセット
 void load_GHitBox()
 {
 	// AIR変数準備 //
 	// 初期化＆移植
+	/*
 	for (int n = 0; n < STATE_MAX; n++){
 		air[P1.PSide - 1][n].setup();
-		air[P1.PSide - 1][n] = air2[P1.Name - 1][n];
+		air[P1.PSide - 1][n] = air2[P1.PSide - 1][n];	//@@
 	}
+	*/
+	load_air(P1.Name - 1, P1.PSide);
 }
 
 void ExAtt(int PSide, int i, int W, int H, int X, int Y)

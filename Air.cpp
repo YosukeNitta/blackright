@@ -47,8 +47,7 @@ static char t_A[2] = { "A" };
 
 // mugen記述をコピーする
 // box.airでそのままもってこれる
-//void copy_air(void)
-void load_air(int na)
+void load_air(int na, int pSide)
 {
 	// 判定セッティング //
 	int i, fp, num;
@@ -481,12 +480,17 @@ EXFILE:
 
 	//GetA_GHitbox(air2[na], na);	// GHitBoxに送る
 	//GetA_Select(air2[na][0], na);
-	GetA_GHitbox(air, na);	// GHitBoxに送る
+
+	//@@
+	//GetA_GHitbox(air, na);
+	GetA_GHitbox(air, pSide);	// GHitBoxに送る
+							// これを毎度行うようにする
+
 	// 立ちモーション
 	GetA_Select(air[0], na);
 }
 
-
+// stateからのP1を受け取る
 void GetP_Air(Player GP1)
 {
 	P1 = GP1;
@@ -592,6 +596,7 @@ EXFILE:
 	GetN_SameParam(N);
 }
 
+// P1のNameに合ったものをnameCにコピー
 void GetPName()
 {
 	for (int n = 0; n < Character_Max(); n++){

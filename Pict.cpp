@@ -13,7 +13,6 @@ static Pict pic[PICT_MAX][IMAGE2_MAX];
 // これが関数で使われる
 static Pict pic2[2][PICT_MAX][IMAGE2_MAX];
 //static vector<vector<vector<Pict>>> pic2;	// 渡す時に使用
-
 //static int P_Image2[2][PICT_MAX][IMAGE2_MAX];	// これに全てのキャラの実際の画像
 												// 2キャラ分のみ入れる
 
@@ -40,8 +39,7 @@ public:
 // picには入ってない
 static vector<Image3>im3;
 
-// 名前（airから読み込み）
-//static Name_t N[CHARACTERS_MAX];
+// 名前（airから読み込み）s
 static vector<Name_t>N;
 
 static void GetPort();	// ポートレイト取得
