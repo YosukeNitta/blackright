@@ -4,5 +4,5 @@ cornel;
 bouncer;
 helios;
 dan;
-/syuichi;
+syuichi;
 /eriku;

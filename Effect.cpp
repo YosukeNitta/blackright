@@ -635,7 +635,6 @@ Effect_t EffImage(Effect_t e)
 			e.alpha -= 25;
 		}
 		else { i = 19; }
-
 		break;
 	// è’åÇîg
 	case 16:
@@ -832,7 +831,6 @@ Effect_t EffSetting(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY
 
 void GetP_Effect(Player GP1, Player GP2)
 {
-	P1 = GP1;
 	P2 = GP2;
 }
 

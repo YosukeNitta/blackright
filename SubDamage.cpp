@@ -873,29 +873,36 @@ boolean GuardCheck()
 	}
 
 	if (
-		// 初回ガード(ジャンプ移行ではない、例外として着地硬直はガード可)　|| 空中ガード判定 || 連続ガード || 起き上がりめくり＆相手が空中
-		((P2.ctrl || P2.stateno == 47) && ((P2.keyAtt[4] != 0) || ((P2.D.selfTime > 0) && (P2.keyAtt[6] != 0) && (P1.SFlg == 2))) 
-		&& (P2.SFlg != 2) && (P2.stateno != 40) || 
-		(P2.ctrl) && (airGuard) || (P2.stateno >= 50 && P2.stateno <= 59))
+		// 初回ガード(ジャンプ移行ではない、例外として着地硬直はガード可) &&
+		// 空中ガード判定 || 連続ガード || 起き上がりめくり＆相手が空中
+		// 相手が空中ではない &&
+		// ジャンプ移行以外 || 操作可能で空ガok || 既にガード中
+		(
+		(P2.ctrl || P2.stateno == 47) && 
+		((P2.keyAtt[4] != 0) || ((P2.D.selfTime > 0) && (P2.keyAtt[6] != 0) && (P1.SFlg == 2))) && 
+		(P2.SFlg != 2) && 
+		(P2.stateno != 40) || (P2.ctrl) && (airGuard) || (P2.stateno >= 50 && P2.stateno <= 59)
 		)
+	   )
 		{
+		// ガードを認識、ガード方向確認開始
 		if (
 			(P1.GuardF == 1) ||
 			
 			// 中段
 			((P1.GuardF == 2)
-			&& (P2.SFlg == 0 || P2.SFlg == 2)) ||
+			&& ((P2.SFlg == 0 && (P2.keyAtt[2] == 0)) || P2.SFlg == 2)) ||	// 下を入れていない
 			// 下段
 			(P1.GuardF == 3)
 			&& (((P2.SFlg == 1) || (P2.keyAtt[2] > 0)) || (P2.SFlg == 2)) || 
-			
+			// 空ガ不可
 			(P1.GuardF == 4)
 			&& ((P2.SFlg == 0) || ((P2.SFlg == 1) || (P2.keyAtt[2] > 0)))
 			)
 			gu = true;
 	}
 
-	return gu;
+	return gu;	// ガードの可否
 }
 
 void GetP_SubDamage(Player GP1, Player GP2)

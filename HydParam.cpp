@@ -46,7 +46,6 @@ void HydParam(void)
 		ChangeState();
 	}
 
-
 	// 1P
 	if (P1.StopTime == 0 || P1.time == 0){
 		//İ’èŠJn
