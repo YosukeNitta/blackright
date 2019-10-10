@@ -187,6 +187,7 @@ void HelParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
+			if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
 			// SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
@@ -484,7 +485,7 @@ void HelParam(void)
 			if (P1.StopTime == 0){
 				if ((P1.CFlg) && (P1.time >= 1)){
 					// [ジャンプキャンセル]
-					if (P1.K_Senkou[8]){		// 先行入力効かせてみる
+					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
 					}
@@ -895,7 +896,9 @@ void HelParam(void)
 				HitTime(5, 14, 18, 12);
 				// [ノックバック]
 				HitVel(-4.2, 0, -1.2, -4.0);
-				P1.GuardF = 1;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				P1.HitAnim = 1000;
 				P1.HitSE = 10;
 			}

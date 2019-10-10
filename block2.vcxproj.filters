@@ -201,6 +201,9 @@
     <ClCompile Include="Title.cpp">
       <Filter>ソース ファイル\モード選択</Filter>
     </ClCompile>
+    <ClCompile Include="SyuParam.cpp">
+      <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">

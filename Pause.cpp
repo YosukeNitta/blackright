@@ -743,6 +743,17 @@ void CommandList()
 		else if (P[i].Name == HYDE){
 			
 		}
+		else if (P[i].Name == SYUICHI) {
+			DrawString(tx, TxtDist * 1, "Å® +Ç`", Cr);
+			DrawString(tx, TxtDist * 2, "Å® +Ça", Cr);
+			DrawString(tx, TxtDist * 3, "Å® +Çb", Cr);
+			DrawString(tx, TxtDist * 4, "Å_ +Çb", Cr);
+			DrawString(tx, TxtDist * 5, "Çc", Cr);
+			DrawString(tx, TxtDist * 6, "Å´Å_Å® +Ç`orÇa", Cr);
+			DrawString(tx, TxtDist * 7, "Å´Å^Å© +Ç`orÇa", Cr);
+			DrawString(tx - 19, TxtDist * 8, "ÉQÅ[ÉWãZ", Cr);
+			DrawString(tx, TxtDist * 9, "Å´Å_Å® +ÇbÅi 1 Åj", Cr);
+		}
 	}
 	
 	

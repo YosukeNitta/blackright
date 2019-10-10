@@ -779,7 +779,6 @@ void AttackSetting()
 		GetS_HelDamage(S);
 		HelperDamCheck();
 	}
-
 	if ((P1.stateno < 1060) || (P1.stateno >= 1070)){
 		GetP_HelDamage(P2, P1);
 		GetH_HelDamage(H2, H1);
@@ -951,6 +950,13 @@ void SetParam()
 					GetS_HydParam(S);
 					GetH_HydParam(H[0], H[1]);
 					HydParam();
+					break;
+				case SYUICHI:
+					//ステートの設定を適用
+					GetP_SyuParam(P[0], P[1]);
+					GetS_SyuParam(S);
+					GetH_SyuParam(H[0], H[1]);
+					SyuParam();
 					break;
 				default:
 					//ステートの設定を適用

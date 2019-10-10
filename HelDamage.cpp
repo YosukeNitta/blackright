@@ -155,8 +155,11 @@ void HelperDamCheck()
 						// P1 攻撃ヒットチェック
 						// ヒットフラグがオフで、相手が無敵じゃない
 						// スイッチがオン
-						if ((H1[i].HMoveHit > 0) && (H1[i].var) && (H1[i].attF == 3) &&
-							(H2[l].HMoveHit > 0) && (H2[l].var) && (H2[l].attF == 3))
+						// お互い飛び道具
+						if (
+							(H1[i].HMoveHit > 0) && (H1[i].var) && (H1[i].attF == 3) &&
+							(H2[l].HMoveHit > 0) && (H2[l].var) && (H2[l].attF == 3)
+							)
 						{
 
 							// [ヒットの設定]
@@ -186,7 +189,7 @@ void HelperDamCheck()
 
 						}// ヒット時設定終了
 
-
+						
 					}// ifチェック終了
 				}// 2P 喰らい判定チェック
 			}// 攻撃判定チェック

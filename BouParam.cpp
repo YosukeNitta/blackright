@@ -627,7 +627,7 @@ void BouParam(void)
 			if (P1.StopTime == 0){
 				if ((P1.CFlg) && (P1.time >= 1)){
 					// [ジャンプキャンセル]
-					if (P1.K_Senkou[8]){		// 先行入力効かせてみる
+					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
 					}

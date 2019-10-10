@@ -273,6 +273,9 @@ void Select::Load_1second(){
 		// キャラサイズ決定
 		move[cm].sizeG = 1.0;
 
+		if(cm == 5)
+		move[cm].sizeG = 0.8;
+
 	}	// cm
 
 	SetTransColor(0, 0, 0);	// 透過色を戻す

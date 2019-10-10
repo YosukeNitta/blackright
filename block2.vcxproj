@@ -134,6 +134,7 @@
     <ClCompile Include="SubDamSet.cpp" />
     <ClCompile Include="SubState.cpp" />
     <ClCompile Include="SubSystem.cpp" />
+    <ClCompile Include="SyuParam.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Traning.cpp" />
     <ClCompile Include="Versus.cpp" />

@@ -181,6 +181,7 @@ void CorParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
+			if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
 			// SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
@@ -364,9 +365,10 @@ void CorParam(void)
 				// [ゲージ] 
 				Power(40);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 13, 17, 11);
+				HitTime(6, 12, 16, 10);
 				// [ノックバック]
 				HitVel(-3.6, 0, -2.0, -4.6);
+				GuardVel(-4.0, -3.4);
 
 				// [ガード属性]
 				P1.GuardF = 1;
@@ -497,7 +499,7 @@ void CorParam(void)
 			if (P1.StopTime == 0){
 				if ((P1.CFlg) && (P1.time >= 6)){
 					// [ジャンプキャンセル]
-					if (P1.K_Senkou[8]){		// 先行入力効かせてみる
+					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
 					}
@@ -666,15 +668,8 @@ void CorParam(void)
 			if (P1.StopTime == 0){
 				if ((P1.CFlg) && (P1.time >= 10)){
 					// [必殺技・ゲージ技]
-					if (P1.Senkou[3] > 0){
-						// スラ
-						if (key(3)){
-							P1.stateno = 321, P1.More = 1,
-								P1.time = 0, P1.A.damage = 0;
-						}
-					}
 					// 先行入力
-					else if (P1.Senkou[1] > 0){
+					if (P1.Senkou[1] > 0){
 						// 連打コンボ
 						if (P1.Var[20] == 1){
 							P1.stateno = 610, P1.More = 1,
@@ -940,17 +935,9 @@ void CorParam(void)
 				// キャンセル
 				if ((P1.CFlg) && (P1.time >= 1)){
 					// [ジャンプキャンセル]
-					if ((P1.K_Senkou[8]) && (P2.stateno >= 1000)){		// 先行入力効かせてみる
+					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)){		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
-					}
-					// [通常技]
-					if (P1.Senkou[3] > 0){		// 先行入力効かせてみる
-						// スラ
-						if (key(3)){
-							P1.stateno = 321, P1.More = 1,
-								P1.time = 0, P1.A.damage = 0;
-						}
 					}
 					// [必殺技・ゲージ技]
 					SCancel();
@@ -1116,7 +1103,9 @@ void CorParam(void)
 				HitTime(8, 16, 18, 14);
 				// [ノックバック]
 				HitVel(-4.6, 0, -1.8, -4.0);
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;

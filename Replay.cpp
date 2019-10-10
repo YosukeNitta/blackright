@@ -91,6 +91,7 @@ int Replay::Mode()
 		ModeChange(GameScene(VersusScene));
 	}
 	// キャラ、カラー、ステージ　を読み込む
+	// リプレイデータ削除
 	else if ((P_BInput(4) == 1) && (repName.size() > 0)){
 		SEStart(38);
 		Replay_Delete();
@@ -182,7 +183,7 @@ int Replay::Load_Reload()
 	r_stage = 0;
 
 	// BGM読み込み
-	BGMStart(11);
+	//BGMStart(11);
 
 	return 0;
 }

@@ -59,6 +59,7 @@ static int Char2_Cmd();
 static int Char3_Cmd();
 static int Char4_Cmd();
 static int Char5_Cmd();
+static int Char6_Cmd();
 
 //-------------------------------------------------------------------------------
 //
@@ -96,6 +97,9 @@ int CharCmd()
 		break;
 	case HYDE:
 		Char5_Cmd();
+		break;
+	case SYUICHI:
+		Char6_Cmd();
 		break;
 	default:
 		Def_Cmd();
@@ -652,15 +656,15 @@ int Char5_Cmd()
 	if (P1.ctrl){
 		if (P1.Senkou[4] > 0){
 			// 地上にいる
-			if (P1.SFlg != 2){
-				if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8]))P1.stateno = 605;	// 6D
-				else if (P1.keyAtt[2])P1.stateno = 610;	// 2D
+			if ((P1.SFlg != 2)){
+				if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8]))P1.stateno = 601;	// 6D
+				else if ((P1.keyAtt[6]) && (P1.keyAtt[2]))P1.stateno = 603;	// 3D
 				else{ P1.stateno = 600; }	// 5D
 			}
 			// 空中キック
 			else if (P1.SFlg == 2 && (P1.YPos < GROUND - 5)){
-				if (P1.keyAtt[2])P1.stateno = 630;	// J2D
-				else{P1.stateno = 620;}	// JD
+				if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8]))P1.stateno = 606;	// J6D
+				else{P1.stateno = 605;}	// JD
 			}
 		}
 	}
@@ -671,22 +675,11 @@ int Char5_Cmd()
 	/
 	/*******/
 
-	// EXアクション
-	// A..ゲージ増加
-	if ((P1.ctrl) && (P1.cmd[3]) && (P1.Var[30] == 0)){
-		if (P1.SFlg != 2){		// 地上
-			if (P1.button[1] > 0)P1.stateno = 550;	// ゲージ増加
-			if (P1.button[3] > 0)P1.stateno = 552;	// 分身
+	// [ スマッシュ ]
+	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Power >= 1000)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Senkou[3] > 0)P1.stateno = 800;
 		}
-	}
-	// B..バースト
-	// 停止時間が0、1060～1069ではない
-	if ((P1.cmd[3]) && (P1.Var[30] == 0) && (P1.StopTime == 0) &&
-		(P1.stateno < 1060 || P1.stateno >= 1070) && (P1.Life > 0) &&
-		(P1.stateno >= 1000) && (P2.stateno < 800 || P2.stateno >= 900)){
-			{		// どこでも
-				if (P1.button[2] > 0)P1.stateno = 551;	// ゲージ増加
-			}
 	}
 
 	//  投げ
@@ -702,6 +695,133 @@ int Char5_Cmd()
 		}
 	}
 	*/
+	return 0;
+}
+
+// シュウイチ
+int Char6_Cmd()
+{
+
+	/********
+	/
+	/ [Ｄアクション・特殊技]
+	/
+	/*******/
+	// 6A
+	if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (P1.Senkou[1] > 0) && (P1.ctrl)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 205;
+		}
+	}
+	//  6B
+	if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (P1.Senkou[2] > 0) && (P1.ctrl)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 215;
+		}
+	}
+	//  6C
+	if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 225;
+		}
+	}
+	//  3C
+	if ((P1.keyAtt[6]) && (P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 325;
+		}
+	}
+
+	// Dアクション
+	if ((P1.ctrl) && (P1.Senkou[4] > 0)) {
+		// 地上にいる
+		if (P1.SFlg != 2) {
+			P1.stateno = 600;
+		}
+	}
+	/********
+	/
+	/ [必殺技・ゲージ技・投げ]
+	/
+	/*******/
+	// [236]兜割り
+	if ((P1.ctrl) && (P1.cmd[1]) && (P1.SFlg != 2)) {
+		if (P1.Senkou[1] > 0) {		// 地上
+			P1.stateno = 620;
+		}
+		if (P1.Senkou[2] > 0) {		// 地上
+			P1.stateno = 621;
+		}
+	}
+
+
+	// [214]時つ風
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.SFlg != 2)) {
+		if (P1.Senkou[1] > 0) {		// 地上
+			P1.stateno = 610;
+		}
+		if (P1.Senkou[2] > 0) {		// 地上
+			P1.stateno = 611;
+		}
+	}
+	/*
+	// [２１４Ｄ]
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Senkou[4] > 0)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Var[11] >= 1000)
+				P1.stateno = 615;
+			else {
+				P1.stateno = 611;
+			}
+		}
+		if (P1.SFlg == 2) {
+			if (P1.YPos < GROUND - 20) {
+				if (P1.Var[11] >= 1000)
+					P1.stateno = 617;
+				else { P1.stateno = 616; }
+			}
+		}
+	}
+
+	// [６２３ＡorＢorＣ]
+	if ((P1.ctrl) && (P1.cmd[4]) && (P1.Senkou[1] > 0 || P1.Senkou[2] > 0 || P1.Senkou[3] > 0)) {
+		if (P1.SFlg != 2) {
+			P1.stateno = 620;
+		}
+	}
+	// [６２３Ｄ]
+	if ((P1.ctrl) && (P1.cmd[4]) && (P1.Senkou[4] > 0)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Var[11] >= 1000)
+				P1.stateno = 625;
+			else { P1.stateno = 620; }
+		}
+	}
+
+	*/
+	// [ 1ゲージ ]
+	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Power >= 1000)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Senkou[3] > 0)P1.stateno = 800;
+		}
+	}
+
+
+	//  投げ
+	if (checkThrow()) {
+		if (P1.SFlg == 2)P1.stateno = 510;
+		else { P1.stateno = 500; }
+	}
+
+	/*
+	//  [ ３ゲージ ]
+	if (check3Gauge()) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 850;	// 超必
+		}
+	}
+	*/
+
 	return 0;
 }
 

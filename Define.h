@@ -14,7 +14,7 @@ static const int CORNEL = 2;
 static const int BOUNCER = 3;
 static const int HELIOS = 4;
 static const int HYDE = 5;
-//static const int ERIKU = 6;
+static const int SYUICHI = 6;
 
 //*************
 //  íËêî

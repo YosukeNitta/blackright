@@ -374,11 +374,12 @@ void EnterAttack()
 		}
 
 		// ƒK[ƒLƒƒƒ“
-		if ((P[i].stateno == 50 || P[i].stateno == 51)
+		if ((P[i].stateno == 50 || P[i].stateno == 51 || 
+			 P[i].stateno == 53 || P[i].stateno == 54)
 			//&& (P[i].aGauge >= (GUARD_MAX / 2)) 
 			&& (P[i].Power >= 1000)
 			&& (P[i].keyAtt[6] > 0)
-			&& (P[i].rbutton[1] > 0 && P[i].rbutton[2] > 0)
+			&& ((P[i].rbutton[1] > 0) && (P[i].rbutton[2] > 0))
 			){
 			P[i].stateno = 520;
 			P[i].time = 0;

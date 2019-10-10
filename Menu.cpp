@@ -100,28 +100,33 @@ void Menu::Draw()
 	// 背景
 	DrawGraph(0, 0, back, true);
 	
-	/*
+	DrawBox(0, SCREEN_H - 40, SCREEN_W, SCREEN_H - 20, GetColor(0, 0, 0), true);
+	int drawX =  80;
+	int drawY = SCREEN_H - 40 + 1;
 	switch (SPoint){
 	case 0:
-		DrawString(140, 140, "アーケード", Cr);
+		DrawString(drawX, drawY, "CPUを倒して勝ち抜くモードです", Cr);
 		break;
 	case 1:
-		DrawString(140, 140, "プレイヤーと対戦", Cr);
+		DrawString(drawX, drawY, "プレイヤーと対戦します", Cr);
 		break;
 	case 2:
-		DrawString(140, 140, "CPUと対戦", Cr);
+		DrawString(drawX, drawY, "CPUと対戦します", Cr);
 		break;
 	case 3:
-		DrawString(140, 140, "トレモ", Cr);
+		DrawString(drawX, drawY, "様々な状況での動きを確認できます", Cr);
 		break;
 	case 4:
-		DrawString(140, 140, "リプレイ再生", Cr);
+		DrawString(drawX, drawY, "ネット対戦(未実装)", Cr);
 		break;
 	case 5:
-		DrawString(140, 140, "ゲーム終了", Cr);
+		DrawString(drawX, drawY, "記録したリプレイを再生します", Cr);
+		break;
+	case 6:
+		DrawString(drawX, drawY, "ゲームを終了します", Cr);
 		break;
 	}
-	*/
+	
 	// ターボモード変更
 	if (P_BInput(4) == 1){
 		if (Versus_GetTurboMode()){
@@ -230,7 +235,7 @@ void Menu::Draw()
 
 		for (int i = 0; i < 3; i++){
 			int xpos = -5;
-			xpos += gameTime * 1.2;
+			xpos += (int)(gameTime * 1.2);
 			if (xpos > 25)
 				xpos = 25;
 

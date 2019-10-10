@@ -13,6 +13,7 @@
 
 //ﾃﾞｰﾀ定義部------------------------------------------------
 static void GuardParam();
+static void GuardPoint();
 static void HitParam();
 static boolean GuardCheck();
 static void DamageEnter();
@@ -27,7 +28,7 @@ static int getPower;	// ゲージ回収、多すぎると減少
 static int hit, guard;	// ヒット、ガード判定
 static Player P[2], hozon[2];
 static boolean touch[2];
-
+static int gTime;	// ガーポ、当身の保存時間
 //プログラム部----------------------------------------------
 
 void DamageCheck()
@@ -222,7 +223,7 @@ void DamageEnter()
 			P2.StopTime = 0;
 			GuardParam();
 		}
-		// [ヒットの設定]
+		// [スパアマ時ヒットの設定]
 		else
 		{
 			// [キャンセル可能に]
@@ -282,6 +283,9 @@ void DamageEnter()
 		)
 		)
 	{
+		// ガーポ・当身用
+		gTime = P2.time;
+
 		//---------------
 		// 共通設定
 		//---------------
@@ -305,7 +309,20 @@ void DamageEnter()
 		if (GuardCheck())
 		// [ガードの設定]
 		{
-			GuardParam();
+			if ((P2.Name == SYUICHI) && ((P2.stateno >= 600) && (P2.stateno < 700))) {
+				if (P2.stateno == 600){
+					P2.time = gTime;
+					GuardPoint();
+				}
+				if ((P2.stateno == 610) || (P2.stateno == 611)) {
+					P2.time = 0;
+					P2.stateno = 615;
+					P1.StopTime = 10, P2.StopTime = 10;
+					P1.CFlg = 0;
+					SEStart(19);
+				}
+			}
+			else { GuardParam(); }
 		}
 		// [ヒットの設定]
 		else
@@ -315,6 +332,47 @@ void DamageEnter()
 		
 	}// 接触条件終了
 
+}
+
+void GuardPoint()
+{
+	// [ゲージ回収]
+	P1.Power += P1.GetPow / 2;
+	P2.Power += P1.GivePow / 2;
+
+	// SE
+	if (P2.D.nokezori >= 18)SEStart(17);
+	else { SEStart(16); }
+
+	// [ヒットエフェクト]
+	int posX, posY;
+	int defPosY;	// 基準位置
+	float effSize = 0.0;
+	defPosY = (int)P2.YPos;
+	if (P1.YPos < P2.YPos - 50)defPosY = (int)P2.YPos - 50;
+	if (P2.D.nokezori >= 20)effSize = 0.1;
+
+	//P1.GuardF; ガード方向で座標かえる
+	if ((P1.GuardF == 3 || P1.GuardF == 13) && (defPosY == (int)P2.YPos)) {
+		posY = P2.ySize / 2;
+	}
+	else { posY = P2.ySize; }
+
+	// エフェクト開始
+	{ posX = 20 + GetRand(10); }
+	{
+		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.2, 0.6 + effSize, P2.muki);
+	}
+
+	// ヒットストップ、のけぞり時間
+	P2.StopTime = P1.HitStop;
+	P1.StopTime = P1.HSSelf;
+	if (P1.StopTime < 0)P1.StopTime = 0;
+	if (P2.StopTime < 0)P2.StopTime = 0;
+
+	// [ガード数カウント]
+	P1.A.guardCount += 1;	// カウント
 }
 
 void GuardParam()
@@ -900,6 +958,24 @@ boolean GuardCheck()
 			&& ((P2.SFlg == 0) || ((P2.SFlg == 1) || (P2.keyAtt[2] > 0)))
 			)
 			gu = true;
+	}
+	// ガードポイント
+	if ((!gu) && (P2.Name == SYUICHI)) {
+		if ((P2.stateno == 600) && 
+			((gTime >= 2) && (gTime < 30))) {
+			if((P1.GuardF == 1) || (P1.GuardF == 2))
+			gu = true;
+		}
+		if ((P2.stateno == 610) &&
+			((gTime >= 2) && (gTime <= 17))) {
+			if ((P1.GuardF == 1) || (P1.GuardF == 2))
+				gu = true;
+		}
+		if ((P2.stateno == 611) &&
+			((gTime >= 2) && (gTime <= 17))) {
+			if ((P1.GuardF == 3) || (P1.GuardF == 13))
+				gu = true;
+		}
 	}
 
 	return gu;	// ガードの可否

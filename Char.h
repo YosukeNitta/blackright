@@ -130,6 +130,17 @@ void GetH_EriParam(Helper GH1[], Helper GH2[]);
 
 //---------------------
 // 
+// シュウイチ
+//
+//---------------------
+void SyuParam(void);
+void GetP_SyuParam(Player GP1, Player GP2);
+void GetS_SyuParam(System_t GS);
+void GetH_SyuParam(Helper GH1[], Helper GH2[]);
+
+
+//---------------------
+// 
 // 共通
 //
 //---------------------

@@ -138,6 +138,8 @@ int SEStart(int num2)
 		se[38] = LoadSoundMem("sound/38_bomb.wav"); // キャンセル
 		se[39] = LoadSoundMem("sound/39_aura.wav"); // キャンセル
 
+		se[40] = LoadSoundMem("sound/40_shot.mp3"); // ショット
+
 		// 非同期読み込み設定に変更
 		SetUseASyncLoadFlag(FALSE);
 
@@ -165,6 +167,8 @@ int SEStart(int num2)
 
 int VOStart(int ch, int num, int percent)
 {
+	/*
+
 	// BGMをロード
 	if (LoadV == 0)
 	{
@@ -252,6 +256,7 @@ int VOStart(int ch, int num, int percent)
 		PlaySoundMem(voice[ch][num], DX_PLAYTYPE_BACK);	//バックグラウンドで再生
 	}
 
+	*/
 	return 0;
 }
 
@@ -324,6 +329,7 @@ void StopSE(int num)
 
 int PVOStart(int pside, int num, int percent)
 {
+	/*
 	int per = GetRand(percent);
 
 	for (int i = 0; i < SE_MAX; i++){
@@ -335,6 +341,7 @@ int PVOStart(int pside, int num, int percent)
 	if (per == 0){
 		PlaySoundMem(pVoice[pside-1][num], DX_PLAYTYPE_BACK);	//バックグラウンドで再生
 	}
+	*/
 
 	return 0;
 }

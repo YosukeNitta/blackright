@@ -1717,8 +1717,15 @@ void DamParam()
 		}
 
 		if (P1.time == 0){
-			// ó‚¯g•ûŒü‚ÍŒÅ’è
-			P1.XVel = 0;
+			// ó‚¯g•ûŒü‚ğ‘I‚Ô
+			if (P1.keyAtt[4]) {
+				P1.XVel = -2.2;
+			}
+			else if (P1.keyAtt[6]) {
+				P1.XVel = 2.2;
+			}
+			else { P1.XVel = 0; }
+
 			P1.YPos = GROUND;
 			EffStartB(16, P1.XPos, P1.YPos, 0, -1,
 				0.20, 0.04, P1.muki);
@@ -1823,6 +1830,11 @@ static void PSetSend()
 		GetP_HydParam(P1, P2);
 		GetH_HydParam(H1, H2);
 		GetS_HydParam(S);
+	}
+	else if(P1.Name == SYUICHI){
+		GetP_SyuParam(P1, P2);
+		GetH_SyuParam(H1, H2);
+		GetS_SyuParam(S);
 	}
 	else { 
 		GetP_HydParam(P1, P2); 

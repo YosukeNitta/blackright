@@ -60,6 +60,7 @@ static vector<int> oButton[LOG_MAX];
 static boolean sButton, sKey;
 static int saveKey = -1;
 static int test, test2[2];	// 特殊ゲージ
+static int test3[2];
 // Add
 static int addGaugeTime[2];		// 表示時間
 static int addGauge[10];		// 画像
@@ -125,7 +126,8 @@ void ObjectDraw()
 		test = LoadGraph("char/bouncer/o1.bmp");
 		test2[0] = LoadGraph("char/helios/o1.bmp");
 		test2[1] = LoadGraph("char/helios/o2.bmp");
-
+		test3[0] = LoadGraph("char/dan/gauge.bmp");
+		test3[1] = LoadGraph("char/dan//gauge2.bmp");
 		EX = LoadGraph("ob/EX.png");
 
 		LoadDivGraph("ob/battle.png", 5, 1, 5, 280, 70, battle);
@@ -378,6 +380,21 @@ void ObjectDraw()
 					DrawBox(SCREEN_W - 80 - 20 - ((i * 1000) * 0.05), (SCREEN_H - 480) + 435,
 						SCREEN_W - 80 - 20 - (((i - 1) * 1000) * 0.05), (SCREEN_H - 480) + 445, GetColor(0, 0, 0), false);
 				}
+			}
+
+			// ダン
+			if (P1.Name == HYDE) {
+				// ゲージ枠
+				DrawBox(99, (SCREEN_H - 480) + 434,
+					99 + 101, (SCREEN_H - 480) + 456, GetColor(20, 20, 20), false);
+				// ゲージ
+				DrawBox(100, (SCREEN_H - 480) + 435, 100 + (P1.Var[11] * 0.05), (SCREEN_H - 480) + 455, GetColor(255, 215, 0), true);
+			}
+			if (P2.Name == HYDE) {
+				DrawBox(SCREEN_W - 80 - 19, (SCREEN_H - 480) + 434,
+					SCREEN_W - 80 - 19 - 101, (SCREEN_H - 480) + 456, GetColor(0, 0, 0), false);
+				DrawBox(SCREEN_W - 80 - 20 - (P2.Var[11] * 0.05), (SCREEN_H - 480) + 435,
+					SCREEN_W - 80 - 20, (SCREEN_H - 480) + 455, GetColor(255, 215, 0), true);
 			}
 		}
 		/**************
