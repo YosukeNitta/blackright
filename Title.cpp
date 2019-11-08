@@ -3,7 +3,7 @@
 static int titleG;
 //static int tGLogo;
 static int fill;
-static boolean load, loadF;
+static boolean load, loadF = false;
 static int timeStop;
 static int kettei;
 static int alpha = 255;	// “§–¾“x
@@ -56,13 +56,13 @@ int Title()
 
 	// •`‰æ
 	{
-		
 		// ‰æ‘œ
 		//DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(220,220,220), true);
 		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 		DrawGraph(0, 0, titleG, true);
 		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		//DrawGraph(0, 0, tGLogo, true);
+
 		SetAlpha(alpha);
 		DrawString(240, 400, "PRESS START BUTTON", Cr);
 		NoBlend();
@@ -89,6 +89,10 @@ int Title()
 	if (timeStop >= 10){
 		load = false, ModeChange(GameScene(MenuScene));
 		kettei = 0;
+
+		// I—¹ˆ—
+		DeleteGraph(titleG);
+		loadF = false;
 	}
 	return 0;	//‚Ç‚±‚É‚à“–‚½‚ç‚È‚©‚Á‚½‚çI—¹
 

@@ -1332,8 +1332,6 @@ void EnterData()
 	}
 }
 
-
-
 // ネットワーク終了
 void End_Network(){
 

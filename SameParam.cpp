@@ -1447,7 +1447,8 @@ void DamParam()
 					// [Žó‚¯g]
 					// ‹ó’†‚É‚¢‚éŽžAƒ{ƒ^ƒ“‚P`‚R“ü—Í
 					if ((P1.button[1] > 0) || (P1.button[2] > 0) ||
-						(P1.button[3] > 0)){
+						(P1.button[3] > 0) || (P1.Senkou[1] > 0) ||
+						(P1.Senkou[2] > 0) || (P1.Senkou[3] > 0)){
 						P1.stateno = 1080, P1.time = 0, P1.More = 1;
 					}
 					else {

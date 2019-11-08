@@ -187,7 +187,7 @@ void HelParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
-			if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
+			if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
 			// SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
@@ -301,7 +301,7 @@ void HelParam(void)
 				// [ゲージ] 
 				Power(30);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 13, 17, 11);
+				HitTime(6, 13, 17, 11);
 				// [ノックバック]
 				HitVel(-3.8, 0, -1.6, -4.8);
 
@@ -691,7 +691,7 @@ void HelParam(void)
 				P1.GetPow = 24, P1.GivePow = 12;
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 12, 16, 10);
+				HitTime(6, 12, 16, 10);
 
 				// [ノックバック]
 				HitVel(-4.4, 0, -1.9, -4.8);
@@ -940,11 +940,13 @@ void HelParam(void)
 					}
 				}
 			}
+			/*
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM){
 				P1.ctrl = 1, P1.More = 1,
 					P1.stateno = 46, P1.time = 0;
 			}
+			*/
 			break;
 			//********************
 			// 410：ジャンプB
@@ -1387,7 +1389,7 @@ void HelParam(void)
 		case 600:	// Aブメ
 			P1.ctrl = 0, P1.SFlg = 0;
 
-			P1.Var[11] += 15;	// 20
+			P1.Var[11] += 10;	// 20
 			if (P1.Var[11] > 3000)P1.Var[11] = 3000;
 
 			if (P1.time == 0)SEStart(39);
@@ -1401,7 +1403,11 @@ void HelParam(void)
 		case 601:
 			P1.ctrl = 0, P1.SFlg = 0;
 
-			P1.Var[11] += 16;	// 22
+			if (P1.AnimTime >= 15) {
+				P1.Var[11] += 5;
+				if (P1.AnimTime >= 30)P1.Var[11] += 5;
+			}
+			P1.Var[11] += 15;	// 22
 			if (P1.Var[11] > 3000)P1.Var[11] = 3000;
 
 			// ループ
@@ -1821,9 +1827,10 @@ void HelParam(void)
 			// SEを鳴らす、移動
 			if (P1.time == 0){
 				SEStart(21);
-				//P1.mutekiF = 0;
+				P1.mutekiF = 0;
+				P1.Muteki = 0;
 			}
-			//if(P1.time <= 8)P1.Muteki = 1;
+			if((P1.time >= 2) && (P1.time <= 8))P1.Muteki = 1;
 
 			// ヒット数セット
 			if (P1.time == 1){
@@ -1923,15 +1930,6 @@ void HelParam(void)
 				DamReset();
 			}
 
-			// 応急処置
-			if (P1.StopTime == 0){
-				// キャンセル
-				if ((P1.CFlg) && (P1.time >= 1) && (P1.scTime > 0)){
-					// [ゲージ技]
-					//HCancel();
-				}
-			}
-
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
@@ -1986,20 +1984,11 @@ void HelParam(void)
 
 			// ヘルパー呼び出し.(ノーマル波動)
 			if (P1.time == 12){
-				HelperReset(1);
+				HelperReset(0);
 				H1[0].var = true;
 				H1[0].time = 0;
 				H1[0].stateno = 2010;
 			}
-			/*
-			// ヘルパー呼び出し(EX波動)
-			if (P1.time == 21){
-				HelperReset(0);
-				H1[0].var = true;
-				H1[0].time = 0;
-				H1[0].stateno = 2010; 
-			}
-			*/
 
 			// ヒット時キャンセル
 			if (P1.StopTime == 0){
@@ -2056,7 +2045,7 @@ void HelParam(void)
 			}
 
 			// 無敵
-			if (P1.time <= 9)P1.Muteki = 1, P1.mutekiF = 0;
+			if (P1.time <= 4)P1.Muteki = 1, P1.mutekiF = 0;
 			else { P1.Muteki = 0; }
 
 			if (P1.time == 1){
@@ -2103,6 +2092,7 @@ void HelParam(void)
 				P1.HitSE = 13;
 				// エフェクト
 				HitEff(3, 0.6, 0.6);
+				P1.A.kill = 0;
 			}
 			// ダメージセット
 			else if (P1.time >= 24){
@@ -2124,6 +2114,7 @@ void HelParam(void)
 				P1.HitSE = 14;
 				// エフェクト
 				HitEff(3, 0.8, 0.8);
+				P1.A.kill = 1;
 			}
 
 			// 当たったら変更

@@ -47,8 +47,9 @@ static Effect_t BE[BE_MAX];
 //表示フラグ
 static boolean E2drawFlg;
 static Effect_t EffImage(Effect_t e);
-Effect_t EffSetting(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY,
+static Effect_t EffSetting(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY,
 	float SizeX, float SizeY, boolean turn);
+static Effect_t EffectDraw(Effect_t e);
 
 // num は呼び出す画像
 int EffStart(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY, 
@@ -62,9 +63,11 @@ int EffStart(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY,
 		// 非同期読み込み設定に変更
 		SetUseASyncLoadFlag(TRUE);
 
+		EffSet[0][0] = LoadGraph("ob/Effect/03_slash.png");
 		LoadDivGraph("ob/Effect/01_hit.png", 5, 5, 1, 320, 320, EffSet[1]);
 		LoadDivGraph("ob/Effect/02_hit2.png", 5, 5, 1, 320, 320, EffSet[2]);
 		EffSet[3][0] = LoadGraph("ob/Effect/03_slash.png");
+		EffSet[4][0] = LoadGraph("ob/Effect/04_slash.png");
 		LoadDivGraph("ob/Effect/05.png", 5, 5, 1, 400, 700, EffSet[5]);
 		LoadDivGraph("ob/Effect/06_air.png", 6, 3, 2, 400, 400, EffSet[6]);
 		EffSet[7][0] = LoadGraph("ob/Effect/07_hydro.png");
@@ -129,95 +132,11 @@ void EffDraw()
 	// 描画ブレンドモードをアルファブレンド（透明）にする
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 
-	/*
-	for (int i = 0; i < E.size(); i++){
-		// エフェクトが入っていたら描画
-		if (E[i].Image != 0){
-			// 横画像取得
-			E[i] = EffImage(E[i]);	// Num2その他
-
-			// 画像を読み込み
-			E[i].Image = EffSet[E[i].Num1][E[i].Num2];
-
-			// 座標調整
-			E[i].XAdd = (int)(xadd * E[i].SizeX);
-			E[i].YAdd = (int)(yadd * E[i].SizeY);
-			if (E[i].turn){
-				E[i].XAdd = -E[i].XAdd;
-			}
-			xadd = 0, yadd = 0;	
-
-
-
-			// 描画ブレンドモードをアルファブレンド（透明）にする
-			if (E[i].alpha == 0)SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-			else if (E[i].alpha != 0){
-				SetDrawBlendMode(DX_BLENDMODE_ADD, E[i].alpha);
-			}
-
-			// エフェクト表示
-			DrawRotaGraph3(E[i].XPos + E[i].XAdd - (int)S.ScroolX, E[i].YPos + E[i].YAdd - (int)S.ScroolY + S.quakeY,
-				E[i].XSize / 2, E[i].YSize / 2,
-				E[i].SizeX, E[i].SizeY, E[i].rot, E[i].Image, true, E[i].turn);
-
-			if (E[i].alpha != 0){
-				// 描画ブレンドモードをノーブレンドにする
-				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			}
-			// 時間経過
-			E[i].Time += 1;
-
-			// 画像削除して再利用できるようにする
-			if (E[i].Time >= E_MAXTIME)E.;
-		}
-	}
-	*/
-
 	for (int i = 0; i < EFF_MAX; i++){
 
 		// エフェクトが入っていたら描画
 		if (E[i].Image != 0){
-			// 横画像取得
-			E[i] = EffImage(E[i]);	// Num2その他
-
-			// 画像を読み込み
-			E[i].Image = EffSet[E[i].Num1][E[i].Num2];
-
-			// 座標調整
-			E[i].XAdd = (int)(xadd * E[i].SizeX);
-			E[i].YAdd = (int)(yadd * E[i].SizeY);
-			if (E[i].turn){
-				E[i].XAdd = -E[i].XAdd;
-			}
-			xadd = 0, yadd = 0;
-
-			
-
-			// 描画ブレンドモードをアルファブレンド（透明）にする
-			if(E[i].alpha == 0)SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-			else if (E[i].alpha != 0){
-				SetDrawBlendMode(DX_BLENDMODE_ADD, E[i].alpha);
-			}
-
-			// エフェクト表示
-			//DrawRotaGraph(E[i].XPos + E[i].XAdd, E[i].YPos + E[i].YAdd, 
-				//E[i].GSize, 0, E[i].Image, true, E[i].turn);
-			/*
-			DrawRotaGraph3(E[i].XPos + E[i].XAdd - (int)S.ScroolX, E[i].YPos + E[i].YAdd - (int)S.ScroolY + S.quakeY,
-				E[i].XSize / 2, E[i].YSize / 2,
-				E[i].SizeX, E[i].SizeY, E[i].rot, E[i].Image, true, E[i].turn);
-				*/
-			E[i].Draw();
-
-			if (E[i].alpha != 0){
-				// 描画ブレンドモードをノーブレンドにする
-				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			}
-			// 時間経過
-			E[i].Time += 1;
-
-			// 画像削除して再利用できるようにする
-			if (E[i].Time >= E_MAXTIME)E[i].Image = 0;
+			E[i] = EffectDraw(E[i]);
 		}
 
 		// E2描画
@@ -229,10 +148,6 @@ void EffDraw()
 					SetDrawBlendMode(DX_BLENDMODE_ADD, E2[i].alpha);
 				}
 
-				// エフェクト表示
-				//DrawRotaGraph3(E2[i].XPos + E2[i].XAdd - (int)S.ScroolX, E2[i].YPos + E2[i].YAdd - (int)S.ScroolY + S.quakeY,
-					//E2[i].XSize / 2, E2[i].YSize / 2, 
-					//E2[i].SizeX, E2[i].SizeY, E2[i].rot, E2[i].Image, true, E2[i].turn);
 				E2[i].Draw();
 
 				if (E[i].alpha != 0){
@@ -255,55 +170,12 @@ void EffDraw()
 
 void EffDrawB()
 {
-
-
-	
-
 	for (int i = 0; i < BE_MAX; i++){
-
 		// エフェクトが入っていたら描画
 		if (BE[i].Image != 0){
-
-			// 横画像取得
-			BE[i] = EffImage(BE[i]);	// Num2その他
-
-			// 画像を読み込み
-			BE[i].Image = EffSet[BE[i].Num1][BE[i].Num2];
-
-			// 座標調整
-			BE[i].XAdd = (int)(xadd * BE[i].SizeX), BE[i].YAdd = (int)(yadd * BE[i].SizeY);
-			if (BE[i].turn){
-				BE[i].XAdd = -BE[i].XAdd;
-				BE[i].YAdd = -BE[i].YAdd;
-			}
-			xadd = 0, yadd = 0;
-
-			// 描画ブレンドモードをアルファブレンド（透明）にする
-			if(BE[i].alpha == 0)SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
-			else if (BE[i].alpha != 0){
-				SetDrawBlendMode(DX_BLENDMODE_ADD, BE[i].alpha);
-			}
-
-			// エフェクト表示
-			//DrawRotaGraph3(BE[i].XPos + BE[i].XAdd - (int)S.ScroolX, BE[i].YPos + BE[i].YAdd - (int)S.ScroolY + S.quakeY,
-				//BE[i].XSize / 2, BE[i].YSize / 2,
-				//BE[i].SizeX, BE[i].SizeY, BE[i].rot, BE[i].Image, true, BE[i].turn);
-			BE[i].Draw();
-
-			// 時間経過
-			BE[i].Time += 1;
-
-			// 画像削除して再利用できるようにする
-			if (BE[i].Time >= E_MAXTIME)BE[i].Image = 0;
-
-			// 描画ブレンドモードをノーブレンドにする
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			BE[i] = EffectDraw(BE[i]);
 		}
-
 	}
-
-	
-
 }
 
 Effect_t EffImage(Effect_t e)
@@ -314,6 +186,9 @@ Effect_t EffImage(Effect_t e)
 	// P1 ステート確認
 	switch (e.Num1)
 	{
+	case 0:	//空
+		i = 19;	// 2
+		break;
 	case 1:	//ヒット１
 		if (time >= 0){
 			i = 0;	// 2
@@ -367,6 +242,31 @@ Effect_t EffImage(Effect_t e)
 		if (time < 12){
 			e.SizeX += (float)(e.defX / 10.0);
 			e.SizeY += (float)(e.defY / 10.0);
+			//e.SizeX -= (float)(e.defX / 10.0);
+			//e.SizeY -= (float)(e.defY / 10.0);
+		}
+		else { i = 19; }
+
+		break;
+
+		// スラッシュ(真横)
+	case 4:
+		i = 0;
+		if (time == 0) {
+			//e.rot = 15.0;
+			e.SizeX -= (float)(e.defX * 0.7);
+			e.SizeY -= (float)(e.defY * 0.7);
+		}
+		
+		if (time < 12) {
+			e.SizeX += (float)(e.defX / 10.0);
+			e.SizeY += (float)(e.defY / 10.0);
+			//e.SizeX -= (float)(e.defX / 10.0);
+			//e.SizeY -= (float)(e.defY / 10.0);
+		}
+		else if (time < 20) {
+			e.SizeX -= (float)(e.defX / 10.0);
+			e.SizeY -= (float)(e.defY / 10.0);
 			//e.SizeX -= (float)(e.defX / 10.0);
 			//e.SizeY -= (float)(e.defY / 10.0);
 		}
@@ -782,6 +682,45 @@ void EasyEffDraw(int num1, int time, int EffXP, int EffYP, int basePosX, int bas
 	}
 	E2drawFlg = true;
 
+}
+
+// 画像表示
+Effect_t EffectDraw(Effect_t e)
+{
+	// 横画像取得
+	e = EffImage(e);	// Num2その他
+
+	// 画像を読み込み
+	e.Image = EffSet[e.Num1][e.Num2];
+
+	// 座標調整
+	e.XAdd = (int)(xadd * e.SizeX);
+	e.YAdd = (int)(yadd * e.SizeY);
+	if (e.turn) {
+		e.XAdd = -e.XAdd;
+	}
+	xadd = 0, yadd = 0;
+
+
+	// 描画ブレンドモードをアルファブレンド（透明）にする
+	if (e.alpha == 0)SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+	else if (e.alpha != 0) {
+		SetDrawBlendMode(DX_BLENDMODE_ADD, e.alpha);
+	}
+
+	e.Draw();
+
+	if (e.alpha != 0) {
+		// 描画ブレンドモードをノーブレンドにする
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+	// 時間経過
+	e.Time += 1;
+
+	// 画像削除して再利用できるようにする
+	if (e.Time >= E_MAXTIME)e.Image = 0;
+
+	return e;
 }
 
 // 画像登録

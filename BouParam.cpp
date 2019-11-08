@@ -502,7 +502,7 @@ void BouParam(void)
 				// [ゲージ] 
 				Power(32);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 14, 18, 12);
+				HitTime(6, 14, 18, 12);
 				// [ノックバック]
 				HitVel(-3.4, 0, -1.6, -4.8);
 				// [ガード属性]
@@ -1202,7 +1202,7 @@ void BouParam(void)
 				Power(32);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 14, 18, 12);
+				HitTime(6, 14, 18, 12);
 
 				// [ノックバック]
 				HitVel(-3.4, 0, -1.6, -4.8);
@@ -2423,9 +2423,9 @@ void BouParam(void)
 			if (P1.time >= 1){
 
 				// [ダメージ]
-				Damage(0, 230);
+				Damage(0, 280);
 				// [ゲージ] 
-				Power(330);
+				Power(390);
 				HitTime(10, 45, 45, 0);
 				// [ノックバック]
 				HitVel(-3.4, -5.4, 0, 0);
@@ -2990,15 +2990,6 @@ void HCancel()
 	if ((P1.Senkou[4] > 0) && (P1.cmd[3]) && (P1.Power >= 3000) && (P1.SFlg != 2) && (P1.Var[13] <= 0)){
 		P1.stateno = 850, P1.More = 1;
 		P1.time = 0;
-	}
-	// EXアクション
-	// A..ゲージ増加
-	if ((P1.Senkou[1] > 0) && (P1.cmd[3]) && (P1.Var[30] == 0)){
-		if (P1.SFlg != 2){		// 地上
-			P1.stateno = 550;
-			P1.More = 1;
-			P1.time = 0;// ゲージ増加
-		}
 	}
 
 	//最後に判定を消す

@@ -806,6 +806,12 @@ int Char6_Cmd()
 		}
 	}
 
+	// [ 超当身 ]
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Power >= 1000)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Senkou[3] > 0)P1.stateno = 810;
+		}
+	}
 
 	//  投げ
 	if (checkThrow()) {
@@ -813,14 +819,12 @@ int Char6_Cmd()
 		else { P1.stateno = 500; }
 	}
 
-	/*
 	//  [ ３ゲージ ]
 	if (check3Gauge()) {
 		if (P1.SFlg != 2) {		// 地上
 			P1.stateno = 850;	// 超必
 		}
 	}
-	*/
 
 	return 0;
 }

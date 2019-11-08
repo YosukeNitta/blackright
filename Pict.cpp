@@ -291,7 +291,7 @@ out:
 	GetPI_Select(pic[0], np);	// セレクトに送る
 	
 	// ファイル閉じたほうがよくない？
-	//fclose(fp);
+	fclose(fp);
 }
 
 void GetPort()
@@ -307,9 +307,6 @@ void GetPort()
 	string fn2 = "/pal/port.bmp";
 	fname = fn1 + P1.nameC + fn2;
 	{
-
-
-
 		// setPal に選んだ番号をセット
 		PR = LoadSoftImage(fname.c_str());
 	}

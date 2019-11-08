@@ -18,6 +18,7 @@ using namespace std;	// vecterで使用
 void Replay_GetFileData();
 void Replay_GetPort(int num);
 int Replay_Delete();
+//void Replay_DrawData();
 
 //ﾃﾞｰﾀ定義部------------------------------------------------
 static int yPos = 0, xPos = 0;
@@ -183,7 +184,7 @@ int Replay::Load_Reload()
 	r_stage = 0;
 
 	// BGM読み込み
-	//BGMStart(11);
+	BGMStart(11);
 
 	return 0;
 }
@@ -218,6 +219,7 @@ void Replay::Load_1second()
 	DeleteSoftImage(handle);
 }
 
+// リプレイ設定を持ってくる
 void Replay_EnterSetting(int n1, int n2, int c1, int c2, int stageNum)
 {
 	r_name[0] = n1, r_name[1] = n2;
@@ -300,7 +302,7 @@ void Replay_GetFileData()
 			iflg = true;
 		}
 
-		if (input[i] == '\n')goto EXFILE;
+		if (input[i] == '\n')goto EXFILE;	// ファイルを閉じる
 	}
 
 	// ファイルを閉じる

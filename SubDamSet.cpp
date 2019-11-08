@@ -53,7 +53,6 @@ void DamSetting()
 			P[0].HitCount = 0;
 			// ガードモーションじゃない
 			if ((P[1].stateno < 50) || (P[1].stateno >= 60))P[0].A.guardCount = 0;
-			P[0].HitCount = 0;
 			P[0].A.hosei_K = 1;	// 強制補整を1に戻す
 			P[0].A.gaugeHosei = false; // ゲージ補正を停止
 		}

@@ -455,6 +455,8 @@ public:
 	int aGauge;
 	int GRecovery;
 	int addG;
+	// 選択したカラー
+	int color;
 
 	// 1F前の向き
 	boolean oldMuki;

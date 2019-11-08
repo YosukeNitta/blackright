@@ -190,7 +190,7 @@ void HydParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
-			if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
+			if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
 
 			// SEを鳴らす
 			if ((P1.time == 20) || (P1.time == 40))SEStart(4);
@@ -315,7 +315,7 @@ void HydParam(void)
 				Power(24);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 12, 16, 10);
+				HitTime(6, 12, 16, 10);
 				// [ノックバック]
 				HitVel(-3.1, 0, -1.6, -4.8);
 
@@ -654,7 +654,7 @@ void HydParam(void)
 				Power(20);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 12, 16, 10);
+				HitTime(6, 12, 16, 10);
 
 				// [ノックバック]
 				HitVel(-3.1, 0, -1.6, -4.8);
@@ -904,11 +904,13 @@ void HydParam(void)
 				ACancel();
 
 			}
+			/*
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM){
 				P1.ctrl = 1, P1.More = 1,
 					P1.stateno = 46, P1.time = 0;
 			}
+			*/
 			break;
 			//********************
 			// 410：ジャンプB

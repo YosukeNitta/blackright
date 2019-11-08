@@ -9,6 +9,9 @@ static int stand[7];
 static boolean load_1 = false;
 static int time;
 
+static int p_color[2];
+static int p_name[2];
+static int StageNum;
 // 対戦数
 static int winCount[2];
 static void Draw();
@@ -60,7 +63,7 @@ int Result()
 				ModeChange(GameScene(VersusScene));	// 対戦画面へループ
 				if (BattleMode(-1) == 0)Replay_Mode(2);	// もう一度録画する
 				else{ Replay_Mode(0); }
-				//Replay_Setting(P[0].name, P[1].name, P[0].color, P[1].color, StageNum);
+				//Replay_Setting(p_name[0], p_name[1], p_color[0], p_color[1], StageNum);
 			}
 			else if (nPos == 1)ModeChange(GameScene(SelectScene));	// キャラセレへ
 		}
@@ -145,6 +148,12 @@ void Draw()
 				DrawString(360, SCREEN_H / 2 - 100, "ぶっころすわよ！", Cr);
 			}
 		}
+		else {
+			{
+				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ入れ忘れ！", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "ぶっころすわよ！", Cr);
+			}
+		}
 	}
 
 	// リザルトなら
@@ -210,6 +219,14 @@ void Result_WinSide(int i, int chara, int chara2){
 	side = i;
 	winChara[0] = chara;
 	winChara[1] = chara2;
+}
+
+void Result_GetData(int c1, int c2, int cl1, int cl2, int stage) {
+	p_name[0] = c1;
+	p_name[1] = c2;
+	p_color[0] = cl1;
+	p_color[1] = cl2;
+	StageNum = stage;
 }
 
 void WinCount(int side)

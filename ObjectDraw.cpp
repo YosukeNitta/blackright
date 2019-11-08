@@ -17,6 +17,10 @@ static int HitNum[10];	// 画像「ヒット数 0～9」
 static int HitGraph, HitGraph2;	// ヒット数の実際の画像(2は 2ケタ目)
 static boolean beat[2];	// 連続ヒットか(falseで青ビ)
 
+static int hitCount[2];		// ヒットorガード数
+static int hDrawTime[2];	// 表示する時間
+static int hHitCount[2];	// 直前のヒット数
+
 static int Win1, Win2;	// プレイヤーWIN の表示
 static int battle[5];	// 画像　FIGHT
 static int EX;
@@ -45,6 +49,7 @@ static int mFrame = 0;
 static int mF_Start = 0;
 //
 static float m_cPos;
+
 
 // キーログ表示
 static int mKey[9];
@@ -158,142 +163,75 @@ void ObjectDraw()
 		/**************
 		* ヒット数
 		**************/
-		if (P2.HFlg){
-			HitGraph = HitNum[P1.HitCount % 10];
-			HitGraph2 = HitNum[P1.HitCount / 10];
-		}
-		if (P1.HFlg){
-			HitGraph = HitNum[P2.HitCount % 10];
-			HitGraph2 = HitNum[P2.HitCount / 10];
-		}
+		Player P[2];
+		int hDrawPos[2];
+		hDrawPos[0] = 5;
+		hDrawPos[1] = (SCREEN_W - 640) + 320 + 122;
+		hitCount[0] = 0, hitCount[1] = 0;
+		P[0] = P1, P[1] = P2;
 
-		if (P1.A.guardCount > 0){
-			HitGraph = HitNum[P1.A.guardCount % 10];
-			HitGraph2 = HitNum[P1.A.guardCount / 10];
-		}
-		else if (P2.A.guardCount > 0){
-			HitGraph = HitNum[P2.A.guardCount % 10];
-			HitGraph2 = HitNum[P2.A.guardCount / 10];
-		}
 
-		// 1P側 ヒット数表示
-		if (P2.HFlg){
-			if (P1.HitCount <= 99){
+		for (int i = 0; i < 2; i++) {
+			// 数字入れ替え
+			if (i == 1) {
+				P[0] = P2, P[1] = P1;
+			}
+
+			// ヒット数
+			if (P[0].HitCount > 1) {
+				HitGraph = HitNum[P[0].HitCount % 10];
+				HitGraph2 = HitNum[P[0].HitCount / 10];
+				hitCount[0] = P[0].HitCount;
+			}
+			// ガード数
+			else if (P[0].A.guardCount > 1) {
+				HitGraph = HitNum[P[0].A.guardCount % 10];
+				HitGraph2 = HitNum[P[0].A.guardCount / 10];
+				hitCount[0] = P[0].A.guardCount;
+			}
+
+			// ガード数
+
+			// 1P側 ヒット数表示
+			// 喰らいor連続ガード
+			if ((P[1].HFlg) || (P[0].A.guardCount > 1)) {
 				// 2ヒット以上で、 1ケタ目表示
-				if (P1.HitCount >= 2){
-					
-					DrawGraph(5 + 80, 90 + 5, Hit, true);
+				if (hitCount[0] >= 2) {
+					// 99ヒット以内
+					if (hitCount[0] <= 99) {
+						// ヒット数がないなら
+						if (P[0].HitCount == 0) {
+							// ガード数表示へ
+							SetDrawBright(128, 128, 128);
+						}
+						DrawGraph(hDrawPos[i] + 80, 90 + 5, Hit, true);
 
-					//青ビの場合
-					if (!beat[0]){
-						SetDrawBright(255, 30, 30);
-					}
-					else{ SetDrawBright(30, 30, 255); }
-					DrawGraph(5 + 39, 90, HitGraph, true);
-					// ヒット数が 2ケタ以上の時は、2ケタ目表示
-					if (P1.HitCount >= 10){
-						DrawGraph(5 + 8, 90, HitGraph2, true);
-					}
-					SetDrawBright(255, 255, 255);
-				}
-				
-			}
-			// 99ヒットでカンスト
-			else if (P1.HitCount >= 100){
-				DrawGraph(5 + 80, 90 + 5, Hit, true);
-				DrawGraph(5 + 39, 90, HitNum[9], true);
-				DrawGraph(5 + 8, 90, HitNum[9], true);
-			}
-			
-		}
-		// 2P
-		if (P1.HFlg){
-			if (P2.HitCount <= 99){
-				// 2ヒット以上で、 1ケタ目表示
-				if (P2.HitCount >= 2){
-					
-					// ヒット
-					DrawGraph((SCREEN_W - 640) + 320 + 202, 90 + 5, Hit, true);
+						//青ビの場合
+						if (!beat[i]) {
+							SetDrawBright(255, 30, 30);
+						}
+						else { SetDrawBright(30, 30, 255); }
+						
+						DrawGraph(hDrawPos[i] + 39, 90, HitGraph, true);
+						
+						// ヒット数が 2ケタ以上の時は、2ケタ目表示
+						if (hitCount[0] >= 10) {
+							DrawGraph(hDrawPos[i] + 8, 90, HitGraph2, true);
+						}
 
-					//青ビの場合
-					if (!beat[1]){
-						SetDrawBright(255, 30, 30);
+						SetDrawBright(255, 255, 255);	// 色リセット
 					}
-					else{ SetDrawBright(30, 30, 255); }
-					DrawGraph((SCREEN_W - 640) + 320 + 161, 90, HitGraph, true);
-					// ヒット数が 2ケタ以上の時は、2ケタ目表示
-					if (P2.HitCount >= 10){
-						DrawGraph((SCREEN_W - 640) + 320 + 130, 90, HitGraph2, true);
+					// 99ヒットでカンスト
+					else if (hitCount[0] >= 100) {
+						DrawGraph(hDrawPos[i], 90 + 5, Hit, true);
+						DrawGraph(hDrawPos[i] + 39, 90, HitNum[9], true);
+						DrawGraph(hDrawPos[i] + 8, 90, HitNum[9], true);
 					}
-					SetDrawBright(255, 255, 255);
-				}
-				
-			}
-			// 99ヒットでカンスト
-			else if (P2.HitCount >= 100){
-				DrawGraph((SCREEN_W - 640) + 320 + 202, 90 + 5, Hit, true);
-				DrawGraph((SCREEN_W - 640) + 320 + 161, 90, HitNum[9], true);
-				DrawGraph((SCREEN_W - 640) + 320 + 130, 90, HitNum[9], true);
-			}
-		}
-		// 1P側 ガード数表示
-		if (P1.A.guardCount > 1){
-			if (P1.HitCount <= 99){
-				// 2ヒット以上で、 1ケタ目表示
-				if (P1.A.guardCount >= 2){
-					SetDrawBright(128, 128, 128);
-					DrawGraph(5 + 80, 90 + 5, Hit, true);
-
-					SetDrawBright(255, 30, 30);
-					DrawGraph(5 + 39, 90, HitGraph, true);
-					// ヒット数が 2ケタ以上の時は、2ケタ目表示
-					if (P1.A.guardCount >= 10){
-						DrawGraph(5 + 8, 90, HitGraph2, true);
-					}
-					SetDrawBright(255, 255, 255);
 				}
 			}
-			// 99ヒットでカンスト
-			else if (P1.HitCount >= 100){
-				SetDrawBright(128, 128, 128);
-				DrawGraph(5 + 80, 90 + 5, Hit, true);
-
-				SetDrawBright(255, 30, 30);
-				DrawGraph(5 + 39, 90, HitNum[9], true);
-				DrawGraph(5 + 8, 90, HitNum[9], true);
-
-				SetDrawBright(255, 255, 255);
-			}
 		}
-		// 2P側 ガード数表示
-		if (P2.A.guardCount > 1){
-			if (P2.HitCount <= 99){
-				// 2ヒット以上で、 1ケタ目表示
-				if (P2.A.guardCount >= 2){
-					SetDrawBright(128, 128, 128);
-					DrawGraph((SCREEN_W - 640) + 320 + 202, 90 + 5, Hit, true);
 
-					SetDrawBright(255, 30, 30);
-					DrawGraph((SCREEN_W - 640) + 320 + 161, 90, HitGraph, true);
-					// ヒット数が 2ケタ以上の時は、2ケタ目表示
-					if (P2.A.guardCount >= 10){
-						DrawGraph((SCREEN_W - 640) + 320 + 130, 90, HitNum[9], true);
-					}
-					SetDrawBright(255, 255, 255);
-				}
-			}
-			// 99ヒットでカンスト
-			else if (P2.HitCount >= 100){
-				SetDrawBright(128, 128, 128);
-				DrawGraph((SCREEN_W - 640) + 320 + 202, 90 + 5, Hit, true);
 
-				SetDrawBright(255, 30, 30);
-				DrawGraph((SCREEN_W - 640) + 320 + 161, 90, HitNum[9], true);
-				DrawGraph((SCREEN_W - 640) + 320 + 130, 90, HitNum[9], true);
-
-				SetDrawBright(255, 255, 255);
-			}
-		}
 		/**************
 		* 特殊ゲージ
 		**************/

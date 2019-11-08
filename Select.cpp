@@ -78,10 +78,10 @@ static Pict pic[CHARACTERS_MAX][IMAGE2_MAX];	// 0番の画像
 //static std::vector<Pict>pic[IMAGE2_MAX];
 static Pallet_t cpal[CHARACTERS_MAX][COLOR_MAX];// パレット
 
-void InputSelect();	// 変数・Select_tの設定
+static void InputSelect();	// 変数・Select_tの設定
 //static void Draw();	// セレクトの描画
-void EnterSelect();	// 操作・決定
-int InputSide(int PSide, int key);	// P1_BInputの両対応版
+static void EnterSelect();	// 操作・決定
+static int InputSide(int PSide, int key);	// P1_BInputの両対応版
 static void CharAnimetion();	// 待機中のアニメ
 
 
@@ -193,29 +193,28 @@ void Select::Load_1second(){
 	// 名前準備
 	std::string fname2, fn1, fn2;
 	fn1 = "char/";
-	fn2 = "/pal/port_s.png";
+	//fn2 = "/pal/port_s.png";
+	fn2 = "/pal/port.png";
 
 	for (int i = 0; i < Character_Max(); i++){
 		charPos.push_back(i);	// charPos
 		port.push_back(0);		// port
 		fname2 = fn1 + move[i].name.nameC + fn2;	// 名前決定
-		port[i] = LoadGraph(fname2.c_str());
+		port[i] = LoadGraph(fname2.c_str());	// 画像ロード
 	}
 
 	//LoadDivGraph("ob/port.png", Character_Max(), Character_Max(), 1, 100, 140, Port);
-	//PortBlank = LoadGraph("ob/PortBlank.png");	// 空の画像
-
 
 	// ステージ
 	if (STAGE_MAX >= 1)mStage[0] = LoadGraph("back/st1.png");
 	if (STAGE_MAX >= 2)mStage[1] = LoadGraph("back/st2.png");
 	if (STAGE_MAX >= 3)mStage[2] = LoadGraph("back/st3.png");
-	if (STAGE_MAX >= 4)mStage[3] = LoadGraph("back/st4.png");
+	//if (STAGE_MAX >= 4)mStage[3] = LoadGraph("back/st4.png");
 
 	if (STAGE_MAX >= 1)mStageB[0] = LoadGraph("back/st1_2.png");
 	if (STAGE_MAX >= 2)mStageB[1] = LoadGraph("back/st2_2.png");
 	if (STAGE_MAX >= 3)mStageB[2] = LoadGraph("back/st3_2.png");
-	if (STAGE_MAX >= 4)mStageB[3] = LoadGraph("back/st4_2.png");
+	//if (STAGE_MAX >= 4)mStageB[3] = LoadGraph("back/st4_2.png");
 
 	// カーソル位置
 	P[0].curX = 1, P[1].curX = 2;
@@ -294,9 +293,13 @@ void Select::Draw()
 	// 背景
 	DrawGraph(0, 0, back, true);
 
+	int pos = (SCREEN_W / 2) - (3 * 70);
+
 	// キャラ大ポトレ
 	for (int i = 0; i < Character_Max(); i++){
-		DrawGraph(SCREEN_W / 2 - 215 + (i * 110), 300, port[charPos[i]], false);
+		DrawBox(pos + (i * 70), 310, pos + (i * 70) + 60, 310 + 60, GetColor(80, 80, 200), true);
+		DrawGraph(pos + (i * 70), 310, port[charPos[i]], true);
+		//DrawExtendGraph(SCREEN_W / 2 - 215 + (i * 110), 300, SCREEN_W / 2 - 215 + (i * 110) + 80, 300 + 80, port[charPos[i]], true);
 	}
 
 	//============
@@ -322,7 +325,8 @@ void Select::Draw()
 
 		// カーソル 
 		if ((i == 0) || ((BMode == 0) || ((BMode == 1 || BMode == 2) && (P[0].charEnter)))){
-			DrawGraph((P[i].posX) + SCREEN_W / 2 - 3 - 216, 297,
+			//DrawGraph((P[i].posX) + SCREEN_W / 2 - 3 - 216, 297,
+			DrawGraph(pos + (P[i].posX) - 3, 307,
 				cursor_char, true);
 		}
 		// 描画輝度を戻す
@@ -331,7 +335,7 @@ void Select::Draw()
 		// プレイヤーサイド
 		if ((i == 0) || ((BMode == 0) || ((BMode == 1 || BMode == 2) && (P[0].charEnter)))){
 			if (P[i].charEnter)SetDrawBright(128, 128, 128);
-			DrawGraph((P[i].posX) + SCREEN_W / 2 - 3 - 216 + (i * 74), 297 - 22,
+			DrawGraph(pos + (P[i].posX) - 3 + (i * 34), 307 - 22,
 				side[i], false);
 			if (P[i].charEnter)SetDrawBright(255, 255, 255);
 		}
@@ -508,10 +512,12 @@ void InputSelect()
 				}
 			}
 		}
+
+
 		// 左右一周
 		if (P[i].curX < 0){
 			P[i].curX = Character_Max() - 1;
-			P[i].posX = (Character_Max() - 1) * 110;
+			P[i].posX = (Character_Max() - 1) * 70;
 		}
 		else if (P[i].curX > Character_Max() - 1){
 			P[i].curX = 0;
@@ -519,11 +525,11 @@ void InputSelect()
 		}
 
 		// カーソル表示移動
-		if (P[i].posX != P[i].curX * 110){
-			if (P[i].posX < P[i].curX * 110)
-			P[i].posX += 22;
-			if (P[i].posX > P[i].curX * 110)
-				P[i].posX -= 22;
+		if (P[i].posX != P[i].curX * 70){
+			if (P[i].posX < P[i].curX * 70)
+			P[i].posX += 10;
+			if (P[i].posX > P[i].curX * 70)
+				P[i].posX -= 10;
 		}
 		// 決定
 		if (InputSide(i, 1) == 1 || InputSide(i, 3) == 1){
@@ -681,8 +687,9 @@ void EnterSelect()
 			Versus_bgmNum(StageNum + 1);
 			
 			// 対戦時のみリプレイ設定
-			if ((BMode == 0) && (GetPrivateProfileInt("Config", "replay", 0, "config.ini") == 1)){
+			if ((BMode == 0) && (GetPrivateProfileInt("Config", "replay", 0, "./config.ini") == 1)){
 				Replay_Mode(2);
+				// 再戦で設定は変わらないので、ここだけでいい
 				Replay_Setting(P[0].name, P[1].name, P[0].color, P[1].color, StageNum);
 			}
 			else{ Replay_Mode(0); }
@@ -709,7 +716,7 @@ void CharAnimetion()
 			bTime += move[charPos[P[i].curX]].air.B[num].time;	// アニメ時間を加算
 			// 時間が上回っている＆次がある
 			if ((bTime <= P[i].time)
-				&& (move[charPos[P[i].curX]].air.B[num + 1].time > -2))
+				&& (move[charPos[P[i].curX]].air.B[num].time > -2))
 			{
 			}
 			else{ 
@@ -719,7 +726,7 @@ void CharAnimetion()
 		// num2ぶちこむ
 		homo[i] = move[charPos[P[i].curX]].air.B[num].num2;
 		// でかすぎたら
-		if (move[charPos[P[i].curX]].air.B[num + 1].time == -2)P[i].time = -1;
+		if (move[charPos[P[i].curX]].air.B[num].time == -2)P[i].time = -1;
 
 		// パレット
 		for (int n = 0; n < 256; n++){
@@ -729,7 +736,8 @@ void CharAnimetion()
 				cpal[charPos[P[i].curX]][P[i].color].b[n], 0);
 		}
 		
-		SetTransColor(cpal[charPos[P[i].curX]][P[i].color].r[0],
+		SetTransColor(
+			cpal[charPos[P[i].curX]][P[i].color].r[0],
 			cpal[charPos[P[i].curX]][P[i].color].g[0], 
 			cpal[charPos[P[i].curX]][P[i].color].b[0]);
 		// 画像決定

@@ -1,0 +1,42 @@
+[SE]
+1 = 01_swing.wav;
+2 = 02_swing.wav;
+3 = 03_swing.wav;
+4 = 04_step.wav;
+5 = 05_bstep.wav;
+6 = 06_chaku.wav;
+7 = 07_walk.wav;
+8 = 08_down.wav;
+9 = 09_catch.wav;
+10 = 10_hit.wav;
+
+11 = 11_hit.wav;
+12 = 12_hit.wav;
+13 = 13_slash.wav;
+14 = 14_hitH.wav;
+15 = 15_slash2.wav;
+16 = 16_guard.wav;
+17 = 17_guard.wav;
+18 = 18_guard.wav;
+19 = 19_push.wav;
+
+21 = 21_swingA.wav;
+22 = 22_spin.wav;
+23 = 23_wind.wav;
+25 = 25_super.wav;
+26 = 26_sliding.wav;
+27 = 27_turn.wav;
+28 = 28_catch.wav;
+29 = 29_tReject.wav;
+30 = 30_freeze.wav;
+
+31 = 31_gauge.wav;
+32 = 32_throwB.wav;
+33 = 33_crash.wav;
+34 = 34_round.wav;
+35 = 35_enter.wav;
+36 = 36_cursor.wav;
+37 = 37_cancel.wav;
+38 = 38_bomb.wav;
+39 = 39_aura.wav;
+40 = 40_shot.mp3;

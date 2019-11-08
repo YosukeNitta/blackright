@@ -20,6 +20,8 @@ static int n_bgm;	// 今のBGM
 static boolean noSound;	// サウンドonoff
 static int noSoundSw = 0;
 
+void GetSoundData();
+
 int BGMStart(int num)
 {
 
@@ -95,53 +97,15 @@ int SEStart(int num2)
 		// 非同期読み込み設定に変更
 		SetUseASyncLoadFlag(TRUE);
 
+		GetSoundData();
+		/*
 		se[1] = LoadSoundMem("sound/01_swing.wav"); // サウンドをロード
-		se[2] = LoadSoundMem("sound/02_swing.wav");
-		se[3] = LoadSoundMem("sound/03_swing.wav");
-		se[4] = LoadSoundMem("sound/04_step.wav"); // ダッシュ足踏み
-		se[5] = LoadSoundMem("sound/05_bstep.wav"); // バクステ
-		se[6] = LoadSoundMem("sound/06_chaku.wav"); // 着地
-		se[7] = LoadSoundMem("sound/07_walk.wav"); // 足踏み
-		se[8] = LoadSoundMem("sound/08_down.wav"); // ダウン
-		se[9] = LoadSoundMem("sound/09_catch.wav"); // 掴み
-
-		se[10] = LoadSoundMem("sound/10_hit.wav"); // ヒット1
-		se[11] = LoadSoundMem("sound/11_hit.wav"); // ヒット2
-		se[12] = LoadSoundMem("sound/12_hit.wav"); // ヒット3
-		se[13] = LoadSoundMem("sound/13_slash.wav"); // ヒット斬撃
-		se[14] = LoadSoundMem("sound/14_hitH.wav"); // ヒット3
-		se[15] = LoadSoundMem("sound/15_slash2.wav"); // ヒット斬撃2
-
-		se[16] = LoadSoundMem("sound/16_guard.wav"); // ガード1
-		se[17] = LoadSoundMem("sound/17_guard.wav"); // ガード2
-		se[18] = LoadSoundMem("sound/18_guard.wav"); // ガード3
-		se[19] = LoadSoundMem("sound/19_push.wav"); // プッシュガード
-
-		se[21] = LoadSoundMem("sound/21_swingA.wav"); // 武器空振り
-		se[22] = LoadSoundMem("sound/22_spin.wav"); // 武器回転
-		se[23] = LoadSoundMem("sound/23_wind.wav"); // 風（高）
-		//se[24] = LoadSoundMem("sound/24_power.wav"); // パワーゲージ増加
-		se[25] = LoadSoundMem("sound/25_super.wav"); // 必殺技カットイン
-		se[26] = LoadSoundMem("sound/26_sliding.wav");// スラ
-		se[27] = LoadSoundMem("sound/27_turn.wav"); // ブメ戻り
-		se[28] = LoadSoundMem("sound/28_catch.wav");// キャッチ
-		se[29] = LoadSoundMem("sound/29_tReject.wav");// 投げ抜け
-		se[30] = LoadSoundMem("sound/30_freeze.wav");// 非常に汎用性が高い
-		se[31] = LoadSoundMem("sound/31_gauge.wav");// ゲージアクション
-		se[32] = LoadSoundMem("sound/32_throwB.wav");// 「アイン」イントロブメ投げ
-		se[33] = LoadSoundMem("sound/33_crash.wav");// ガードクラッシュ
-		se[34] = LoadSoundMem("sound/35_enter.wav");// ガードクラッシュ
-
-		se[35] = LoadSoundMem("sound/35_enter.wav"); // 決定
-		se[36] = LoadSoundMem("sound/36_cursor.wav"); // カーソル移動
-		se[37] = LoadSoundMem("sound/37_cancel.wav"); // キャンセル
-		se[38] = LoadSoundMem("sound/38_bomb.wav"); // キャンセル
-		se[39] = LoadSoundMem("sound/39_aura.wav"); // キャンセル
-
-		se[40] = LoadSoundMem("sound/40_shot.mp3"); // ショット
+		*/
 
 		// 非同期読み込み設定に変更
 		SetUseASyncLoadFlag(FALSE);
+		
+
 
 		volumeS = GetPrivateProfileInt("Config", "SE", 10, "config.ini");
 
@@ -156,6 +120,8 @@ int SEStart(int num2)
 
 		LoadS = 1;
 	}
+
+	//if (se > se.size)return 0;
 
 	// 音を鳴らす
 	if ((se[num2] != 0) && (!noSound)){
@@ -355,4 +321,130 @@ void StopSound(int num)
 		if (noSound)noSound = false;
 		else{ noSound = true; }
 	}
+}
+
+void GetSoundData()
+{
+	// 判定セッティング //
+
+	int i, fp;
+	int anum;	// Nameの場所
+	int num;	// セット番号
+	anum = -1;
+
+	char fname[15] = { "sound/list.txt" };
+	
+	// 名前読み込み
+	string setName;
+	string fn1 = "sound/";
+	
+	int input[NAME_MAX];
+	char inputc[NAME_MAX];	// inputとinputcに文字がはいる
+	boolean iflg = false;	// 名前入力フラグ
+	boolean next = false;
+
+	// ファイルを開く //
+	fp = FileRead_open(fname);//ファイル読み込み
+	if (fp == NULL) {			// エラーが起こったら
+		printfDx("error name\n");// 文字を表示
+		return;
+	}
+
+	//最初の1行読み飛ばす
+	while (FileRead_getc(fp) != '\n'); // FileRead_getc:一文字読み出す
+
+	while (1) {
+		//=========================
+		// 基本ループ
+		// このループ終了後に下へ
+		//=========================
+		for (i = 0; i < NAME_MAX; i++)
+		{
+			inputc[i] = input[i] = FileRead_getc(fp);//1文字取得する
+
+			// スラッシュで改行
+			if (inputc[i] == '/') {					//スラッシュがあれば
+				while (FileRead_getc(fp) != '\n');	//改行までループ
+				i = -1;//カウンタを最初に戻して (戻ったときに0になる)
+				continue;
+			}
+
+			// 改行で次の行に進む
+			if (input[i] == '\n') {
+				for (int j = 0; j < NAME_MAX; j++) {
+					inputc[j] = input[j] = NULL;
+					//inputc[i] = '\0';//そこまでを文字列とし（これを見つけると文字列として扱う）
+				}
+				i = -1;
+				break;
+			}
+
+			// 文字列にする
+			if (input[i] == ',' || input[i] == ' ' ||
+				input[i] == '[' || input[i] == ']' ||
+				input[i] == ';' || input[i] == '=') { //カンマか改行なら
+				inputc[i] = '\0';//そこまでを文字列とし（これを見つけると文字列として扱う）
+				break;	// iを1増やしてループ脱出（代入する）
+			}
+
+			// 読み込み終了
+			if (input[i] == EOF) {//ファイルの終わりなら
+				goto EXFILE;//終了
+			}
+		}	// 基本ループ終了
+
+
+
+		// 最初に数字扱いにして、文字が入ってたら変更する
+		/*
+		iflg = false;
+		{
+			if ((inputc[0] != '\0') && (inputc[0] != '\n') && (inputc[0] != NULL)
+				&& (anum < Character_Max()))iflg = true;
+		}
+		*/
+
+		// 最初に数字扱いにして、文字が入ってたら変更する
+		iflg = false;
+
+		// 文字列セットに移行していない
+		if(!next)
+		{
+			if (inputc[0] == '0')iflg = true;
+			else if (inputc[0] == '1')iflg = true;
+			else if (inputc[0] == '2')iflg = true;
+			else if (inputc[0] == '3')iflg = true;
+			else if (inputc[0] == '4')iflg = true;
+			else if (inputc[0] == '5')iflg = true;
+			else if (inputc[0] == '6')iflg = true;
+			else if (inputc[0] == '7')iflg = true;
+			else if (inputc[0] == '8')iflg = true;
+			else if (inputc[0] == '9')iflg = true;
+		}
+
+		// 名前だったら
+		if (iflg) {
+			num = atoi(inputc);	// 番号をセット
+			next = true;	// 次の準備
+		}
+
+		// 文字列セット
+		if (next && (inputc[0] != '\0' || inputc[0] != NULL || inputc[0] != '\n')) {
+			//strcpy_s(buf, inputc);
+			setName = fn1 + inputc;
+			se[num] = LoadSoundMem(setName.c_str());
+			next = false;
+		}
+
+		if (input[i] == EOF) {//ファイルの終わりなら
+			goto EXFILE;//終了
+		}
+	}
+
+	// ファイルを閉じる
+EXFILE:
+	FileRead_close(fp);
+
+	// PictにNameを送る
+	//GetN_Pict(N);
 }

@@ -181,7 +181,7 @@ void CorParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
-			if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
+			if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
 			// SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
@@ -484,7 +484,7 @@ void CorParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-3.6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         , 0, -1.7, -5);
+				HitVel(-3.8, 0, -1.7, -5);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -717,10 +717,10 @@ void CorParam(void)
 				P1.GetPow = 24, P1.GivePow = 12;
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 12, 16, 10);
+				HitTime(6, 12, 16, 10);
 
 				// [ノックバック]
-				HitVel(-3.0, 0, -1.6, -4.8);
+				HitVel(-3.2, 0, -1.6, -4.8);
 				P1.GuardF = 1;
 
 				P1.HitAnim = 1010;	// 下段喰らい
@@ -1075,12 +1075,13 @@ void CorParam(void)
 					}
 				}
 			}
+			/*
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM){
 				P1.ctrl = 1, P1.More = 1, 
 				P1.stateno = 46, P1.time = 0;
 			}
-
+			*/
 			break;
 			//********************
 			// 410：ジャンプB
@@ -1307,14 +1308,10 @@ void CorParam(void)
 					}
 				}
 			}
-			if ((P1.time >= 4 + 1) && (P2.HFlg)){
+
+			// ヒット時
+			if ((P1.time >= 4 + 1) && (P2.HFlg) && (P2.stateno >= 1000)){
 				P1.ctrl = 1;
-			}
-			if (P1.time >= ANIMELEM + 1){
-				P1.ctrl = 1, P1.SFlg = 2;
-				P1.stateno = 46;
-				P1.time = 0;
-				P1.ignoreG = false;
 			}
 
 			if ((P1.YPos + P1.YVel * 2 >= GROUND) && (P1.time >= 4)){
@@ -1337,6 +1334,14 @@ void CorParam(void)
 							P1.time = 0, P1.A.damage = 0;
 					}
 				}
+			}
+			*/
+			/*
+			if (P1.time >= 20) {
+				P1.ctrl = 1, P1.SFlg = 2;
+				P1.stateno = 46;
+				P1.time = 0;
+				P1.ignoreG = false;
 			}
 			*/
 			break;
@@ -1426,8 +1431,6 @@ void CorParam(void)
 			P1.XVel = 0;
 			// 距離をとる
 			if (P1.time == 0){
-
-				
 
 				int dist = 86;
 				if (P1.muki == 0){
@@ -3560,15 +3563,6 @@ void HCancel()
 			P1.stateno = 850;	// 超必
 			P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
-	}
-	// EXアクション
-	// A..ゲージ増加
-	if ((P1.Senkou[1] > 0) && (P1.cmd[3]) && (P1.Var[30] == 0)){
-		if (P1.SFlg != 2){		// 地上
-			P1.stateno = 550;
-			P1.More = 1;
-			P1.time = 0;// ゲージ増加
-		}
 	}
 
 	//最後に判定を消す

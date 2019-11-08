@@ -11,14 +11,15 @@
 //デファイン部----------------------------------------------
 
 
-
 //ﾃﾞｰﾀ定義部------------------------------------------------
 
 static double hosei;
 static int getPower;	// ゲージ回収、多すぎると減少
+static int gTime;	// ガーポ、当身の保存時間
 
 //内部関数宣言部--------------------------------------------
 
+static void GuardPoint(int i);
 static boolean GuardCheck(int n);
 static void GuardParam(int i);
 static void HitParam(int i);
@@ -103,6 +104,9 @@ void HelperDamCheck()
 						)
 					   )
 					{
+						// ガーポ・当身用
+						gTime = P2.time;
+
 						//---------------
 						// 共通設定
 						//---------------
@@ -117,7 +121,13 @@ void HelperDamCheck()
 						if (GuardCheck(i))
 						// [ガードの設定]
 						{
-							GuardParam(i);
+							if ((P2.Name == SYUICHI) && ((P2.stateno >= 600) && (P2.stateno < 820))) {
+								if (P2.stateno == 600) {
+									P2.time = gTime;
+									GuardPoint(i);
+								}
+							}
+							else { GuardParam(i); }
 						}
 						// [ガード時設定終了]
 						// [ヒットの設定]
@@ -210,6 +220,48 @@ void HelperDamCheck()
 
 }
 
+void GuardPoint(int i)
+{
+	// [ゲージ回収]
+	P1.Power += H1[i].HGetPow / 2;
+	P2.Power += H1[i].HGivePow / 2;
+
+	// SE
+	if (P2.D.nokezori >= 18)SEStart(17);
+	else { SEStart(16); }
+
+	// [ヒットエフェクト]
+	int posX, posY;
+	int defPosY;	// 基準位置
+	defPosY = (int)P2.YPos;
+
+	if (P1.YPos < P2.YPos - 50)defPosY = (int)P2.YPos - 50;
+
+	//P1.GuardF; ガード方向で座標かえる
+	if ((P1.GuardF == 3 || P1.GuardF == 13) && (defPosY == (int)P2.YPos)) {
+		posY = P2.ySize / 2;
+	}
+	else { posY = P2.ySize; }
+
+	// [1Pのヒット確認用]
+	H1[i].HMoveHit = 0;
+
+	// エフェクト開始
+	{ posX = 20 + GetRand(10); }
+	{
+		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.2, 0.6, P2.muki);
+	}
+
+	// ヒットストップ、のけぞり時間
+	H1[i].stopTime = H1[i].HSSelf;
+
+	if (P2.StopTime < 0)P2.StopTime = 0;
+
+	// [ガード数カウント]
+	P1.A.guardCount += 1;	// カウント
+}
+
 void GuardParam(int i)
 {
 
@@ -229,7 +281,7 @@ void GuardParam(int i)
 
 	// [ダメージ計算]
 	P2.Life -= (H1[i].A.damage + H1[i].A.hosyo) / 10;
-	if (P2.Life <= 0)P2.Life = 1;	// 削り殺し防止
+	if ((P2.Life <= 0) && (P2.aGauge > 0))P2.Life = 1;	// 削り殺し防止
 
 	// [ガードゲージ減少]
 	//if (P2.SFlg == 2)P2.aGauge -= H1[i].A.damage / 8;	// 空中ガードは増加
@@ -237,37 +289,16 @@ void GuardParam(int i)
 	
 	boolean gotoCrash = false;
 	// [ガードゲージ減少]
-	{
-		/*
-		int n = 0;
-		// 削り量決定
-		if (P2.SFlg == 2){
-			n = H1[i].A.damage + H1[i].A.hosyo;
-		}
-		else{
-			n = (H1[i].A.damage + H1[i].A.hosyo) / 4;
-		}
-		// 初段
-		if (P2.A.guardCount == 0){
-			if (n > 200)n = 200;
-			else if (n < 1)n = 1;
-			P2.aGauge -= n;
-		}
-		// ガード中
-		else{
-			if (n > 100)n = 100;
-			else if (n < 1)n = 1;
-			P2.aGauge -= n;
-		}
-		*/
 
+	if (P2.aGauge > 0 && P2.SFlg == 2) 
+	{
 		int n = 0;
 		// 削り量決定
 		if (P2.SFlg == 2){
 			n = H1[i].A.damage + H1[i].A.hosyo + 20;
 		}
 		else{
-			n = (int)((float)(H1[i].A.damage + H1[i].A.hosyo) * 0.55);
+			//n = (int)((float)(H1[i].A.damage + H1[i].A.hosyo) * 0.55);
 		}
 
 		// 初段
@@ -293,8 +324,6 @@ void GuardParam(int i)
 		P2.aGauge -= n;
 		TestText(n, 1);
 
-
-
 		// クラッシュしたら
 		if (P2.aGauge <= 0){
 			gotoCrash = true;
@@ -306,9 +335,6 @@ void GuardParam(int i)
 			P2.D.yaccel = 0.14;
 		}
 	}
-
-	// [アドゲージ増加]
-	//P1.addG += (H1[i].A.damage) / 12;
 
 	// ガークラではない
 	if (!gotoCrash){
@@ -322,6 +348,7 @@ void GuardParam(int i)
 		P2.D.nokezori = H1[i].HG_GuardTime;
 		P2.StopTime = H1[i].HHitStop;
 	}
+	// ガークラ
 	else{
 		// 硬直に移行
 		if (P2.SFlg == 0)P2.stateno = 1000;
@@ -668,6 +695,15 @@ boolean GuardCheck(int n)
 			&& ((P2.SFlg == 0) || ((P2.SFlg == 1) || (P2.keyAtt[2] > 0)))
 			)
 			gu = true;
+	}
+
+	// ガードポイント
+	if ((!gu) && (P2.Name == SYUICHI)) {
+		if ((P2.stateno == 600) &&
+			((gTime >= 1) && (gTime < 50))) {
+			if ((H1[n].HGuardF == 1) || (H1[n].HGuardF == 2))
+				gu = true;
+		}
 	}
 
 	return gu;

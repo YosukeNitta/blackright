@@ -741,18 +741,22 @@ void CommandList()
 			DrawString(tx, TxtDist * 11, "‚`+‚a+‚bi 3 j", Cr);
 		}
 		else if (P[i].Name == HYDE){
-			
+			DrawString(tx, TxtDist * 1, "‚ci‹ó’†‰Âj", Cr);
+			DrawString(tx - 19, TxtDist * 2, "ƒQ[ƒW‹Z", Cr);
+			DrawString(tx, TxtDist * 3, "«_¨ +‚bi 1 j", Cr);
 		}
 		else if (P[i].Name == SYUICHI) {
 			DrawString(tx, TxtDist * 1, "¨ +‚`", Cr);
 			DrawString(tx, TxtDist * 2, "¨ +‚a", Cr);
 			DrawString(tx, TxtDist * 3, "¨ +‚b", Cr);
 			DrawString(tx, TxtDist * 4, "_ +‚b", Cr);
-			DrawString(tx, TxtDist * 5, "‚c", Cr);
+			DrawString(tx, TxtDist * 5, "‚ciƒz[ƒ‹ƒh‰Âj", Cr);
 			DrawString(tx, TxtDist * 6, "«_¨ +‚`or‚a", Cr);
 			DrawString(tx, TxtDist * 7, "«^© +‚`or‚a", Cr);
 			DrawString(tx - 19, TxtDist * 8, "ƒQ[ƒW‹Z", Cr);
 			DrawString(tx, TxtDist * 9, "«_¨ +‚bi 1 j", Cr);
+			DrawString(tx, TxtDist * 10, "«^© +‚bi 1 j", Cr);
+			DrawString(tx, TxtDist * 11, "‚`+‚a+‚bi 3 j", Cr);
 		}
 	}
 	

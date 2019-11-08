@@ -349,6 +349,7 @@ void ThrowReject(){
 			&& (P1.time < TR_TIME) && (P2.rejectF)){
 			P1.stateno = 55, P2.stateno = 55;
 			P1.time = 0, P2.time = 0;
+			P1.StopTime = 0, P2.StopTime = 0;
 
 			if (P1.throwSide == 0){
 				P1.muki = 0, P2.muki = 1;
@@ -359,7 +360,7 @@ void ThrowReject(){
 				P2.XPos = P1.XPos - 40;
 			}
 			P1.YPos = GROUND, P2.YPos = GROUND;
-			P1.XVel = -8, P2.XVel = -8;
+			P1.XVel = -10, P2.XVel = -10;
 			P1.YVel = 0, P2.YVel = 0;
 			P1.More = 1, P2.More = 1;
 
@@ -383,7 +384,7 @@ void ThrowReject(){
 				P1.muki = 1, P2.muki = 0;
 				P2.XPos = P1.XPos - 40;
 			}
-			P1.XVel = -2, P2.XVel = -2;
+			P1.XVel = -3, P2.XVel = -3;
 			P1.YVel = -3, P2.YVel = -3;
 			P1.ignoreG = false, P2.ignoreG = false;
 			P1.D.yaccel = 0.35, P2.D.yaccel = 0.35;

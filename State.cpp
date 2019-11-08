@@ -10,7 +10,6 @@
 //デファイン部----------------------------------------------
 
 
-
 //ﾃﾞｰﾀ定義部------------------------------------------------
 
 static Player PP2;
@@ -134,6 +133,7 @@ int CharMove(void)
 
 	P1.Var[30] = 10, P2.Var[30] = 10;
 
+#pragma region 処理
 	// ヒットストップ中は停止
 	if(S.StopTime == 0){
 	/***
@@ -446,10 +446,7 @@ int CharMove(void)
 
 
 	}// 終了、ヒットストップしてないなら動く
-
-
-
-	
+#pragma endregion
 
 	//-----------------
 	//
@@ -1368,14 +1365,17 @@ void TimeCount()
 		if (S.roundTime == 1){
 			if (P1.Life <= 0 && P2.Life <= 0){
 				Result_WinSide(0, -1, -1);
+				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
 				WinCount(3);
 			}
 			else if (P1.Life <= 0){
 				Result_WinSide(2, P2.Name, P1.Name);
+				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
 				WinCount(2);
 			}
 			else if (P2.Life <= 0){
 				Result_WinSide(1, P1.Name, P2.Name);
+				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
 				WinCount(1);
 			}
 		}

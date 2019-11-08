@@ -185,7 +185,7 @@ void EinParam(void)
 			case 30:	// ダッシュ
 				P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 				P1.XVel = P1.C.runF[0]; //速度を足す
-				if (P1.AnimTime <= 3)P1.XVel = P1.C.runF[0] * 0.5; //速度を足す;
+				if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
 				// SEを鳴らす
 				if ((P1.time == 20) || (P1.time == 40))SEStart(4);
 				if (P1.time >= P1.animElem[P1.stateno])P1.time = 0;
@@ -311,7 +311,7 @@ void EinParam(void)
 					// [ゲージ] 
 					P1.GetPow = 25, P1.GivePow = 12;
 					// [ヒットストップ・のけぞり時間]
-					HitTime(5, 12, 16, 10);
+					HitTime(6, 12, 16, 10);
 					// [ノックバック]
 					HitVel(-3.6, 0, -1.5, -4.8);
 
@@ -647,7 +647,7 @@ void EinParam(void)
 					Power(24);
 
 					// [ヒットストップ・のけぞり時間]
-					HitTime(5, 12, 16, 10);
+					HitTime(6, 12, 16, 10);
 	
 					// [ノックバック]
 					HitVel(-3.1, 0, -1.6, -4.8);
@@ -902,11 +902,13 @@ void EinParam(void)
 					ACancel();
 
 				}
+				/*
 				// 全体フレームを超えたらリセット
 				if (P1.time >= ANIMELEM){
 					P1.ctrl = 1, P1.More = 1,
 						P1.stateno = 46, P1.time = 0;
 				}
+				*/
 				break;
 			//********************
 			// 410：ジャンプB
@@ -1455,7 +1457,7 @@ void EinParam(void)
 					if (P1.Var[6] == 1)H_VelSet(1, 6.2, 6.2);
 					else if (P1.Var[6] == 2)H_VelSet(1, 8.9, 8.9);
 					else if (P1.Var[6] == 3){
-						H_VelSet(1, 7.5, 0);
+						H_VelSet(1, 9.5, 0);
 					}
 				}
 				// 呼び出し.[1]	飛び道具
@@ -1964,6 +1966,7 @@ void EinParam(void)
 						H1[2].YPos += 100;
 						H1[2].stateno = 2100;
 						P1.Var[12] = H1[2].XPos;	// 座標
+						P1.Var[13] = 0;	// 時間リセット
 					}
 				}
 
@@ -2554,7 +2557,7 @@ void EinParam(void)
 					if (H1[i].YPos >= GROUND)H1[i].YPos = GROUND;
 					H1[i].Alpha = true;	//透明化
 					P1.A.gaugeHosei = true;
-					
+					P1.Var[13]++;	// 時間加算
 
 					//SE
 					if (H1[i].time == 6 && P1.Var[11] == 0)SEStart(23);
@@ -2563,10 +2566,10 @@ void EinParam(void)
 					// 座標・速度設定
 					// 速度がないときはここで決める
 					if (H1[i].time == 5 && H1[i].HXVel == 0){
-						H1[i].HXVel = 1.0;
+						H1[i].HXVel = 0;// 1.0;
 					}
 					if (H1[i].time == 7){
-						H1[i].HXVel = 5.0;
+						H1[i].HXVel = 0;//5.0;
 					}
 
 					// ヒット数・ダメージセット
@@ -2627,7 +2630,9 @@ void EinParam(void)
 						//(H1[i].XPos > (S.ScroolX + SCREEN_W + H1[i].WAtt[0])) ||
 						(H1[i].XPos < GAMENHAJI) ||
 						(H1[i].XPos >(STAGE_WIDTH - GAMENHAJI)) ||
-						(P1.Var[11] >= 5) 
+						(P1.Var[11] >= 5) ||
+						//(P1.stateno >= 1000) ||
+						(H1[i].time > 300)
 						//|| (H1[i].XPos > P1.Var[12] + 290 || 
 						//H1[i].XPos < P1.Var[12] - 290)
 						)

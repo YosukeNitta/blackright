@@ -47,6 +47,8 @@ static int modeCount = 0;	// モードになってからの経過フレーム
 static int sd = 0;	// ゲーム進行速度
 static boolean wait;	// 熱帯相手を待って、モードを動かさない
 
+//static int stop = 0;
+
 // 各種項目
 static Menu men;
 static Select sel;
@@ -165,6 +167,7 @@ void Game_Processing();
 void Game_Draw();
 void Game_Update();
 void Game_End();
+void Replay_DrawData();
 
 //プログラム部----------------------------------------------
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -236,6 +239,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			//wait
 			
 			Game_Draw();
+			//Replay_DrawData();
 			fps.Wait();		// 1フレーム経過するまで待機
 		}
 		//------------
@@ -243,6 +247,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//------------
 		{
 			Game_Update();
+			
 		}
 	}
 	// メインループ終了
@@ -323,6 +328,8 @@ void Game_Processing()
 		else{ sd = 0; }
 	}
 
+	
+
 	// ボタン入力チェック、スロー時はなし
 	// 0～-nは操作する
 	if (sd <= 0){
@@ -350,7 +357,7 @@ void Game_Processing()
 		}
 		// 停止
 		else if (sd == 1){
-			//sd = 0;
+			sd = 0;
 		}
 		// 再行動(2倍速)
 		else if(sd == -1){
@@ -361,6 +368,14 @@ void Game_Processing()
 			sd = 0;
 		}
 	}
+
+	/*
+	if (stop == 0)stop = 1;
+	else if (stop == 1) {
+		stop = 0;
+		sd = 1;
+	}
+	*/
 }
 
 void Game_Draw()
@@ -379,7 +394,7 @@ void Game_Draw()
 	if (sd == 1)DrawString(SCREEN_W -100, 20, "モード待機中…",Cr);
 
 	//sy.MainDraw();	// FPS等を描画
-	if (drawFPS) { fps.Draw(); }
+	if (drawFPS) { fps.Draw(SCREEN_W - 80, 0); }
 }
 
 // モード・ネットディレイの表示
@@ -398,6 +413,7 @@ void Game_Update()
 	}
 
 	//ウィンドウモードに
+	/*
 	if (CheckHitKey(KEY_INPUT_F4) != 0)sw2++;
 	else { sw2 = 0; }
 	if (CheckHitKey(KEY_INPUT_F4) != 0){
@@ -413,6 +429,7 @@ void Game_Update()
 			}
 		}
 	}
+	*/
 }
 
 // 終了処理
@@ -427,4 +444,9 @@ void Game_End()
 	Tlist_Save();
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
+}
+
+void Replay_DrawData()
+{
+	DrawFormatString(SCREEN_W - 100, SCREEN_H - 20, GetColor(10,10,255), "状態..%d", Replay_Mode(-1));
 }

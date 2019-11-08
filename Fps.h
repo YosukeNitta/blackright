@@ -9,7 +9,7 @@ public:
 	const int FPS = 60;	//60 ê›íËÇµÇΩFPS
 
 	bool Update();
-	void Draw();
+	void Draw(int drawX, int drawY);
 	void Wait();
 };
 

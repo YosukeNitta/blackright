@@ -177,9 +177,6 @@
     <ClCompile Include="EriParam.cpp">
       <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
     </ClCompile>
-    <ClCompile Include="StateData.cpp">
-      <Filter>ソース ファイル\数値計算</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>プリコンパイル済みヘッダ</Filter>
     </ClCompile>

@@ -309,15 +309,26 @@ void DamageEnter()
 		if (GuardCheck())
 		// [ƒK[ƒh‚ÌÝ’è]
 		{
-			if ((P2.Name == SYUICHI) && ((P2.stateno >= 600) && (P2.stateno < 700))) {
+			if ((P2.Name == SYUICHI) && ((P2.stateno >= 600) && (P2.stateno < 820))) {
 				if (P2.stateno == 600){
 					P2.time = gTime;
 					GuardPoint();
 				}
+				// “–g¬—§
 				if ((P2.stateno == 610) || (P2.stateno == 611)) {
 					P2.time = 0;
 					P2.stateno = 615;
 					P1.StopTime = 10, P2.StopTime = 10;
+					P1.CFlg = 0;
+					SEStart(19);
+				}
+				// “–g¬—§
+				if (P2.stateno == 810) {
+					P2.time = 0;
+					P2.stateno = 811;
+					P2.Muteki = 8;
+					P2.mutekiF = 0;
+					P1.StopTime = 0, P2.StopTime = 0;
 					P1.CFlg = 0;
 					SEStart(19);
 				}
@@ -399,16 +410,9 @@ void GuardParam()
 		if (kezuri >= 8)kezuri = 8;
 		P2.Life -= kezuri;
 	}
-	/*
-	// ’Êí‹Zí‚è@ƒ_ƒ‚ÍÅ‘å4
-	else if (
-		(P1.stateno > 210 && P1.stateno < 300) ||
-		(P1.stateno > 310 && P1.stateno < 400)){
-		if (kezuri > 4)kezuri = 4;
-		P2.Life -= kezuri;
-	}
-	*/
-	if (P2.Life <= 0)P2.Life = 1;	// í‚èŽE‚µ–hŽ~
+
+	// 
+	if ((P2.Life <= 0) && (P2.aGauge > 0))P2.Life = 1;	// í‚èŽE‚µ–hŽ~
 
 	// [ƒQ[ƒW‰ñŽû]
 	P1.Power += P1.GetPow / 2;
@@ -417,14 +421,14 @@ void GuardParam()
 	boolean gotoCrash = false;
 
 	// [ƒK[ƒhƒQƒFƒWŒ¸­]
-	if (P2.aGauge > 0){
+	if (P2.aGauge > 0 && P2.SFlg == 2){
 		int n = 0;
 		// í‚è—ÊŒˆ’è
 		if (P2.SFlg == 2){
 			n = (P1.A.damage + P1.A.hosyo) * 1.1 + 20;
 		}
 		else{
-			n = (int)((float)(P1.A.damage + P1.A.hosyo) * 0.55);
+			//n = (int)((float)(P1.A.damage + P1.A.hosyo) * 0.55);
 		}
 
 		// ‰’i
@@ -962,7 +966,7 @@ boolean GuardCheck()
 	// ƒK[ƒhƒ|ƒCƒ“ƒg
 	if ((!gu) && (P2.Name == SYUICHI)) {
 		if ((P2.stateno == 600) && 
-			((gTime >= 2) && (gTime < 30))) {
+			((gTime >= 1) && (gTime <= 50))) {
 			if((P1.GuardF == 1) || (P1.GuardF == 2))
 			gu = true;
 		}
@@ -974,6 +978,12 @@ boolean GuardCheck()
 		if ((P2.stateno == 611) &&
 			((gTime >= 2) && (gTime <= 17))) {
 			if ((P1.GuardF == 3) || (P1.GuardF == 13))
+				gu = true;
+		}
+		// ’´“–g
+		if ((P2.stateno == 810) &&
+			((gTime >= 0) && (gTime <= 21))) {
+			if ((P1.GuardF == 1) || (P1.GuardF == 2) || (P1.GuardF == 3))
 				gu = true;
 		}
 	}
