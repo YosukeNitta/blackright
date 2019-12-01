@@ -23,7 +23,8 @@ int Result()
 		stand[EIN] = LoadGraph("ob/standEin.png");
 		stand[BOUNCER] = LoadGraph("ob/standBouncer.png");
 		stand[HELIOS] = LoadGraph("ob/standHelios.png");
-		stand[HYDE] = LoadGraph("ob/standHyde.png");
+		stand[HYDE] = LoadGraph("ob/stand3sample.png");
+		stand[SYUICHI] = LoadGraph("ob/stand3sample.png");
 		load_1 = true;
 	}
 
@@ -140,12 +141,22 @@ void Draw()
 		}
 		else if (winChara[0] == HYDE){
 			if (winChara[1] == winChara[0]){
-				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ入れ忘れ！", Cr);
-				DrawString(360, SCREEN_H / 2 - 100, "ぶっころすわよ！", Cr);
+				DrawString(360, SCREEN_H / 2 - 120, "ダン勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
 			}
 			else{
-				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ入れ忘れ！", Cr);
-				DrawString(360, SCREEN_H / 2 - 100, "ぶっころすわよ！", Cr);
+				DrawString(360, SCREEN_H / 2 - 120, "同キャラ勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
+			}
+		}
+		else if (winChara[0] == SYUICHI) {
+			if (winChara[1] == winChara[0]) {
+				DrawString(360, SCREEN_H / 2 - 120, "シュウイチ勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
+			}
+			else {
+				DrawString(360, SCREEN_H / 2 - 120, "同キャラ勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
 			}
 		}
 		else {

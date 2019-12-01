@@ -23,10 +23,10 @@ static int SPoint;	// 選択ポインタの位置初期化
 static int TimeStop, kettei, kettei2;
 static int inputUP, inputDOWN;
 static int SentakuNum;
-static int selectMax = 12;
+static int selectMax = 11;
 
 static int page;
-static const int page_max = 2;
+static const int page_max = 1;
 static const int pageBoxSize = SCREEN_H - 40 - 40;
 
 static Player P[2];
@@ -79,7 +79,7 @@ int Pause()
 		SNum = 3;
 
 		// 項目の最大数
-		selectMax = 12;
+		selectMax = 11;
 		// 表示位置
 		drawPos = 0;
 
@@ -238,22 +238,23 @@ int Pause()
 
 					// 設定データ描画
 					{
+						// トレモ設定描画
 						TrainingList();
 						//DrawString(0, 0, "D押しっぱで項目を消す", Cr);
 						DrawString(TxtDist, TxtDist * (selectMax + 1) + (drawPos * TxtDist), "ポジションリセット", Cr);
 						DrawString(TxtDist, TxtDist * (selectMax + 2) + (drawPos * TxtDist), "コマンド表", Cr);
 						DrawString(TxtDist, TxtDist * (selectMax + 3) + (drawPos * TxtDist), "戦闘画面へ戻る", Cr);
 						
-						if (drawPos < 0)	// ずらす
+						//if (drawPos < 0)	// ずらす
 						DrawString(TxtDist, TxtDist * (selectMax + 4) + (drawPos * TxtDist), "キャラクターセレクトに戻る", Cr);
-						if (drawPos < -1)	// ずらす
+						if (drawPos < 0)	// ずらす
 							DrawString(TxtDist, TxtDist * (selectMax + 5) + (drawPos * TxtDist), "メニューに戻る", Cr);
 
 						// 項目位置の四角
 						if (drawPos == 0)
 							DrawBox(SCREEN_W - 20, 20, SCREEN_W, 20 + pageBoxSize, Cr, true);
 						else if (drawPos == -1)
-							DrawBox(SCREEN_W - 20, 40, SCREEN_W, 40 + pageBoxSize, Cr, true);
+							DrawBox(SCREEN_W - 20, 60, SCREEN_W, 60 + pageBoxSize, Cr, true);
 						else if (drawPos == -2)
 							DrawBox(SCREEN_W - 20, SCREEN_H - 20 - pageBoxSize, SCREEN_W, SCREEN_H - 20, Cr, true);
 					}
@@ -374,10 +375,11 @@ void TraningSet()
 			}
 			else{ row = 0; }
 
-			if (row == 1 || row == -1)SEStart(35);
+			// 左右入力 + 変更できる要素だった
+			if (row == 1 || row == -1) {
+				if(SPoint < selectMax)SEStart(35);
+			}
 
-			// イキスギィ！
-			
 			//if ((P1_BInput(104) == 0) && (P1_BInput(106) == 0)){
 
 			// ロードした最初は変えない（いれっぱでかわるの防止）
@@ -433,6 +435,7 @@ void TraningSet()
 				if (S.T_GGauge > 1)
 					S.T_GGauge = 0;
 			}
+			/*
 			nx++;
 			// アドゲージ
 			if (SPoint == nx){
@@ -446,6 +449,7 @@ void TraningSet()
 				if (S.T_AddGauge > 1)
 					S.T_AddGauge = 0;
 			}
+			*/
 			nx++;
 			// 体勢
 			if (SPoint == nx){
@@ -597,12 +601,12 @@ void TrainingList()
 		if (S.T_GGauge == 0)DrawString(160, TxtDist * nx, "自動回復", Oran);
 		else if (S.T_GGauge == 1){ DrawString(160, TxtDist * nx, "通常", Cr); }
 
+		/*
 		nx++;
-
 		DrawString(30, TxtDist * nx, "アドゲージ", Cr);
 		if (S.T_AddGauge == 0)DrawString(160, TxtDist * nx, "通常", Oran);
 		else if (S.T_AddGauge == 1){ DrawString(160, TxtDist * nx, "MAX", Cr); }
-
+		*/
 		nx++;
 
 		DrawString(30, TxtDist * nx, "体勢", Cr);
@@ -744,6 +748,7 @@ void CommandList()
 			DrawString(tx, TxtDist * 1, "Ｄ（空中可）", Cr);
 			DrawString(tx - 19, TxtDist * 2, "ゲージ技", Cr);
 			DrawString(tx, TxtDist * 3, "↓＼→ +Ｃ（ 1 ）", Cr);
+			DrawString(tx, TxtDist * 4, "Ａ+Ｂ+Ｃ（ 3 ）", Cr);
 		}
 		else if (P[i].Name == SYUICHI) {
 			DrawString(tx, TxtDist * 1, "→ +Ａ", Cr);
@@ -784,6 +789,9 @@ void BackGraphT()
 
 }
 
+/// <summary>
+/// 半透明の黒
+/// </summary>
 void BackGraph()
 {
 	// 描画ブレンドモードをアルファブレンド（透明）にする

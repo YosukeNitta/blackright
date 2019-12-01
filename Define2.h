@@ -1,7 +1,5 @@
+#pragma once
 #include "DxLib.h"
-
-#ifndef DEF_DEFINE2_H	//一度定義されていたら、定義しない
-#define DEF_DEFINE2_H
 
 //--------------
 // ディファイン
@@ -40,6 +38,8 @@ static void HitTime(int HS, int GH, int AH, int GG);
 static void DamReset();
 // 投げ抜け
 static void ThrowReject();
+// ずらし投げ
+static void DelayThrow(int num);
 
 // ヒットエフェクト
 static void HitEff(int g, double x, double y);
@@ -333,6 +333,7 @@ void DamReset()
 	P1.A.guard_gx = 0;
 	P1.A.guard_ax = 0;
 	P1.A.quakeTime = 0;
+	P1.A.quakeX = 0;
 	P1.A.quakeY = 0;
 	P1.A.kill = true;
 
@@ -400,6 +401,43 @@ void ThrowReject(){
 	}
 }
 
+
+/// <summary>
+/// 投げ
+/// 2F以内にずらし押しをしたら投げにキャンセル
+/// </summary>
+/// <param name="num">AorB どちらを先に押したか</param>
+void DelayThrow(int num)
+{
+	// 1以上は止める
+	if (P1.time > 1)return;
+
+	bool te = false;
+
+	if (num == 1) {
+		if (((P1.button[1] == 2) && (P1.button[2] == 1)) 
+			//&& (P2.HFlg == 0)
+			) {
+			te = true;
+		}
+	}
+	else if (num == 2) {
+		if (((P1.button[1] == 1) && (P1.button[2] == 2)) 
+			) {
+			te = true;
+		}
+	}
+
+	// 投げ
+	if (te == true) {
+		P1.stateno = 500, P1.More = 1,
+			P1.time = 1, P1.A.damage = 0;
+		// 空中技
+		if (P1.stateno >= 400 && P1.stateno < 500)
+			P1.stateno = 510;
+	}
+}
+
 void HitEff(int g, double x, double y)
 {
 	P1.A.hitEff = g;
@@ -453,5 +491,3 @@ boolean AnimElem(int state2)
 
 	return false;
 }
-
-#endif

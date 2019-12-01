@@ -1,7 +1,7 @@
-#include "Define.h"
+#pragma once
 
-#ifndef DEF_PSET_H	//一度定義されていたら、定義しない 
-#define DEF_PSET_H
+#include "Define.h"
+#include "DxLib.h"
 
 class Pict {
 
@@ -232,7 +232,7 @@ public:
 
 	// 地震エフェクト
 	int quakeTime;
-	double quakeY;
+	double quakeX, quakeY;
 
 	int att_Level;	// 攻撃レベル　通常投げ.-1 コマ投げ.0 弱.1 基本.2 強.3
 	boolean kill;	// キル判定、0でとどめを刺せなくできる
@@ -289,6 +289,10 @@ public:
 	}
 }Attack_t;
 
+
+/// <summary>
+/// キャラクターの基本となる情報
+/// </summary>
 class Character{
 public:
 	// 描画のサイズ
@@ -600,10 +604,12 @@ public:
 	boolean mirage;
 
 	// コンストラクタ
+	/*
+	~Player()          // デストラクタ
+	{
+
+	}
+	*/
 };
 
 static Player P1, P2;
-
-
-
-#endif

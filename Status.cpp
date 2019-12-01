@@ -12,8 +12,7 @@ using namespace std;	// 名前空間らしい、これでstd::と書く必要がなくなる
 //デファイン部----------------------------------------------
 
 //ﾃﾞｰﾀ定義部------------------------------------------------
-static vector<string>tlist;
-
+//static vector<string>tlist;
 // ステートに入れるデータ
 class stateData{
 public:
@@ -72,6 +71,7 @@ void load_status(Player gp)
 	boolean iflg = false;	// 数字フラグ
 	boolean nextRaw = false;
 
+	vector<string>tlist;
 	////
 	// 元はここで文字の関数宣言
 	//tlist.push_back("Common");
@@ -258,6 +258,8 @@ void load_status(Player gp)
 	// ファイルを閉じる
 EXFILE:
 	FileRead_close(fp);
+
+	tlist.shrink_to_fit();	// 完全に消え去ってしまえー！
 
 	// 値を返却
 	GetP1_Player(gp);

@@ -356,36 +356,15 @@ int P1_BCheck()
 		}
 
 		// 7ボタン	PAUSE
-		/*
-		if (((m_P_Input[0] & pad[co_p[0][10]]) != 0) ||
-			(CheckHitKey(key[co_k[0][10]]) == 1)){
-			P1_NB[7] += 1;
-		}
-		else
-		*/
 		{
 			P1_NB[7] = 0;
 		}
 
 		// 8ボタン  トレモ(1)
-		/*
-		if (((m_P_Input[0] & pad[co_p[0][11]]) != 0) ||
-			(CheckHitKey(key[co_k[0][11]]) == 1)){
-			P1_NB[8] += 1;
-		}
-		else
-		*/
 		{
 			P1_NB[8] = 0;
 		}
 		// 9ボタン  トレモ(2)
-		/*
-		if (((m_P_Input[0] & pad[co_p[0][12]]) != 0) ||
-			(CheckHitKey(key[co_k[0][12]]) == 1)){
-			P1_NB[9] += 1;
-		}
-		else
-		*/
 		{
 			P1_NB[9] = 0;
 		}

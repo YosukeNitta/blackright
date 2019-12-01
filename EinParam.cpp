@@ -87,7 +87,9 @@ void EinParam(void)
 		}
 
 		// チェーン初期化
-		if (P1.ctrl)P1.Var[1] = 0;
+		if (P1.ctrl) {
+			P1.Var[1] = 0;
+		}
 
 		switch (P1.stateno){
 
@@ -384,6 +386,9 @@ void EinParam(void)
 					}
 				}
 
+				// 投げ
+				DelayThrow(1);
+
 				break;
 			//********************
 			// 210：立ちB
@@ -463,6 +468,10 @@ void EinParam(void)
 						SCancel();
 					}
 				}
+
+				// 投げ
+				DelayThrow(2);
+
 				break;
 
 				//********************
@@ -504,7 +513,7 @@ void EinParam(void)
 					// [ヒットストップ・のけぞり時間]
 					HitTime(8, 22, 24, 18);
 					// [ノックバック]
-					HitVel(-4.0, 0, -2.0, -4);
+					HitVel(-4.2, 0, -2.0, -4);
 					// [ガード属性]
 					P1.GuardF = 1;
 
@@ -708,6 +717,9 @@ void EinParam(void)
 					}
 				}
 
+				// 投げ
+				DelayThrow(1);
+
 				break;
 			//********************
 			// 310：しゃがみB
@@ -744,7 +756,7 @@ void EinParam(void)
 					HitTime(8, 18, 20, 16);
 
 					// [ノックバック]
-					HitVel(-3.2, 0, -1.5, -4.6);
+					HitVel(-3.8, 0, -1.5, -4.6);
 					P1.GuardF = 1;
 					// [喰らい中の浮き]
 					P1.fallF = 1;
@@ -795,6 +807,8 @@ void EinParam(void)
 					}
 				}
 
+				// 投げ
+				DelayThrow(2);
 
 				break;
 			//********************
@@ -828,7 +842,7 @@ void EinParam(void)
 					HitTime(8, 40, 40, 18);
 					// [ノックバック]
 					HitVel(-1.8, -4, -2.2, -3.5);
-					GuardVel(-3.8, -1.5);
+					GuardVel(-4.2, -1.5);
 
 					P1.GuardF = 3;
 					// [喰らい中の浮き]
@@ -909,6 +923,9 @@ void EinParam(void)
 						P1.stateno = 46, P1.time = 0;
 				}
 				*/
+				// 投げ
+				DelayThrow(1);
+
 				break;
 			//********************
 			// 410：ジャンプB
@@ -973,6 +990,9 @@ void EinParam(void)
 						}
 					}
 				}
+				// 投げ
+				DelayThrow(2);
+
 				break;
 			//********************
 			// 420：ジャンプC
@@ -1029,7 +1049,7 @@ void EinParam(void)
 			case 500:
 				P1.ctrl = 0, P1.SFlg = 0;
 				// 投げ方向設定
-				if (P1.time == 0){
+				if (P1.time == 1){
 					P1.throwSide = P1.muki;
 					P1.A.throwTurn = false;
 					if (P1.keyAtt[4]){
@@ -1209,18 +1229,11 @@ void EinParam(void)
 				P1.ctrl = 0, P1.SFlg = 2;
 
 				// 投げ方向設定
-				if (P1.time == 0){
+				if (P1.time == 1){
 					P1.throwSide = P1.muki;
 					P1.A.throwTurn = false;
-					if (P1.muki == 0){
-						if (InputPAD(104) >= 1){
-							P1.A.throwTurn = true;
-						}
-					}
-					if (P1.muki == 1){
-						if (InputPAD(106) >= 1){
-							P1.A.throwTurn = true;
-						}
+					if (P1.keyAtt[4]) {
+						P1.A.throwTurn = true;
 					}
 				}
 				// SEを鳴らす
@@ -1648,6 +1661,7 @@ void EinParam(void)
 					H1[2].var = true;
 					H1[2].time = 0;
 					H1[2].stateno = 2020;
+					P1.Var[7] = 1;	//D設置
 				}
 
 				// ヘルパー削除
@@ -1667,14 +1681,9 @@ void EinParam(void)
 				P1.ignoreG = true;
 				// 速度をつける
 				if (P1.time == 0){
-					P1.XVel = -2;
-					P1.YVel = -2.8;
+					VelSet(-2.0, -2.8);
+					P1.Var[7] = 0;	// JD
 				}
-				/*
-				if (AnimElem(2)){
-					VelSet(-1.1, 0);
-				}
-				*/
 				// SEを鳴らす
 				if (P1.time == 1){
 					SEStart(2);
@@ -1687,16 +1696,36 @@ void EinParam(void)
 					HelperReset(2);
 					H1[2].var = true;
 					H1[2].time = 0;
-					H1[2].HYVel = 5;
+					//H1[2].HYVel = 5;	// Y速度設定
 					H1[2].stateno = 2020;
+					P1.Var[7] = 3;	//JD設置
 				}
 				// 重力緩和
 				VelAdd(0, P1.C.yAccel-0.2);
 
 				// 着地
-				if (P1.YPos + P1.YVel * 2 >= GROUND)P1.time = 0, P1.stateno = 606, P1.ctrl = 0;
+				if (P1.YPos + P1.YVel * 2 >= GROUND)P1.time = 0, P1.stateno = 623, P1.ctrl = 0;
 
 				break;
+				//********************
+				// 623 着地硬直
+				//********************
+			case 623:
+				P1.ctrl = 0, P1.SFlg = 0;
+				// 速度をつける
+				VelSet(0, 0);
+				P1.YPos = GROUND;
+
+				// SEを鳴らす
+				if (P1.time == 1) {
+					SEStart(6);
+				}
+
+				// 全体フレームを超えたらリセット
+				if (P1.time >= 17)P1.stateno = 11, P1.SFlg = 1, P1.ctrl = 1;
+
+				break;
+
 			//********************
 			// 625 発射
 			//********************
@@ -1717,9 +1746,17 @@ void EinParam(void)
 						H1[2].time = 0;
 						H1[2].stateno = 2025;
 
+						if(P1.Var[7] == 3)H1[2].HYVel = 5;	// Y速度設定)
+						else { H1[2].HYVel = 0; }	// Y速度設定
+
 						// レバー方向で速度変更
 						if (P1.keyAtt[6])H1[2].HXVel = 9.2;
 						else if (P1.keyAtt[4])H1[2].HXVel = -6.4;
+						// 5D発射
+						else { 
+							if(P1.Var[7] == 1)P1.Var[7] = 2; 
+							else if (P1.Var[7] == 3)P1.Var[7] = 4;
+						}	
 					}
 				}
 				
@@ -1746,10 +1783,19 @@ void EinParam(void)
 					H1[2].var = true;
 					H1[2].time = 0;
 					H1[2].stateno = 2025;
+					H1[2].HYVel = 0;
+
+					if (P1.Var[7] == 3)H1[2].HYVel = 5;	// Y速度設定)
+					else { H1[2].HYVel = 0; }	// Y速度設定
 
 					// レバー方向で速度変更
 					if (P1.keyAtt[6])H1[2].HXVel = 9.2;
 					else if (P1.keyAtt[4])H1[2].HXVel = -6.4;
+					// 5D発射
+					else {
+						if (P1.Var[7] == 1)P1.Var[7] = 2;
+						else if (P1.Var[7] == 3)P1.Var[7] = 4;
+					}
 				}
 				// 時間経過でジャンプ降りに
 				if (P1.time >= ANIMELEM)P1.ctrl = 1;
@@ -2207,6 +2253,9 @@ void EinParam(void)
 					if (AnimElem(21)){
 						P1.HitSE = 14;
 						Damage(0, 165);
+						// 地震エフェクト
+						P1.A.quakeTime = 2;
+						P1.A.quakeY = 2;
 					}
 					// エフェクト
 					HitEff(3, 0.6, 0.6);
@@ -2388,8 +2437,17 @@ void EinParam(void)
 					// 速度は 625 で決める
 					// 速度がないときはここで決める
 					if (H1[i].time == 0 && H1[i].HXVel == 0){
-						H1[i].HXVel = 5.4;
+						if (P1.Var[7] == 2)H_VelSet(i, 5.2, -1.2);	//地上設置
+						else { H_VelSet(i, 4.8, -0.4); }	// 空中設置
 					}
+
+					// 5Dなら
+					if (P1.Var[7] == 2)
+						H1[i].HYVel += 0.2;
+					if (P1.Var[7] == 4)
+						H1[i].HYVel += 0.3;
+
+					/*
 					// 方向転換
 					if ((H1[i].HXVel < 0) &&
 						((H1[i].muki == 0 && H1[i].XPos < (S.ScroolX + 20)) ||
@@ -2397,6 +2455,7 @@ void EinParam(void)
 						H1[i].HXVel = -H1[i].HXVel - (H1[i].HXVel * 0.2);
 						SEStart(5);
 					}
+					*/
 
 					// 音を鳴らす
 					if (H1[i].time == 3){
@@ -2447,11 +2506,15 @@ void EinParam(void)
 					//***************
 					// アニメをループさせる
 					if (H1[i].HAnimTime >= 24)H1[i].HAnimTime = 0;
+
+					//(H1[i].muki == 1 && H1[i].XPos < (S.ScroolX)) ||
+						//(H1[i].muki == 0 && H1[i].XPos > (S.ScroolX + SCREEN_W)) ||
 					// 終了条件、その向きで端到達or攻撃ヒット
 					if ((H1[i].XPos < 0 || H1[i].XPos > STAGE_WIDTH) ||
-						(H1[i].muki == 1 && H1[i].XPos < (S.ScroolX)) ||
-						(H1[i].muki == 0 && H1[i].XPos >(S.ScroolX + SCREEN_W)) ||
+						(H1[i].XPos < (S.ScroolX - 24)) ||
+						(H1[i].XPos >(S.ScroolX + SCREEN_W + 24)) ||
 						(H1[i].HMoveHit == 0 && H1[i].time >= 4) ||
+						((P1.Var[7] == 2 || P1.Var[7] == 4) && (H1[i].YPos + H1[i].HYVel >= GROUND)) ||	// 5D設置限界距離
 						(P1.stateno >= 1000)
 						)
 					{
@@ -2811,16 +2874,12 @@ void SCancel()
 	}
 
 	// 214 + AorB
-	if ((P1.Senkou[2] > 0)
-		&& (P1.cmd[2])){		// 先行入力効かせてみる
-		P1.stateno = 611, P1.More = 1,
-			P1.time = 0, P1.A.damage = 0;
-	}
-	else if ((P1.Senkou[1] > 0)
-		&& (P1.cmd[2])){		// 先行入力効かせてみる
+	if ((P1.cmd[2]) && (P1.Senkou[1] > 0 || P1.Senkou[2] > 0 || P1.Senkou[3] > 0)) {
 		P1.stateno = 610, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
+		if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 611;
 	}
+
 	// [EX技] 0.5ゲージ
 	if ((P1.Senkou[4] > 0)
 		&& (P1.cmd[1]) && (P1.Power >= 500)){

@@ -489,7 +489,7 @@ void SyuParam(void)
 				// [ヒットストップ・のけぞり時間]
 				HitTime(6, 14, 18, 12);
 				// [ノックバック]
-				HitVel(-3.4, 0, -1.6, -4.8);
+				HitVel(-3.6, 0, -1.6, -4.8);
 				// [ガード属性]
 				P1.GuardF = 1;
 				// [ヒット時のアニメ]
@@ -568,6 +568,10 @@ void SyuParam(void)
 					P1.More = 1, P1.time = 0, P1.A.damage = 0;
 				}
 			}
+
+			// 投げ
+			DelayThrow(1);
+
 			break;
 
 			//********************
@@ -601,7 +605,7 @@ void SyuParam(void)
 				HitTime(8, 18, 20, 16);
 
 				// [ノックバック]
-				HitVel(-2.6, 0, -1.4, -5);
+				HitVel(-3.6, 0, -1.4, -5);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -635,6 +639,19 @@ void SyuParam(void)
 					SCancel();
 				}
 			}
+
+			// 投げ
+			// 2Fに投げをずらし押ししたら
+			if ((P1.time == 1) &&
+				(P1.button[1] == 2 && P1.button[2] == 1) &&
+				(P2.HFlg == 0)
+				) {
+				P1.stateno = 500, P1.More = 1,
+					P1.time = 1, P1.A.damage = 0;
+			}
+
+			// 投げ
+			DelayThrow(1);
 
 			break;
 
@@ -729,6 +746,9 @@ void SyuParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 215：6B
@@ -795,6 +815,10 @@ void SyuParam(void)
 				P1.SFlg = 0;
 				P1.ctrl = 0;
 			}
+
+			// 投げ
+			DelayThrow(2);
+
 			break;
 
 		case 216:	// 着地硬直
@@ -1094,6 +1118,9 @@ void SyuParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 310：しゃがみB
@@ -1133,7 +1160,7 @@ void SyuParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-3.0, 0, -1.8, -4.6);
+				HitVel(-4.0, 0, -1.8, -4.6);
 				P1.GuardF = 3;	// 下段
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -1187,6 +1214,9 @@ void SyuParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			
 			//********************
@@ -1220,7 +1250,7 @@ void SyuParam(void)
 				HitTime(8, 40, 40, 18);
 				// [ノックバック]
 				HitVel(-1.8, -4, -2.2, -3.5);
-				GuardVel(-3.8, -1.5);
+				GuardVel(-4.0, -1.5);
 
 				P1.GuardF = 3;
 				// [喰らい中の浮き]
@@ -1369,6 +1399,9 @@ void SyuParam(void)
 					P1.stateno = 46, P1.time = 0;
 			}
 			*/
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 410：ジャンプB
@@ -1433,6 +1466,9 @@ void SyuParam(void)
 					}
 				}
 			}
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 420：ジャンプC
@@ -1613,7 +1649,8 @@ void SyuParam(void)
 		case 500:
 			P1.ctrl = 0, P1.SFlg = 0;
 			// 投げ方向設定
-			if (P1.time == 0) {
+			// ずらし投げに対応するために1Fから
+			if (P1.time == 1) {
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
 				if (P1.keyAtt[4]) {
@@ -1793,7 +1830,7 @@ void SyuParam(void)
 			P1.ctrl = 0, P1.SFlg = 2;
 
 			// 投げ方向設定
-			if (P1.time == 0) {
+			if (P1.time == 1) {
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
 				if (P1.muki == 0) {
@@ -2538,6 +2575,9 @@ void SyuParam(void)
 				// エフェクト
 				HitEff(3, 0.8, 0.8);
 				P1.A.kill = 1;
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 
 			// 当たったら変更
@@ -2644,6 +2684,9 @@ void SyuParam(void)
 				P1.HitSE = 14;
 				// エフェクト
 				HitEff(0, 0.8, 0.8);
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 
 			// 全体フレームを超えたらリセット
@@ -2887,7 +2930,9 @@ void SyuParam(void)
 				HitEff(3, 0.8, 0.8);
 				P1.HitSE = 14;
 				P1.A.kill = 1;
-
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 			else {
 				DamReset();
@@ -3038,20 +3083,19 @@ void SCancel()
 		}
 	}
 	// 236 + AorB
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[1])) {		// 先行入力効かせてみる
 		P1.stateno = 620, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
-		if (P1.Senkou[2] > 0)P1.stateno = 621;
+		if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 621;
 	}
 
 	// 214 + AorB
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[2])) {		// 先行入力効かせてみる
-		P1.stateno = 610;
-			P1.More = 1,
+		P1.stateno = 610, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
-			if (P1.Senkou[2] > 0)P1.stateno = 611;
+		if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 611;
 	}
 	/*
 	// 236 + C

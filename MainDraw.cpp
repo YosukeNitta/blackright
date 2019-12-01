@@ -155,11 +155,19 @@ void MainDraw()
 
 		// ステ背景
 		if (stageBack[sNum] != 0){
-			DrawGraph(0 - (int)((float)ScX * 0.25), 0 - (int)((float)ScY * 0.25) + S.quakeY,
+			DrawGraph(0 - (int)((float)ScX * 0.25) + S.quakeX, 0 - (int)((float)ScY * 0.25) + S.quakeY,
 				stageBack[sNum], false);
+			
 		}
 		// ステージ描画
-		DrawGraph(0 - ScX, 0 - ScY + S.quakeY, Stage, true);
+		//DrawGraph(0 - ScX, 0 - ScY + S.quakeY, Stage, true);
+		DrawRotaGraph((SCREEN_W / 2) - ScX + S.quakeX + (SCREEN_W) / 2,
+		((STAGE_HEIGHT - SCREEN_H) / 2) - ScY + S.quakeY + (SCREEN_H) / 2,
+			1.0, 0, Stage, true);
+
+		//DrawRotaGraph((SCREEN_W / 2) - ScX + (SCREEN_W + S.camSize) / 2, 
+			//((STAGE_HEIGHT - SCREEN_H) / 2) - ScY + S.quakeY + (SCREEN_H + S.camSize) / 2,
+			//S.camExRate, 0, Stage, true);
 	}
 
 	//---------------
@@ -224,9 +232,11 @@ void MainDraw()
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 		
+		//
 		DrawGraph(0, 0, port[0], true);
 		DrawTurnGraph(SCREEN_W - 60, 0, port[1], true);
 
+		//
 		DrawGraph(0, 0, PPort[0], true);
 		DrawTurnGraph(SCREEN_W - 62, 0, PPort[0], true);
 
@@ -483,7 +493,6 @@ void HelperGraph()
 			m_HGraphX = (int)H[h][i].XPos - ScX + plusX[h];
 			m_HGraphY = (int)(H[h][i].YPos - ScY + ((H[h][i].HGraphH / 2) * H[h][i].GSize)
 				+ ((-H[h][i].sPosY + H[h][i].aPosY) * H[h][i].GSize));
-				
 
 			
 			if (H[h][i].Alpha){
@@ -493,7 +502,7 @@ void HelperGraph()
 
 			// 描画（+12で前のが使える？）
 			if (H[h][i].Image != 0)
-			DrawRotaGraph(m_HGraphX, m_HGraphY + S.quakeY, H[h][i].GSize, 0, H[h][i].Image, true, H[h][i].muki);
+			DrawRotaGraph(m_HGraphX + S.quakeX, m_HGraphY + S.quakeY, H[h][i].GSize, 0, H[h][i].Image, true, H[h][i].muki);
 
 			if (H[h][i].Alpha){
 				// 描画ブレンドモードをノーブレンドにする
@@ -517,7 +526,7 @@ void P1Graph()
 		for (int i = 0; i < 6; i++){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200 - i * 30);
 
-			DrawRotaGraph(mOldXPos[i][0] - ScX, mOldYPos[i][0] - ScY + S.quakeY, P1.GSize, 0, mOldImage[i][0], true, mOldMuki[i][0]);
+			DrawRotaGraph(mOldXPos[i][0] - ScX + S.quakeX, mOldYPos[i][0] - ScY + S.quakeY, P1.GSize, 0, mOldImage[i][0], true, mOldMuki[i][0]);
 
 		}
 		SetDrawBright(255, 255, 255);
@@ -543,7 +552,7 @@ void P1Graph()
 		// 白くする
 		if ((P1.colorC[0] < 0) && (P1.colorC[1] < 0) && (P1.colorC[2] < 0)){
 			SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
-			DrawRotaGraph((int)(m_PGraphX[0] + plusX[0]), (int)(m_PGraphY[0] + plusY[0] + S.quakeY), P1.GSize, 0, P1.Image, true, HV[0]);
+			DrawRotaGraph((int)(m_PGraphX[0] + plusX[0] + S.quakeX), (int)(m_PGraphY[0] + plusY[0] + S.quakeY), P1.GSize, 0, P1.Image, true, HV[0]);
 			SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 		}
 		// 別の色に
@@ -553,9 +562,9 @@ void P1Graph()
 	}
 	
 	// カラー変更なし
-	DrawRotaGraph((int)(m_PGraphX[0] + plusX[0]), (int)(m_PGraphY[0] + plusY[0] + S.quakeY), P1.GSize, 0, P1.Image, true, HV[0]);
+	DrawRotaGraph((int)(m_PGraphX[0] + plusX[0] + S.quakeX), (int)(m_PGraphY[0] + plusY[0] + S.quakeY), P1.GSize, 0, P1.Image, true, HV[0]);
 
-	// カラー変更してたら
+	// カラー変更してたら設定消す
 	if (P1.colorCTime > 0){
 		// 描画ブレンドモードをノーブレンドにする
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -576,7 +585,7 @@ void P2Graph()
 		for (int i = 0; i < 6; i++){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200 - i * 30);
 
-			DrawRotaGraph(mOldXPos[i][1] - ScX, mOldYPos[i][1] - ScY + S.quakeY, P2.GSize, 0, mOldImage[i][1], true, mOldMuki[i][1]);
+			DrawRotaGraph(mOldXPos[i][1] - ScX + S.quakeX, mOldYPos[i][1] - ScY + S.quakeY, P2.GSize, 0, mOldImage[i][1], true, mOldMuki[i][1]);
 
 		}
 		SetDrawBright(255, 255, 255);
@@ -590,6 +599,7 @@ void P2Graph()
 	if (P2.colorCTime > 0){
 		if ((P2.colorC[0] == -1) && (P2.colorC[1] == -1) && (P2.colorC[2] == -1)){
 			SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
+			// これがないと白くならない
 			DrawRotaGraph((int)(int)(m_PGraphX[1] + plusX[1]), (int)(m_PGraphY[1] + plusY[1] + S.quakeY), P2.GSize, 0, P2.Image, true, HV[1]);
 			SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 		}
@@ -597,8 +607,10 @@ void P2Graph()
 			SetDrawBright(P2.colorC[0], P2.colorC[1], P2.colorC[2]);
 		}
 	}
+
 	// これから変える
-	DrawRotaGraph((int)(int)(m_PGraphX[1] + plusX[1]), (int)(m_PGraphY[1] + plusY[1] + S.quakeY), P2.GSize, 0, P2.Image, true, HV[1]);
+	DrawRotaGraph((int)(int)(m_PGraphX[1] + plusX[1] + S.quakeX), (int)(m_PGraphY[1] + plusY[1] + S.quakeY), P2.GSize, 0, P2.Image, true, HV[1]);
+	
 	if (P2.colorCTime > 0){
 		// 描画ブレンドモードをノーブレンドにする
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -642,7 +654,7 @@ void LifeGraph()
 	// ライフバー↓描画
 	{
 		// 描画ブレンドモードをアルファブレンド（透明）にする
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 188);
 		// ライフバー下表示
 		DrawGraph((SCREEN_W - 640) / 2, drawLPos, LifeBar[1], true);
 		// 描画ブレンドモードをノーブレンドにする

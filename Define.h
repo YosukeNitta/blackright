@@ -1,8 +1,6 @@
+#pragma once
 #include "DxLib.h"
 
-
-#ifndef DEF_DEFINE_H	//一度定義されていたら、定義しない
-#define DEF_DEFINE_H
 
 // 変更するもの
 static const int STAGE_MAX = 3;		// ステージの最大
@@ -96,5 +94,3 @@ static const int ThrowMuteki_Hit = 5;		// 投げ無敵時間
 static const int Cr = GetColor(255, 255, 255);
 // オレンジの色
 static const int Oran = GetColor(255, 200, 0);
-
-#endif

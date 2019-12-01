@@ -564,7 +564,7 @@ void GuardParam()
 			P2.YVel = P1.AY / 2.0;
 		}
 		else{ 
-			//P1.A.hbVelX = P1.A.guard_gx + (P1.A.guard_gx * 0.1), 
+			P1.A.hbVelX = P1.A.guard_gx + (P1.A.guard_gx * 0.1), 
 			P2.XVel = P1.A.guard_gx + (P1.A.guard_gx * 0.1);
 			P2.YVel = P1.GY; 
 		}
@@ -885,6 +885,7 @@ void HitParam()
 	// [地震エフェクト]
 	if (P1.A.quakeTime > 0){
 		S.quakeTime = P1.A.quakeTime;
+		S.quakeX = P1.A.quakeX;
 		S.quakeY = P1.A.quakeY;
 	}
 	

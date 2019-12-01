@@ -259,6 +259,15 @@ void Menu::Draw()
 	}
 }
 
+int Menu::End() {
+	DeleteGraph(back);
+	for (int i = 0; i < 7; i++) {
+		DeleteGraph(mode[i]);
+	}
+
+	return 0;
+}
+
 int Menu::Load_Reload(){
 	Anten(255);
 
@@ -275,10 +284,13 @@ int Menu::Load_Reload(){
 	return 0;
 }
 
+
 void Menu::Load_1second(){
+	// ‰æ‘œ
 	back = LoadGraph("ob/titleB.png");
 	LoadDivGraph("ob/menu.png", 7, 1, 7, 160, 33, mode);
 
+	// ƒ‚[ƒh1‚Æ2‚ð‹t‚É‚·‚é
 	int hozon = mode[1];
 	mode[1] = mode[2];
 	mode[2] = hozon;

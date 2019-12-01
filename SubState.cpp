@@ -370,8 +370,8 @@ void EnterAttack()
 				else if (P[i].Senkou[2] > 0)P[i].stateno = 210;
 				else if (P[i].Senkou[1] > 0)P[i].stateno = 200;
 			}
-			
 		}
+		
 
 		// ƒK[ƒLƒƒƒ“
 		if ((P[i].stateno == 50 || P[i].stateno == 51 || 

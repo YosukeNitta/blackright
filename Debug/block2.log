@@ -1,15 +1,20 @@
-﻿  Select.cpp
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define.h(35): warning C4091: 'static ': 変数が何も宣言されていないときは、'GameScene' の左辺を無視します。
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\select.cpp(238): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\stdio.h(1774): note: 'sprintf' の宣言を確認してください
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\select.cpp(799): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\select.cpp(797): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\select.cpp(813): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\select.cpp(811): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-  State.cpp
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define.h(35): warning C4091: 'static ': 変数が何も宣言されていないときは、'GameScene' の左辺を無視します。
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\state.cpp(1215): warning C4390: ';': 制御が空の文が見つかりました。意図した記述でしょうか?
-  Title.cpp
-c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define.h(35): warning C4091: 'static ': 変数が何も宣言されていないときは、'GameScene' の左辺を無視します。
-  コードを生成中...
+﻿  CorParam.cpp
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define.h(33): warning C4091: 'static ': 変数が何も宣言されていないときは、'GameScene' の左辺を無視します。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define2.h(370): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define2.h(369): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define2.h(399): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\define2.h(398): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(1496): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(1495): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(2605): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(2668): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(2702): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(2850): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(2982): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3414): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3417): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3422): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3425): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3429): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\babu9\onedrive\ドキュメント\visual studio 2017\projects\block2_network_2\corparam.cpp(3432): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   block2.vcxproj -> C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Debug\blackright.exe

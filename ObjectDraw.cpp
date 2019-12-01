@@ -5,6 +5,7 @@
 
 using namespace std;
 
+#pragma region 変数
 // アナウンス
 static double m_size;	// 画像の拡大
 
@@ -50,7 +51,6 @@ static int mF_Start = 0;
 //
 static float m_cPos;
 
-
 // キーログ表示
 static int mKey[9];
 static int mButton[4];
@@ -61,6 +61,8 @@ static int gButton[4];
 static vector<int> oKey;
 //static int oButton[LOG_MAX][4];
 static vector<int> oButton[LOG_MAX];
+static vector<int> oTime;
+static int o_nTime = 0;
 
 static boolean sButton, sKey;
 static int saveKey = -1;
@@ -86,6 +88,7 @@ static int m_Button[4];
 
 // 画面の明るさ
 static int blackOut;
+#pragma endregion
 
 void BoxCheck();	// 判定チェック
 void BoxKurai();	// 喰らい判定表示
@@ -108,7 +111,9 @@ static Test tes;
 
 void ObjectDraw_KeyDisplay();
 
-//その他の描画
+/// <summary>
+/// キャラ・ステージ以外の描画
+/// </summary>
 void ObjectDraw()
 {
 
@@ -150,10 +155,13 @@ void ObjectDraw()
 			oKey.push_back(-1);
 		}
 
+		//oButton->resize(LOG_MAX);
+		//oTime.resize(LOG_MAX);
 		for (int a = 0; a < LOG_MAX; a++){
 			for (int i = 0; i < 4; i++){
 				oButton[a].push_back(0);
 			}
+			oTime.push_back(-1);
 		}
 		blackOut = 0;
 
@@ -250,90 +258,161 @@ void ObjectDraw()
 			*/
 
 			// バウンサー
-			if (P1.Name == BOUNCER){
-				if (P1.D.armor <= 0)SetAlpha(68);
-				if (P1.D.armor > 2)SetDrawBright(255, 10, 10);
-				else if (P1.D.armor > 1)SetDrawBright(255, 128, 128);
+			Player P[2];
+			int xp, yp, xp2, yp2;
+			P[0] = P1, P[1] = P2;
 
-				DrawGraph(0 + 2, 62 + 2, test, true);
-				NoBlend();
-				SetDrawBright(255, 255, 255);
-				if (P1.Var[13] > 0){
-					DrawFormatString(80, (SCREEN_H - 480) + 430, Oran, "%d", P1.Var[13] / 60);
-				}
-			}
-			if (P2.Name == BOUNCER){
-				if (P2.D.armor <= 0)SetAlpha(68);
-				if (P2.D.armor > 2)SetDrawBright(255, 10, 10);
-				else if (P2.D.armor > 1)SetDrawBright(255, 128, 128);
+			for (int i = 0; i < 2; i++) {
+				// バウンサー
+				if (P[i].Name == BOUNCER) {
+					
+					yp = 62 + 7;
+					if (i == 0) {
+						xp = 2 + 27;
+						xp2 = xp + 1 + (P[i].Var[17] * 0.08);
+					}
+					else {
+						xp = SCREEN_W - 2 - 27;
+						xp2 = xp - 1 - (P[i].Var[17] * 0.08);
+					}
 
-				DrawGraph(SCREEN_W - 2 - 26, 62 + 2, test, true);
-				NoBlend();
-				SetDrawBright(255, 255, 255);
-				if (P2.Var[13] > 0){
-					DrawFormatString(SCREEN_W - 80 - 10, (SCREEN_H - 480) + 430, Oran, "%d", P2.Var[13] / 60);
+					// アーマー時間
+					if ((P[i].Var[17] != -1) && (P[i].D.armor > 0))DrawBox(xp, yp,
+						xp2, yp + 12, Oran, true);
+
+
+					if (P[i].D.armor <= 0)SetAlpha(68);
+					if (P[i].D.armor > 2)SetDrawBright(255, 10, 10);
+					else if (P[i].D.armor > 1)SetDrawBright(255, 128, 128);
+
+					yp = 62 + 2;
+					if (i == 0) xp = 0 + 2;
+					else { xp = SCREEN_W - 2 - 26; }
+
+					// アーマーの輝き
+					DrawGraph(xp, yp, test, true);
+					NoBlend();
+					SetDrawBright(255, 255, 255);
+
+
+					yp = (SCREEN_H - 480) + 430;
+					if (i == 0) xp = 80;
+					else { xp = SCREEN_W - 80 - 10; }
+
+					// 3ゲージ時間
+					if (P[i].Var[13] > 0) {
+						DrawFormatString(xp, yp, Oran, "%d", P[i].Var[13] / 60);
+					}
 				}
+
+				// ヘリオス
+				if (P[i].Name == HELIOS) {
+					
+					yp = (SCREEN_H - 480) + 430;
+					int color;
+					if (i == 0)xp = 80;
+					else { xp = SCREEN_W - 80 - 10; }	// 10はテキスト分
+
+					if (P[i].Var[11] >= 3000) {
+						color = Oran;
+					}
+					else if (P[i].Var[11] >= 2000) {
+						color = GetColor(255, 255, 0);
+					}
+					else if (P[i].Var[11] >= 1000) {
+						color = Cr;
+					}
+					else { color = GetColor(128, 128, 128); }
+					// 本数
+					DrawFormatString(xp, yp, color, "%d", P[i].Var[11] / 1000);
+					
+
+					yp = (SCREEN_H - 480) + 435;
+					if (i == 0) {
+						xp = 100;
+						xp2 = xp + (P[i].Var[11] * 0.05);
+					}
+					else {
+						xp = SCREEN_W - 80 - 20 - (P[i].Var[11] * 0.05);
+						xp2 = SCREEN_W - 80 - 20;
+					}
+
+					// ゲージ
+					DrawBox(xp, yp, xp2, yp + 10, GetColor(255, 215, 0), true);
+
+					if (i == 0) {
+						xp = 100;
+					}
+					else {
+						xp = SCREEN_W - 80 - 20 - ((3 * 1000) * 0.05);
+					}
+
+					// ゲージ枠
+					for (int n = 1; n < 4; n++) {
+						DrawBox(xp + (((n - 1) * 1000) * 0.05), yp,
+							xp + ((n * 1000) * 0.05), yp + 10, GetColor(20, 20, 20), false);
+					}
+				}
+
+				// ダン
+				/*
+				if (P[i].Name == HYDE) {
+
+					yp = (SCREEN_H - 480) + 432;
+					int color;
+					if (P[i].Var[11] > 0)color = GetColor(255, 215, 0);
+					else if (P[i].Var[10] > 0)color = GetColor(105, 105, 105);
+					else { color = GetColor(205, 205, 205); }
+
+					int var;
+					if (P[i].Var[11] > 0)
+						var = (P[i].Var[11] * 0.15);
+					else { var = ((1800 - P[i].Var[10]) * 0.05); }
+
+					if (i == 0) {
+						xp = 100;
+						xp2 = xp + 91;
+					}
+					else {
+						xp = SCREEN_W - 100;
+						xp2 = xp - 91;
+					}
+
+					SetAlpha(158);
+					// ゲージ黒部分
+					DrawBox(xp, yp,
+						xp2, yp + 15, GetColor(0, 0, 0), true);
+					NoBlend();
+
+					if (i == 0) {
+						xp = 100;
+						xp2 = xp + var;
+					}
+					else { 
+						xp = SCREEN_W - 100; 
+						xp2 = xp - var;
+					}	// 10はテキスト分
+
+					// ゲージ
+					DrawBox(xp, yp,
+						xp2, yp + 15, color, true);
+
+					if (i == 0) {
+						xp = 100;
+						xp2 = xp + 91;
+					}
+					else {
+						xp = SCREEN_W - 100;
+						xp2 = xp - 91;
+					}
+
+					// ゲージ枠
+					DrawBox(xp, yp,
+						xp2, yp + 16, GetColor(20, 20, 20), false);
+				}
+				*/
 			}
 
-			// ヘリオス
-			if (P1.Name == HELIOS){
-				if (P1.Var[11] >= 3000){
-					DrawFormatString(80, (SCREEN_H - 480) + 430, Oran, "%d", P1.Var[11] / 1000);
-				}
-				else if (P1.Var[11] >= 2000){
-					DrawFormatString(80, (SCREEN_H - 480) + 430, GetColor(255, 255, 0), "%d", P1.Var[11] / 1000);
-				}
-				else if(P1.Var[11] >= 1000){
-					DrawFormatString(80, (SCREEN_H - 480) + 430, Cr, "%d", P1.Var[11] / 1000);
-				}
-				else{
-					DrawFormatString(80, (SCREEN_H - 480) + 430, GetColor(128, 128, 128), "%d", P1.Var[11] / 1000);
-				}
-
-				// ゲージ
-				DrawBox(100, (SCREEN_H - 480) + 435, 100 + (P1.Var[11] * 0.05), (SCREEN_H - 480) + 445, GetColor(255, 215, 0), true);
-				// ゲージ枠
-				for (int i = 1; i < 4; i++){
-					DrawBox(100 + (((i - 1) * 1000) * 0.05), (SCREEN_H - 480) + 435, 
-						100 + ((i * 1000) * 0.05), (SCREEN_H - 480) + 445, GetColor(20, 20, 20), false);
-				}
-			}
-			if (P2.Name == HELIOS){
-
-				if (P2.Var[11] >= 3000){
-					DrawFormatString(SCREEN_W - 80 - 10, (SCREEN_H - 480) + 430, Oran, "%d", P2.Var[11] / 1000);
-				}
-				else if (P2.Var[11] >= 2000){
-					DrawFormatString(SCREEN_W - 80 - 10, (SCREEN_H - 480) + 430, GetColor(255, 255, 0), "%d", P2.Var[11] / 1000);
-				}
-				else if (P2.Var[11] >= 1000){
-					DrawFormatString(SCREEN_W - 80 - 10, (SCREEN_H - 480) + 430, Cr, "%d", P2.Var[11] / 1000);
-				}
-				else{
-					DrawFormatString(SCREEN_W - 80 - 10, (SCREEN_H - 480) + 430, GetColor(128, 128, 128), "%d", P2.Var[11] / 1000);
-				}
-				DrawBox(SCREEN_W - 80 - 20 - (P2.Var[11] * 0.05), (SCREEN_H - 480) + 435, 
-					SCREEN_W - 80 - 20, (SCREEN_H - 480) + 445, GetColor(255, 215, 0), true);
-				for (int i = 1; i < 4; i++){
-					DrawBox(SCREEN_W - 80 - 20 - ((i * 1000) * 0.05), (SCREEN_H - 480) + 435,
-						SCREEN_W - 80 - 20 - (((i - 1) * 1000) * 0.05), (SCREEN_H - 480) + 445, GetColor(0, 0, 0), false);
-				}
-			}
-
-			// ダン
-			if (P1.Name == HYDE) {
-				// ゲージ枠
-				DrawBox(99, (SCREEN_H - 480) + 434,
-					99 + 101, (SCREEN_H - 480) + 456, GetColor(20, 20, 20), false);
-				// ゲージ
-				DrawBox(100, (SCREEN_H - 480) + 435, 100 + (P1.Var[11] * 0.05), (SCREEN_H - 480) + 455, GetColor(255, 215, 0), true);
-			}
-			if (P2.Name == HYDE) {
-				DrawBox(SCREEN_W - 80 - 19, (SCREEN_H - 480) + 434,
-					SCREEN_W - 80 - 19 - 101, (SCREEN_H - 480) + 456, GetColor(0, 0, 0), false);
-				DrawBox(SCREEN_W - 80 - 20 - (P2.Var[11] * 0.05), (SCREEN_H - 480) + 435,
-					SCREEN_W - 80 - 20, (SCREEN_H - 480) + 455, GetColor(255, 215, 0), true);
-			}
 		}
 		/**************
 		* 判定確認 （トレモ限定）
@@ -591,13 +670,29 @@ void ObjectDraw()
 				blackOut = 0;
 			}
 		}
-
 }
 
 
-// ヒットボックス以外も調べます☆
+// ヒットボックス以外も調べる
 void BoxCheck()
 {
+	// レコーディング関連、中央に表示
+	// いつでも表示する
+	if (S.TSwitch[7] > 0) {
+		// 薄い四角
+		SetAlpha(128);
+		DrawBox(SCREEN_W / 2 - 61, 100 - 1,
+			SCREEN_W / 2 + 61, 120, GetColor(0, 0, 0), true);
+		NoBlend();
+	}
+	if (S.TSwitch[7] == 1)DrawFormatString(SCREEN_W / 2 - 30, 100, Cr, "録画準備");
+	else if (S.TSwitch[7] == 2) {
+		DrawString(SCREEN_W / 2 - 30, 100, "録画中", GetColor(255, 255, 0));
+		DrawFormatString(SCREEN_W / 2 + 30, 100, Cr, "%d", TText[0]);
+	}
+	else if (S.TSwitch[7] == 3)DrawFormatString(SCREEN_W / 2 - 30, 100, Cr, "再生中 %d", TText[0]);
+
+
 	// 描画、表示オンの時のみ
 	if (S.TSwitch[5] == 0 || S.TSwitch[5] == 1){
 
@@ -630,7 +725,13 @@ void BoxCheck()
 
 
 		// 発生フレーム
+		//if (P1.ctrl == 0)mHassei++;
+		//else { mHassei = 0; }
+		
+		// 発生表示
+		// 変数が表示されるので、どこでも良い？
 		DrawFormatString(500, 100, Cr, "発生 %d", mHassei);
+
 		if ((P1.MoveHit == 0) 
 			&& 
 			(
@@ -643,8 +744,9 @@ void BoxCheck()
 
 		// フレームチェック
 		DrawFormatString(500, 120, Cr, "硬直差 %d", mFrame);
-
+		
 		// フレームチェック・開始
+		// 計測が始まっていない 2Pが喰らいになった
 		if ((mF_Start == 0) && (P2.ctrl == 0) && 
 			((P2.HFlg == 1) || (P2.stateno >= 50 && P2.stateno <= 59))){
 			mF_Start = 1, mFrame = 0;
@@ -665,17 +767,16 @@ void BoxCheck()
 			mF_Start = 0;
 		}
 
+		
+
 		//DrawFormatString(500, 140, Cr, "補正 %.2f", P1.A.hosei_K);
-		if (S.TSwitch[2] == 3)DrawFormatString(500, 140, Cr, "プレイヤー操作");
+		if (S.TSwitch[2] <= 2)DrawFormatString(500, 140, Cr, "ダミー");
+		else if (S.TSwitch[2] == 3)DrawFormatString(500, 140, Cr, "プレイヤー操作");
 		else if (S.TSwitch[2] == 4)DrawFormatString(500, 140, Cr, "コンピュータ");
-		else if (S.TSwitch[7] == 0)DrawFormatString(500, 140, Cr, "通常");
-		else if (S.TSwitch[7] == 1)DrawFormatString(500, 140, Cr, "録画準備");
-		else if (S.TSwitch[7] == 2){
-			DrawString(500, 140, "録画中", GetColor(255,255,0));
-			DrawFormatString(560, 140, Cr, "%d", TText[0]);
-		}
-		else if (S.TSwitch[7] == 3)DrawFormatString(500, 140, Cr, "再生中 %d", TText[0]);
-		else if (S.TSwitch[7] > 3)DrawFormatString(500, 140, Cr, "何かおかしい");
+		//else if (S.TSwitch[7] == 0)DrawFormatString(500, 140, Cr, "通常");
+		//else if (S.TSwitch[7] > 3)DrawFormatString(500, 140, Cr, "何かおかしい");
+
+		//DrawFormatString(500, 160, Cr, "%d", sizeof(Versus()));
 
 		// ヘルパー
 		//DrawFormatString(500, 160, Cr, "W.%d time.%d", H1[18].WAtt[1], H1[18].time);
@@ -745,7 +846,7 @@ void BoxCheck()
 			else if (P1.keyPos == 9)ke = 7;
 		}
 		
-		// キー
+		// キーが変更された
 		//if (S.StopTime == 0)
 		{
 		for (int i = 0; i < 9; i++){
@@ -756,7 +857,7 @@ void BoxCheck()
 			else { sKey = false; }
 		}
 
-		// ボタン
+		// ボタンが入力された
 		for (int i = 0; i < 4; i++){
 			if (P1.button[i + 1] == 1){
 				sButton = true;
@@ -766,14 +867,19 @@ void BoxCheck()
 			else { sButton = false; }
 		}
 
+		// 時間経過
+		o_nTime++;
+
 		
 		// キーorボタン開始
 		if (sKey || sButton){
 
 			// キー
+			// ずらす
 			for (int a = 1; a < LOG_MAX; a++){
 				oKey[LOG_MAX - a] = oKey[LOG_MAX - 1 - a];
 			}
+			// キー方向
 			for (int i = 0; i < 9; i++){
 				if (ke == i+1){
 					oKey[0] = i;
@@ -794,8 +900,19 @@ void BoxCheck()
 				if (P1.button[i + 1] == 1){
 					oButton[0][i] = 1;
 				}
+				// 押しっぱの表示
+				else if (P1.button[i + 1] > 1) {
+					oButton[0][i] = 2;
+				}
 				else { oButton[0][i] = 0; }
 			}
+
+			// タイム
+			for (int a = 1; a < LOG_MAX; a++) {				
+				oTime[LOG_MAX - a] = oTime[LOG_MAX - 1 - a];
+			}
+			oTime[0] = o_nTime;
+			o_nTime = 0;
 		}
 		}	//  stoptime
 
@@ -812,7 +929,19 @@ void BoxCheck()
 					DrawGraph(px, 95 + (a * 20), gButton[i], true);
 					px += 20;
 				}
+				else if (oButton[a][i] > 1) {
+					SetDrawBright(128, 128, 128);
+					DrawGraph(px, 95 + (a * 20), gButton[i], true);
+					SetDrawBright(255, 255, 255);
+					px += 20;
+				}
 			}
+			px += 20;
+			// タイム
+			if (oTime[a] > -1) {
+				DrawFormatString(px, 95 + (a * 20), Cr, "%d", oTime[a]);
+			}
+			DrawFormatString(0, 75, Cr, "%d", o_nTime);
 		}
 		
 		saveKey = ke;

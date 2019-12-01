@@ -108,7 +108,12 @@ int PalletSet()
 		for (int n2 = 0; n2 < IMAGE2_MAX; n2++){
 			// image2を初期化
 			//P_Image2[P1.PSide - 1][n][n2] = 0;
-			
+
+			// 前の画像を削除する
+			if (pic2[P1.PSide - 1][n][n2].image != 0)
+				DeleteGraph(pic2[P1.PSide - 1][n][n2].image);	// これでメモリ消費なくなったが、キャラ消えた
+																// picのimageが初期化されていないからだった
+
 			// pic2にpic3設定をセット
 			pic2[P1.PSide - 1][n][n2] = pic3[P1.Name - 1][n][n2];
 
@@ -120,6 +125,8 @@ int PalletSet()
 				}
 				// image2に色を変えたimage3を入れる
 				//P_Image2[P1.PSide - 1][n][n2] = CreateGraphFromSoftImage(im3[P1.Name - 1].image[n][n2]);
+				
+				
 				// image2に色を変えたimage3を入れる
 				pic2[P1.PSide - 1][n][n2].image = CreateGraphFromSoftImage(im3[P1.Name - 1].image[n][n2]);
 			}
@@ -157,7 +164,6 @@ void load_pict(int np, int side)
 	//////
 
 	/// 初期化してるからいらない？
-	/*
 	for (int i = 0; i < IMAGE_MAX; i++){
 		for (int j = 0; j < IMAGE2_MAX; j++){
 			pic[i][j].image = 0;
@@ -167,7 +173,6 @@ void load_pict(int np, int side)
 			pic[i][j].y = 0;
 		}
 	}
-	*/
 	
 	// 名前読み込み
 	string fname;
@@ -342,6 +347,7 @@ void GetPort()
 		GetPaletteSoftImage(PR, 0, &r1, &g1, &b1, 0);
 		
 		SetTransColor(r1, g1, b1);
+
 		PR2 = CreateGraphFromSoftImage(PR);
 		//SetTransColor(0, 0, 0);
 

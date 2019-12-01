@@ -607,6 +607,8 @@ void GetPName()
 	// GHitbox‚É‘—‚é
 	if (P1.PSide == 1)Get_P1Set(P1);
 	if (P1.PSide == 2)Get_P2Set(P1);
+
+	// ‚±‚±‚ÅN‚ğÁ‚·H
 }
 
 /*

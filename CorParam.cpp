@@ -329,6 +329,7 @@ void CorParam(void)
 			// 慣性
 			if ((P1.time == 0) && (P1.XVel > 0))VelSet(P1.XVel / 1.5, 0);
 			// 先行入力消す
+			// buttonはそのまま
 			if (P1.time <= 1)P1.Senkou[1] = 0;
 			//[ 通常技の自動振り向き ]
 			if (P1.time == 0){
@@ -365,10 +366,10 @@ void CorParam(void)
 				// [ゲージ] 
 				Power(40);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(6, 12, 16, 10);
+				HitTime(8, 12, 16, 10);
 				// [ノックバック]
-				HitVel(-3.6, 0, -2.0, -4.6);
-				GuardVel(-4.0, -3.4);
+				HitVel(-3.8, 0, -2.2, -4.6);
+				GuardVel(-4.2, -3.4);
 
 				// [ガード属性]
 				P1.GuardF = 1;
@@ -447,6 +448,9 @@ void CorParam(void)
 				SCancel();
 			}
 
+			// 投げ
+			DelayThrow(1);
+			
 			break;
 			
 			//********************
@@ -484,7 +488,7 @@ void CorParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-3.8, 0, -1.7, -5);
+				HitVel(-4.2, 0, -2.0, -4.8);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -545,6 +549,9 @@ void CorParam(void)
 					SCancel();
 				}
 			}
+			
+			// 投げ
+			DelayThrow(2);
 
 			break;
 			//********************
@@ -556,9 +563,9 @@ void CorParam(void)
 			if ((P1.time == 0) && (P1.XVel > 0))VelSet(0,0);
 
 			// 移動
-			if (AnimElem(2))VelAdd(2,0);
-			if (AnimElem(4))PosAdd(22, 0);
-			if (AnimElem(8))PosAdd(-39, 0);
+			if (AnimElem(3))VelAdd(2,0);
+			if (AnimElem(6))PosAdd(22, 0);
+			if (AnimElem(10))PosAdd(-39, 0);
 
 
 
@@ -581,7 +588,7 @@ void CorParam(void)
 				HitTime(8, 22, 24, 16);
 
 				// [ノックバック]
-				HitVel(-4.2, 0, -2.0, -5);
+				HitVel(-4.4, 0, -2.0, -5);
 				P1.GuardF = 2;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -611,6 +618,10 @@ void CorParam(void)
 					SCancel();
 				}
 			}
+
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 220：立ちC
@@ -720,7 +731,7 @@ void CorParam(void)
 				HitTime(6, 12, 16, 10);
 
 				// [ノックバック]
-				HitVel(-3.2, 0, -1.6, -4.8);
+				HitVel(-3.4, 0, -1.6, -4.8);
 				P1.GuardF = 1;
 
 				P1.HitAnim = 1010;	// 下段喰らい
@@ -783,6 +794,18 @@ void CorParam(void)
 				}
 			}
 
+			// 投げ
+			// 2Fに投げをずらし押ししたら
+			if ((P1.time == 1) &&
+				(P1.button[1] == 2 && P1.button[2] == 1) &&
+				(P2.HFlg == 0)
+				) {
+				P1.stateno = 500, P1.More = 1,
+					P1.time = 1, P1.A.damage = 0;
+			}
+
+			// 投げ
+			DelayThrow(1);
 
 			break;
 			//********************
@@ -832,7 +855,7 @@ void CorParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-3.0, 0, -1.8, -4.6);
+				HitVel(-3.8, 0, -1.8, -4.6);
 				P1.GuardF = 3;	// 下段
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -881,6 +904,8 @@ void CorParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(2);
 
 			break;
 			//********************
@@ -915,7 +940,7 @@ void CorParam(void)
 				// [ヒットストップ・のけぞり時間]
 				HitTime(8, 22, 24, 18);
 				// [ノックバック]
-				HitVel(-3.8, 0, -1.8, -4.0);
+				HitVel(-4.0, 0, -1.8, -4.0);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -1082,6 +1107,9 @@ void CorParam(void)
 				P1.stateno = 46, P1.time = 0;
 			}
 			*/
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 410：ジャンプB
@@ -1147,6 +1175,10 @@ void CorParam(void)
 					}
 				}
 			}
+
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 420：ジャンプC
@@ -1351,7 +1383,7 @@ void CorParam(void)
 		case 500:
 			P1.ctrl = 0, P1.SFlg = 0;
 			// 投げ方向設定
-			if (P1.time == 0){
+			if (P1.time == 1){
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
 				if (P1.keyAtt[4]){
@@ -1489,6 +1521,7 @@ void CorParam(void)
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitSE = 12;
+				
 			}
 			else {
 				DamReset();
@@ -1515,18 +1548,11 @@ void CorParam(void)
 			P1.ctrl = 0, P1.SFlg = 2;
 
 			// 投げ方向設定
-			if (P1.time == 0){
+			if (P1.time == 1){
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
-				if (P1.muki == 0){
-					if (InputPAD(104) >= 1){
-						P1.A.throwTurn = true;
-					}
-				}
-				if (P1.muki == 1){
-					if (InputPAD(106) >= 1){
-						P1.A.throwTurn = true;
-					}
+				if (P1.keyAtt[4]) {
+					P1.A.throwTurn = true;
 				}
 			}
 			// SEを鳴らす
@@ -2062,7 +2088,7 @@ void CorParam(void)
 			// 610 スピナー
 			//********************
 		case 610:	
-			if (((P1.button[2] == 1) || (P1.Senkou[2] > P1.Senkou[1])) &&
+			if (((P1.Senkou[3] > P1.Senkou[1]) || (P1.Senkou[2] > P1.Senkou[1])) &&
 				(P1.time == 0)){
 				P1.stateno++;
 				P1.More = 1, P1.time = 0;
@@ -2206,7 +2232,8 @@ void CorParam(void)
 			// 620 アッパー
 			//********************
 		case 620:
-			if (((P1.button[2] == 1) || (P1.Senkou[2] > P1.Senkou[1])) &&
+			// ステート変更
+			if (((P1.Senkou[3] > P1.Senkou[1]) || (P1.Senkou[2] > P1.Senkou[1])) &&
 				(P1.time == 0)){
 				P1.stateno++;
 				P1.More = 1, P1.time = 0;
@@ -2611,7 +2638,9 @@ void CorParam(void)
 				P1.HitSE = 14;
 				// エフェクト
 				HitEff(1, 1, 1);
-
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 			else {
 				DamReset();
@@ -2683,7 +2712,7 @@ void CorParam(void)
 			}
 
 			if (AnimElem(3)){
-				VelSet(3.0, -7.2);
+				VelSet(3.4, -7.2);
 			}
 
 			// アニメ時間
@@ -2745,7 +2774,7 @@ void CorParam(void)
 			}
 			break;
 			//********************
-			// 821：ジャンプD
+			// 821: EX昇竜叩き落とし
 			//********************
 		case 821:
 			P1.ctrl = 0, P1.SFlg = 2;
@@ -2780,6 +2809,9 @@ void CorParam(void)
 				HitEff(1, 1, 1);
 				// バウンド
 				P1.A.boundLevel = 1;
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 			else {
 				//DamReset();
@@ -3505,19 +3537,19 @@ void SCancel()
 			P1.time = 0, P1.A.damage = 0;
 	}
 	// 236 + AorB
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[1])){		// 先行入力効かせてみる
 		P1.stateno = 630, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
 	}
 	// 214 + AorB
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[2])){		// 先行入力効かせてみる
 		P1.stateno = 610, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
 	}
 	// 623 + B
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[4])){		// 先行入力効かせてみる
 		P1.stateno = 620, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;

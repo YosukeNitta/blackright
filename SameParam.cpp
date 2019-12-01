@@ -934,7 +934,7 @@ void SameParam()
 
 	case 60:	// 空中ダッシュ
 		P1.SFlg = 2, P1.Lock = 0;
-		P1.XVel = 0.5 + (P1.C.runF[0] * 0.75); //速度を足す
+		P1.XVel = 0.4 + (P1.C.runF[0] * 0.70); //速度を足す
 		P1.YVel = 0;
 		P1.ignoreG = true;
 
@@ -970,7 +970,7 @@ void SameParam()
 		break;
 	case 65:	// 空中バックダッシュ
 		P1.SFlg = 2, P1.Lock = 0;
-		P1.XVel = -0.6 + (-P1.C.runF[0] * 0.75); //速度を足す
+		P1.XVel = -0.4 + (-P1.C.runF[0] * 0.68); //速度を足す
 		P1.YVel = 0;
 		P1.ignoreG = true;
 
@@ -1359,6 +1359,12 @@ void DamParam()
 			&& (P1.time > 0) && (P1.YPos < GROUND) && (P1.D.wall > 0 && P1.D.wall <= 2)
 			&& (P1.StopTime == 0)){
 			P1.stateno = 1046, P1.time = 0, P1.More = 1;
+			// 左右どちらによっているか
+			if (P1.XPos < S.ScroolX + SCREEN_W / 2) {
+				S.quakeX = -2;
+			}
+			else { S.quakeX = 2; }
+			S.quakeTime = 2;
 		}
 
 		// 着地
@@ -1421,6 +1427,12 @@ void DamParam()
 			&& (P1.time > 0) && (P1.YPos < GROUND) && (P1.D.wall > 0 && P1.D.wall <= 2)
 			&& (P1.StopTime == 0)){
 			P1.stateno = 1046, P1.time = 0, P1.More = 1;
+			// 左右どちらによっているか
+			if (P1.XPos < S.ScroolX + SCREEN_W / 2) {
+				S.quakeX = -2;
+			}
+			else { S.quakeX = 2; }
+			S.quakeTime = 2;
 		}
 
 		// 着地
@@ -1675,10 +1687,36 @@ void DamParam()
 			P1.time = 0, P1.D.nokezori = 30;
 		}
 		break;
+
 	case 1065:	// ロック技喰らい（空中）
 		P1.ctrl = 0, P1.SFlg = 2;
 		P1.ignoreG = true;
+
+		// 相手と相打ち
+		if (P2.stateno >= 1000) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 30;
+		}
+		// バグで動ける
+		else if (P2.stateno < 200 && P1.time > 30) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 10;
+		}
+
+		// 宇宙旅行しすぎた場合
+		if ((P1.YPos < -50) || (P1.YPos > GROUND + 30)) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 30;
+		}
+		break;
+
+	case 1066:	// ロック技喰らい（空中）
+		P1.ctrl = 0, P1.SFlg = 2;
+		P1.ignoreG = true;
 		
+		//if (P1.time <= 4)P1.time = 0;
+		//else if (P1.time <= 9)P1.time = 5;
+
 		// 相手と相打ち
 		if (P2.stateno >= 1000){
 			P1.stateno = 1030, P1.More = 1;
@@ -1695,6 +1733,59 @@ void DamParam()
 			P1.stateno = 1030, P1.More = 1;
 			P1.time = 0, P1.D.nokezori = 30;
 		}
+
+		// 着地
+		if ((P1.YVel + P1.C.yAccel > 0 && (P1.YPos + P1.YVel * 2) >= GROUND - 20) && (P1.StopTime == 0)) {
+			// ダウン
+			{
+				// 着地かダウン判断
+				if (P1.fall == 1 || P1.Life <= 0) {
+					P1.stateno = 1050, P1.time = 0, P1.More = 1;
+				}
+				else if (P1.fall == 0) {
+					P1.stateno = 47, P1.time = 0, P1.More = 1;
+				}
+				// 地上受け身可能
+				else if (P1.fall == 2) {
+					// [受け身]
+					// 空中にいる時、ボタン１～３入力
+					if ((P1.button[1] > 0) || (P1.button[2] > 0) ||
+						(P1.button[3] > 0)) {
+						P1.stateno = 1080, P1.time = 0, P1.More = 1;
+					}
+					else {
+						P1.stateno = 1050, P1.time = 0, P1.More = 1;
+					}
+				}
+			}
+		}
+		break;
+
+	case 1067:	// ロック技喰らい（空中）
+		P1.ctrl = 0, P1.SFlg = 2;
+		P1.ignoreG = true;
+
+		//if (P1.time <= 4)P1.time = 0;
+		// if (P1.time <= 9)P1.time = 5;
+
+		// 相手と相打ち
+		if (P2.stateno >= 1000) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 30;
+		}
+		// バグで動ける
+		else if (P2.stateno < 200 && P1.time > 30) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 10;
+		}
+
+		// 宇宙旅行しすぎた場合
+		if ((P1.YPos < -50) || (P1.YPos > GROUND + 30)) {
+			P1.stateno = 1030, P1.More = 1;
+			P1.time = 0, P1.D.nokezori = 30;
+		}
+
+
 		break;
 
 	case 1070:	// 敗北

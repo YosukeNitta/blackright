@@ -37,6 +37,71 @@ typedef struct {
 	}
 }Effect_t;
 
+class Vector2 {
+public:
+	// x,y
+	float x, y;
+	// コンストラクタ
+	Vector2() {
+		x = 0;
+		y = 0;
+	}
+	Vector2(float x, float y) {
+		this->x = x;
+		this->y = y;
+	}
+
+	// デストラクタ
+	~Vector2(){
+		
+	}
+
+	// 足し算
+	Vector2 operator + (Vector2 vec2){
+		this->x + vec2.x;
+		this->y + vec2.y;
+	}
+};
+
+//[ エフェクト ]
+class Effect {
+
+public:
+	int image;		// 現在の画像
+
+	//float sizeX, sizeY;	// 描画サイズ
+	Vector2 size;
+	//float defX, defY;	// 最初のサイズ(実際に表示されるサイズではない)
+	Vector2 def;
+	int alpha;		// 透過
+
+	//int XPos, YPos;	// 画像の表示位置
+	Vector2 pos;
+	//int XAdd, YAdd;	// 座標を移動させる
+	Vector2 add;
+	//int XSize, YSize;// 画像サイズ
+	Vector2 gSize;
+	int Num1, Num2;	// 画像番号 縦と横
+	int time;		// 時間
+	boolean turn;
+	int RGB[3];		// 変えると色が変わる
+	float rot;		// 角度
+
+	// コンストラクタ
+	Effect() {
+		image;
+		size;
+		def;
+	}
+
+	void Draw() {
+		DrawRotaGraph3(pos.x + add.x - (int)S.ScroolX + S.quakeX, pos.y + add.y - (int)S.ScroolY + S.quakeY,
+			size.x / 2, size.y / 2,
+			size.x, size.y, rot, image, true, turn);
+	}
+};
+static Effect ef;
+
 // エフェクトの変数用意
 static Effect_t E[EFF_MAX];
 //static vector<Effect_t> E;
@@ -96,7 +161,7 @@ int EffStart(int Effnum, int EffXP, int EffYP, int basePosX, int basePosY,
 		if (E[i].Image == 0){
 			E[i] = EffSetting(Effnum, EffXP, EffYP, basePosX, basePosY,
 				SizeX, SizeY, turn);
-
+			//ef = new Effect(, );
 			//e.push_back(Effect_t());
 			//e[i] = EffSetting(Effnum, EffXP, EffYP, basePosX, basePosY,
 				//SizeX, SizeY, turn);

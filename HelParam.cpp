@@ -301,9 +301,9 @@ void HelParam(void)
 				// [ゲージ] 
 				Power(30);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(6, 13, 17, 11);
+				HitTime(6, 12, 16, 10);
 				// [ノックバック]
-				HitVel(-3.8, 0, -1.6, -4.8);
+				HitVel(-4.0, 0, -1.6, -4.8);
 
 				// [ガード属性]
 				P1.GuardF = 1;
@@ -373,6 +373,9 @@ void HelParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 205：立ちA
@@ -405,7 +408,7 @@ void HelParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-2.6, 0, -1.4, -5);
+				HitVel(-3.0, 0, -1.4, -5);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -415,6 +418,7 @@ void HelParam(void)
 			else {
 				DamReset();
 			}
+
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
@@ -439,6 +443,9 @@ void HelParam(void)
 					SCancel();
 				}
 			}
+
+			// 投げ
+			DelayThrow(1);
 
 			break;
 			//********************
@@ -525,9 +532,12 @@ void HelParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
-			// 215：2B
+			// 215：6B
 			//********************
 		case 215:
 			P1.ctrl = 0, P1.SFlg = 0;
@@ -556,7 +566,7 @@ void HelParam(void)
 				// [ヒットストップ・のけぞり時間]
 				HitTime(10, 22, 24, 18);
 				// [ノックバック]
-				HitVel(-3.8, 0, -1.8, -4.0);
+				HitVel(-4.0, 0, -1.8, -4.0);
 				// [ガード属性]
 				P1.GuardF = 2;
 
@@ -589,6 +599,10 @@ void HelParam(void)
 					SCancel();
 				}
 			}
+
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 220：立ちC
@@ -617,7 +631,7 @@ void HelParam(void)
 				// [ヒットストップ・のけぞり時間]
 				HitTime(8, 22, 24, 18);
 				// [ノックバック]
-				HitVel(-4.0, 0, -2.2, -4);
+				HitVel(-4.4, 0, -2.2, -4);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -750,6 +764,10 @@ void HelParam(void)
 					P1.More = 1, P1.time = 0, P1.A.damage = 0;
 				}
 			}
+
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 310：しゃがみB
@@ -776,7 +794,7 @@ void HelParam(void)
 				HitTime(8, 18, 20, 14);
 
 				// [ノックバック]
-				HitVel(-3.4, 0, -1.8, -4.6);
+				HitVel(-3.8, 0, -1.8, -4.6);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -816,6 +834,8 @@ void HelParam(void)
 				}
 			}
 
+			// 投げ
+			DelayThrow(2);
 
 			break;
 			//********************
@@ -844,7 +864,7 @@ void HelParam(void)
 				HitTime(8, 32, 34, 18);
 				// [ノックバック]
 				HitVel(-1.8, -3.6, -1.8, -3.4);
-				GuardVel(-3.8, -1.8);
+				GuardVel(-4.2, -1.8);
 				// [ガード属性]
 				P1.GuardF = 3;
 
@@ -947,6 +967,9 @@ void HelParam(void)
 					P1.stateno = 46, P1.time = 0;
 			}
 			*/
+			// 投げ
+			DelayThrow(1);
+
 			break;
 			//********************
 			// 410：ジャンプB
@@ -1008,6 +1031,10 @@ void HelParam(void)
 					}
 				}
 			}
+
+			// 投げ
+			DelayThrow(2);
+
 			break;
 			//********************
 			// 420：ジャンプC
@@ -1060,7 +1087,7 @@ void HelParam(void)
 		case 500:
 			P1.ctrl = 0, P1.SFlg = 0;
 			// 投げ方向設定
-			if (P1.time == 0){
+			if (P1.time == 1){
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
 				if (P1.keyAtt[4]){
@@ -1217,7 +1244,7 @@ void HelParam(void)
 			P1.ctrl = 0, P1.SFlg = 2;
 
 			// 投げ方向設定
-			if (P1.time == 0){
+			if (P1.time == 1){
 				P1.throwSide = P1.muki;
 				P1.A.throwTurn = false;
 				if (P1.muki == 0){
@@ -1498,39 +1525,49 @@ void HelParam(void)
 			}
 
 			// ヒット数セット
-			if (P1.time == 1){
+			if (P1.time == 1 || P1.time == 28){
 				P1.MoveHit = 1;	// １回
 			}
 
 			if (P1.time == 5){
-				P1.XVel = 20;
+				P1.XVel = 16.0;
 			}
 
 			// ダメージセット
-			if (P1.time >= 1){
-
+			if (P1.time >= 1 && P1.time < 20){
 				// [ダメージ]
-				Damage(105, 0);
+				Damage(80, 0);
 				// [ゲージ] 
-				Power(130);
+				Power(70);
 				HitTime(4, 30, 32, 24);
 				// [ノックバック]
-				HitVel(-2.6, -4.5, -2.8, -3.2);
+				HitVel(-2.6, 0, -1.8, -3.2);
+				P1.HitAnim = 1030;	// 空中喰らい
+				// [喰らい中の浮き]
+				P1.fallF = 1;
+				// [ガード属性]
+				P1.GuardF = 1;
+				P1.HitSE = 11;
+				P1.A.yaccel = 0.3;
+			}
+			else if (P1.time >= 28) {
+				// [ダメージ]
+				Damage(100, 0);
+				// [ゲージ] 
+				Power(95);
+				HitTime(8, 24, 24, 16);
+				// [ノックバック]
+				HitVel(-2.6, -3.0, -2.4, -2.6);
 				P1.HitAnim = 1030;	// 空中喰らい
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				// [ガード属性]
 				P1.GuardF = 1;
 				P1.HitSE = 13;
-				P1.A.wallLevel = 2;
-				P1.A.wall_xvel = 0.2;
-				if (P1.HitCount == 0){
-					P1.A.boundLevel = 2;
-					P1.A.bound_xvel = -0.8;
-					P1.A.bound_yvel = -3.2;
-				}
-				else{ P1.A.boundLevel = 0; }
-
+				// エフェクト
+				HitEff(3, 0.6, 0.6);
+				//P1.A.wallLevel = 2;
+				//P1.A.wall_xvel = 0.2;
 			}
 			else {
 				DamReset();
@@ -1817,20 +1854,15 @@ void HelParam(void)
 				P1.time = 0, P1.Lock = 0;
 			break;
 			//********************
-			// 620 昇竜
+			// 620 A昇竜
 			//********************
 		case 620:	
 			P1.ctrl = 0, P1.SFlg = 0;
-			P1.D.counter = true;
-			P1.D.fatal = true;
 
 			// SEを鳴らす、移動
 			if (P1.time == 0){
 				SEStart(21);
-				P1.mutekiF = 0;
-				P1.Muteki = 0;
 			}
-			if((P1.time >= 2) && (P1.time <= 8))P1.Muteki = 1;
 
 			// ヒット数セット
 			if (P1.time == 1){
@@ -1853,7 +1885,7 @@ void HelParam(void)
 				HitVel(-2.6, -3.2, -2.2, -3.0);
 				P1.HitAnim = 1030;	// 空中喰らい
 				// [喰らい中の浮き]
-				P1.fallF = 2;	// 地上受け身可能
+				P1.fallF = 1;	// 地上受け身可能
 				// [ガード属性]
 				P1.GuardF = 1;
 				P1.HitSE = 13;
@@ -1876,6 +1908,59 @@ void HelParam(void)
 			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
 			break;
+
+			//********************
+			// 621 B昇竜
+			//********************
+		case 621:
+			P1.ctrl = 0, P1.SFlg = 0;
+			P1.D.counter = true;
+			P1.D.fatal = true;
+
+			// SEを鳴らす、移動
+			if (P1.time == 0) {
+				SEStart(21);
+				P1.mutekiF = 0;
+				P1.Muteki = 0;
+			}
+			if ((P1.time >= 2) && (P1.time <= 8))P1.Muteki = 1;
+
+			// ヒット数セット
+			if (P1.time == 1) {
+				P1.MoveHit = 1;	// １回
+			}
+
+			if (P1.time == 7)
+				EffStart(20, P1.XPos + 17, P1.YPos - 10, 0, 0,
+					0.50, 0.50, P1.muki);
+
+			// ダメージセット
+			if ((P1.time >= 1) && (P1.time <= 20)) {
+
+				// [ダメージ]
+				Damage(110, 0);
+				// [ゲージ] 
+				Power(145);
+				HitTime(8, 24, 24, 18);
+				// [ノックバック]
+				HitVel(-2.6, -3.2, -2.2, -3.0);
+				P1.HitAnim = 1030;	// 空中喰らい
+				// [喰らい中の浮き]
+				P1.fallF = 2;	// 地上受け身可能
+				// [ガード属性]
+				P1.GuardF = 1;
+				P1.HitSE = 13;
+
+			}
+			else {
+				DamReset();
+			}
+
+			// 全体フレームを超えたらリセット
+			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+			break;
+
 			//********************
 			// 625 Ｄ昇竜
 			//********************
@@ -2045,8 +2130,8 @@ void HelParam(void)
 			}
 
 			// 無敵
-			if (P1.time <= 4)P1.Muteki = 1, P1.mutekiF = 0;
-			else { P1.Muteki = 0; }
+			//if (P1.time <= 4)P1.Muteki = 1, P1.mutekiF = 0;
+			//else { P1.Muteki = 0; }
 
 			if (P1.time == 1){
 				EffStart(16, P1.XPos, P1.YPos, -10, -(P1.ySize / 1.5),
@@ -2115,6 +2200,9 @@ void HelParam(void)
 				// エフェクト
 				HitEff(3, 0.8, 0.8);
 				P1.A.kill = 1;
+				// 地震エフェクト
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 
 			// 当たったら変更
@@ -2402,6 +2490,9 @@ void HelParam(void)
 				if (P1.time == 6){
 					P1.HitSE = 14;
 					Damage(0, 150);
+					// 地震エフェクト
+					P1.A.quakeTime = 2;
+					P1.A.quakeY = 2;
 				}
 				// エフェクト
 				HitEff(0, 0.6, 0.6);
@@ -2766,19 +2857,20 @@ void SCancel()
 	// 236 + 攻撃
 	if ((P1.cmd[1]) && (!H1[0].var)){		// 画面にヘルパー１がない
 		if ((P1.Senkou[1] > 0) ||
-			(P1.Senkou[2] > 0)){
+			(P1.Senkou[2] > 0) ||
+			(P1.Senkou[3] > 0)){
 			P1.stateno = 630, P1.More = 1,
 				P1.time = 0, P1.A.damage = 0;
 		}
 	}
 
 	// 214 + AorB
-	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0))
+	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[2])){		// 先行入力効かせてみる
 		if (P1.SFlg != 2){
 			P1.stateno = 610, P1.More = 1,
 				P1.time = 0, P1.A.damage = 0;
-			if (P1.Senkou[2] > 0)P1.stateno = 611;
+			if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 611;
 		}
 	}
 	// 623 + AorB
@@ -2787,6 +2879,7 @@ void SCancel()
 		if (P1.SFlg != 2){
 			P1.stateno = 620, P1.More = 1,
 				P1.time = 0, P1.A.damage = 0;
+			if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 621;
 		}
 	}
 
@@ -2810,7 +2903,7 @@ void SCancel()
 			P1.time = 0, P1.A.damage = 0;
 		}
 		else {
-			P1.stateno = 610, P1.More = 1,
+			P1.stateno = 611, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
 		}
 	}
@@ -2822,7 +2915,7 @@ void SCancel()
 			P1.time = 0, P1.A.damage = 0;
 		}
 		else {
-			P1.stateno = 620, P1.More = 1,
+			P1.stateno = 621, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
 		}
 	}

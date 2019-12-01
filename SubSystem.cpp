@@ -195,13 +195,22 @@ int SetScrool()
 	}
 
 	// キャラ間の距離が端々より大きい時、変化なし
-	if (PDist >= SCREEN_W - (GAMENHAJI * 2)){}	// 640 - 70 = 570
+	// 640 - 70 = 570
+	if (PDist >= SCREEN_W - (GAMENHAJI * 2)){
+		//S.camSize = PDist - (SCREEN_W - (GAMENHAJI * 2));
+		//S.camExRate = 1.0 - (double)(PDist - (SCREEN_W - (GAMENHAJI * 2))) * 0.01;
+	}	
 	// やや遠い時、同じ距離に置く
 	else if (PDist >= SCREEN_W - mSDist){ 
 		ScXPoint = leftP - (SCREEN_W / 2) + (PDist / 2); // leftP - 360 + PDist
+		//S.camSize = 0;
+		//S.camExRate = 1.0;
 	}
 	// 近い
-	else {}
+	else {
+		//S.camSize = 0;
+		//S.camExRate = 1.0;
+	}
 
 	/*
 	// 1P
@@ -294,13 +303,13 @@ int SetScrool()
 // キャラの接触チェック
 int TouchCheck()
 {
-	// ほも
 	if (S.roundState != 0){
 	Player P[2];
 	P[0] = P1, P[1] = P2;
 
-	for (int i = 0; i < 2; i++){
-
+	// 位置調整をここでおこなうべきではないと思われる
+	// でもこれやらないと2P側だけ端でめくる
+	for (int i = 0; i < 2; i++){	
 		//X軸 端処理
 		if (P[i].XPos <= (S.ScroolX + GAMENHAJI)){
 			P[i].XPos = S.ScroolX + GAMENHAJI;
@@ -308,8 +317,8 @@ int TouchCheck()
 		else if (P[i].XPos >= (S.ScroolX + SCREEN_W - GAMENHAJI)){
 			P[i].XPos = S.ScroolX + (SCREEN_W - GAMENHAJI);
 		}
-
 	}
+
 	// 戻ってくる
 	P1 = P[0], P2 = P[1];
 
@@ -491,15 +500,18 @@ int TouchCheck()
 	// 測った値を送る
 	Get_PSet(P1, P2);
 
-	} // ほも終了
+	} 
 	// 終了
 	return 0;
 }
 
 
+/// <summary>
+/// 移動後の位置調整
+/// 最後にここが来る
+/// </summary>
 void PosHosei()
 {
-	// ほも
 	if (S.roundState != 0){
 
 	// 座標記録
@@ -510,21 +522,32 @@ void PosHosei()
 	P[0] = P1, P[1] = P2;
 
 	for (int i = 0; i < 2; i++){
-
 		//X軸 端処理
+
+		// スクリーン内の端に固定する
 		if (P[i].XPos <= (S.ScroolX + GAMENHAJI)){
 			P[i].XPos = (double)S.ScroolX + GAMENHAJI;
 		}
 		else if (P[i].XPos >= (S.ScroolX + SCREEN_W - GAMENHAJI)){
 			P[i].XPos = (double)S.ScroolX + (SCREEN_W - GAMENHAJI);
 		}
-	
+		
+		/*
+		// ステージの端に固定する
+		if (P[i].XPos <= GAMENHAJI) {
+			P[i].XPos = GAMENHAJI;
+		}
+		else if (P[i].XPos >= (STAGE_WIDTH - GAMENHAJI)) {
+			P[i].XPos = (STAGE_WIDTH - GAMENHAJI);
+		}
+		*/
 	}
+
 	// 戻ってくる
 	P1 = P[0], P2 = P[1];
 
-	
 	TH_Set(P1, P2);
+
 	//当たり判定チェック、コピペの > の部分をイコールにする
 	if (((P1.X_UL >= P2.X_UL && P1.X_UL <= P2.X_UL + P2.xSize) ||
 		(P2.X_UL >= P1.X_UL && P2.X_UL <= P1.X_UL + P1.xSize)) &&
@@ -733,6 +756,9 @@ void VelPosSet()
 	Get_PSSet(P1, P2, S);
 }
 
+/// <summary>
+/// 速度減算
+/// </summary>
 void VelXYAdd()
 {
 	Player P[2];

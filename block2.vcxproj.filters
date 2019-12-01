@@ -254,5 +254,11 @@
     <ClInclude Include="Arcade.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="NetData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInfo.h">
+      <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

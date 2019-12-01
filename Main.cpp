@@ -23,6 +23,7 @@
 #include "Replay.h"
 #include "Arcade.h"
 #include "Fps.h"
+#include "WindowInfo.h"
 
 // vectorを使う
 #include <vector>
@@ -30,9 +31,7 @@ using namespace std;
 
 #pragma warning(disable : 4996)	// fscanfのエラー表示を消す
 
-/*
-* ローカル変数
-*/
+#pragma region	ローカル変数
 static int GameMode;	// 現在のモード、メニューで初期化
 static int LoadMode;			// そのモードの準備を初期化する
 static int sw;			// スクショ
@@ -46,8 +45,8 @@ static int modeCount = 0;	// モードになってからの経過フレーム
 
 static int sd = 0;	// ゲーム進行速度
 static boolean wait;	// 熱帯相手を待って、モードを動かさない
-
 //static int stop = 0;
+#pragma endregion
 
 // 各種項目
 static Menu men;
@@ -170,6 +169,7 @@ void Game_End();
 void Replay_DrawData();
 
 //プログラム部----------------------------------------------
+#pragma region メイン関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
 {
@@ -258,6 +258,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return 0;				// ソフトの終了 
 
 }//main終了
+#pragma endregion
 
 void ModeChange(int num)
 {
@@ -300,7 +301,10 @@ void Screen_Setting()
 	ChangeWindowMode(screenMode);
 
 	// 画面モードの設定、サイズを測る
-	SetGraphMode(SCREEN_W, SCREEN_H, 16);
+	SetGraphMode(WindowInfo::width, WindowInfo::height, 16);
+
+	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);	// グラフィックハンドルのリセット防止
+														// ウィンドウサイズ変更時に消えないようにする
 
 	// 非アクティブ状態でも動く(動かさないと熱帯できない)
 	SetAlwaysRunFlag(true);
@@ -313,6 +317,7 @@ void Screen_Setting()
 }
 
 // 入力・FPS更新処理
+#pragma region
 void Game_Processing()
 {
 	
@@ -377,6 +382,7 @@ void Game_Processing()
 	}
 	*/
 }
+#pragma endregion
 
 void Game_Draw()
 {
@@ -397,7 +403,9 @@ void Game_Draw()
 	if (drawFPS) { fps.Draw(SCREEN_W - 80, 0); }
 }
 
-// モード・ネットディレイの表示
+/// <summary>
+/// 情報の更新
+/// </summary>
 void Game_Update()
 {
 	// ネットワークに接続中
@@ -413,23 +421,21 @@ void Game_Update()
 	}
 
 	//ウィンドウモードに
-	/*
 	if (CheckHitKey(KEY_INPUT_F4) != 0)sw2++;
 	else { sw2 = 0; }
-	if (CheckHitKey(KEY_INPUT_F4) != 0){
+	if (CheckHitKey(KEY_INPUT_F4) != 0) {
 		// 最初のみ
-		if (sw2 == 1){
-			if (sw2_2 == 0){
+		if (sw2 == 1) {
+			if (sw2_2 == 0) {
 				ChangeWindowMode(0);
 				sw2_2 = 1;
 			}
-			else if (sw2_2 == 1){
+			else if (sw2_2 == 1) {
 				ChangeWindowMode(1);
 				sw2_2 = 0;
 			}
 		}
 	}
-	*/
 }
 
 // 終了処理
@@ -442,7 +448,6 @@ void Game_End()
 	if (Replay_Mode(-1) > 0)Replay_End();
 	// トレモ設定保存
 	Tlist_Save();
-
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 }
 

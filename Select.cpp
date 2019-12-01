@@ -217,8 +217,8 @@ void Select::Load_1second(){
 	//if (STAGE_MAX >= 4)mStageB[3] = LoadGraph("back/st4_2.png");
 
 	// カーソル位置
-	P[0].curX = 1, P[1].curX = 2;
-	P[0].posX = 1 * 110, P[1].posX = 2 * 110;
+	P[0].curX = 2, P[1].curX = 3;
+	P[0].posX = P[0].curX * 110 - 110, P[1].posX = P[1].curX * 110 - 110;
 	P[0].curY = 0, P[1].curY = 0;
 	StageNum = 0;
 
@@ -279,12 +279,12 @@ void Select::Load_1second(){
 
 	SetTransColor(0, 0, 0);	// 透過色を戻す
 	///////////////////////////////////
-	if (charPos.size() > 0)charPos[0] = BOUNCER - 1;
-	if (charPos.size() > 1)charPos[1] = CORNEL - 1;
-	if (charPos.size() > 2)charPos[2] = HELIOS - 1;
-	if (charPos.size() > 3)charPos[3] = EIN - 1;
-	if (charPos.size() > 4)charPos[4] = 4;
-	
+	if (charPos.size() > 0)charPos[0] = HYDE - 1;
+	if (charPos.size() > 1)charPos[1] = BOUNCER - 1;
+	if (charPos.size() > 2)charPos[2] = CORNEL - 1;
+	if (charPos.size() > 3)charPos[3] = HELIOS - 1;
+	if (charPos.size() > 4)charPos[4] = EIN - 1;
+	if (charPos.size() > 5)charPos[5] = SYUICHI - 1;
 }
 
 
@@ -590,15 +590,18 @@ void EnterSelect()
 					
 					switch (P[i].curX){
 					case 0:
-						P[i].name = BOUNCER;
+						P[i].name = HYDE;
 						break;
 					case 1:
-						P[i].name = CORNEL;
+						P[i].name = BOUNCER;
 						break;
 					case 2:
-						P[i].name = HELIOS;
+						P[i].name = CORNEL;
 						break;
 					case 3:
+						P[i].name = HELIOS;
+						break;
+					case 4:
 						P[i].name = EIN;
 						break;
 					default:
@@ -740,6 +743,8 @@ void CharAnimetion()
 			cpal[charPos[P[i].curX]][P[i].color].r[0],
 			cpal[charPos[P[i].curX]][P[i].color].g[0], 
 			cpal[charPos[P[i].curX]][P[i].color].b[0]);
+		// 画像リセット
+		if(P[i].image != 0)DeleteGraph(P[i].image);
 		// 画像決定
 		P[i].image = CreateGraphFromSoftImage(pic[charPos[P[i].curX]][homo[i]].image);
 		SetTransColor(0,0,0);

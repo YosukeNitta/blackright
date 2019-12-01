@@ -1,5 +1,4 @@
-#ifndef DEF_SSET_H	//一度定義されていたら、定義しない
-#define DEF_SSET_H
+#pragma once
 
 // ゲームの数値を記録しておく
 typedef struct {
@@ -9,6 +8,8 @@ typedef struct {
 	***********************/
 	// スクロールの位置
 	double ScroolX, ScroolY;
+	// カメラサイズ、倍率
+	//double camSize, camExRate;
 	// 終了フラグ
 	int EndFlg;
 	// 時間停止（演出・暗転等）
@@ -22,7 +23,7 @@ typedef struct {
 	int roundTime;	// 設定時間
 	boolean noScroolX, noScroolY;	// スクロールを停止する
 	// 衝撃(カメラ)
-	double quakeY;
+	double quakeX, quakeY;
 	int quakeTime;
 
 	// 現在のステージ
@@ -57,5 +58,3 @@ typedef struct {
 
 // プレイヤー1・2の定義、ここでstaticを使い被らないようにする
 static System_t S;
-
-#endif

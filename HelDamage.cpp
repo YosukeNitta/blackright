@@ -139,7 +139,7 @@ void HelperDamCheck()
 						
 						// 共通設定
 						// [ダメージ元に戻す]
-						H1[i].A.damage = 0;
+						//H1[i].A.damage = 0;	消したけど今のところ問題なし
 
 					}// ヒットorガード判断終了
 
@@ -193,7 +193,9 @@ void HelperDamCheck()
 							// [1Pのヒット確認用]
 							H1[i].HMoveHit--, H2[l].HMoveHit--;
 							// [ダメージ元に戻す]
-							H1[i].A.damage = 0, H2[l].A.damage = 0;
+							//H1[i].A.damage = 0, 
+							//H2[l].A.damage = 0;
+							
 							// [スパキャン猶予]
 							//P1.scTime = SC_TIME;
 
@@ -333,7 +335,10 @@ void GuardParam(int i)
 			H1[i].H_GY = 0.0;
 			H1[i].H_AY = -5.0 / 2.0;
 			P2.D.yaccel = 0.14;
+			P2.Life -= 50;
+			if (P2.Life <= 0)P2.Life = 1;	// 削り殺し防止
 		}
+
 	}
 
 	// ガークラではない
@@ -381,7 +386,7 @@ void GuardParam(int i)
 		0.2, 0.6, P2.muki);
 
 	// [1Pのヒット確認用]
-	H1[i].HMoveHit = 0;
+	H1[i].HMoveHit--;
 
 	// [ノックバック距離]
 	if (((P2.XPos <= GAMENHAJI) || (P2.XPos >= (STAGE_WIDTH - GAMENHAJI))) &&
@@ -596,7 +601,7 @@ void HitParam(int i)
 		P1.HitCount += 1;
 
 	// [1Pのヒット確認用]
-	H1[i].HMoveHit = 0;
+	H1[i].HMoveHit--;
 	
 	// [2Pのコントロールを奪う]
 	P2.ctrl = 0;

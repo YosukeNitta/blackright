@@ -66,7 +66,10 @@ void TimeCount();
 //-------------------------------------------------------------------------------
 
 
-//移動処理
+/// <summary>
+/// 対戦部分動作処理
+/// </summary>
+/// <returns>特になし</returns>
 int CharMove(void)
 {
 	// 画像のロード
@@ -502,6 +505,9 @@ int CharMove(void)
 			||
 			((S.TraningFlg) && (P1_BInput(7) == 1))
 		){
+			// 録画をオフにする
+			S.TSwitch[7] = 0;
+
 			// 一度だけ操作を受け付けない
 			P1_BCheck();
 			P2_BCheck();
@@ -516,8 +522,9 @@ int CharMove(void)
 }
 
 
-
-// 体力、位置を初期化
+/// <summary>
+/// 体力、位置を初期化
+/// </summary>
 void CharLoad()
 {
 	// 名前をselectで出した値からロード
@@ -668,9 +675,6 @@ void CharLoad()
 	fpSet = 0;
 }
 
-
-
-
 void Get_PSet(Player GP1, Player GP2)
 {
 	P1 = GP1;
@@ -724,17 +728,6 @@ void Get_Color(int c, int PSide)
 	Load_1 = 0;
 }
 
-
-//-------------------------------------------------------------------------------
-//
-// 数値初期化
-//
-//-------------------------------------------------------------------------------
-
-void Syokika()
-{
-	
-}
 
 //-------------------------------------------------------------------------------
 //
@@ -833,6 +826,7 @@ void GraphicSetting()
 	{
 		if (S.quakeTime > 0)S.quakeTime--;
 		else{
+			S.quakeX = 0;
 			S.quakeY = 0;
 			S.quakeTime = 0;
 		}
@@ -1311,8 +1305,6 @@ void TimeCount()
 				P2.D.armor = 0;
 			}
 		}
-
-		
 
 		// 立ちへ移行して、まだ始まってない
 		// roundTimeが1以上で移動可能にする
