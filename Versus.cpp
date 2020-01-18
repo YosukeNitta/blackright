@@ -61,7 +61,7 @@ int Versus(void)
 				// 1が返ってきたら終了
 				if (Num == 1){
 					CharLoad();
-					ModeChange(GameScene(MenuScene));	// メニューへ
+					ModeChange(SceneNum(MenuScene));	// メニューへ
 				}
 			}// ModePause 
 		}
@@ -103,23 +103,23 @@ int Versus(void)
 				switch (PauseNum){
 				case 1:
 					ModePause = 0, PauseNum = 0;
-					ModeChange(GameScene(VersusScene));	// 初期化
+					ModeChange(SceneNum(VersusScene));	// 初期化
 					break;
 				case 2:
 					ModePause = 0, PauseNum = 0;
-					ModeChange(GameScene(SelectScene));
+					ModeChange(SceneNum(SelectScene));
 					break;
 				case 3:
 					ModePause = 0, PauseNum = 0;
-					ModeChange(GameScene(MenuScene));	// メニューへ
+					ModeChange(SceneNum(MenuScene));	// メニューへ
 					break;
 				case 4:
 					ModePause = 0, PauseNum = 0;
 					// 続行
 					break;
-				case GameScene(ReplayScene):	// リプレイ
+				case SceneNum(ReplayScene):	// リプレイ
 					ModePause = 0, PauseNum = 0;
-					ModeChange(GameScene(ReplayScene));
+					ModeChange(SceneNum(ReplayScene));
 					// 続行
 					break;
 				}

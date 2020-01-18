@@ -91,6 +91,7 @@ void HydParam(void)
 		if ((P1.ctrl) && (P1.Var[11] > 0))P1.Var[12] = 0;
 
 		// 強化時間減少
+		/*
 		if (P1.Var[11] > 0) {
 			P1.Var[11]--;
 			// 終了時エフェクト
@@ -98,9 +99,18 @@ void HydParam(void)
 				EffStartB(16, P1.XPos, P1.YPos - (P1.GraphH / 2) * P1.GSize, 0, 0,
 					0.23, 0.23, P1.muki);
 		}
+		*/
+
+		// 初回チャージ
+		if (P1.Var[11] == 0) {
+			P1.Var[10] = 180 * 6;
+			P1.Var[11] = -1;
+		}
 		// チャージ時間
-		if ((P1.Var[11] <= 0) && (P1.Var[10] > 0))
-			P1.Var[10]--;
+		//if ((P1.Var[11] <= 0) && (P1.Var[10] > 0))
+			//P1.Var[10]--;
+
+		if (P1.Var[10] < 180 * 6)P1.Var[10]++;
 
 		// 次弾設定 3発まで
 		P1.Var[2] = 0;
@@ -406,6 +416,8 @@ void HydParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -422,11 +434,6 @@ void HydParam(void)
 			// VO
 			if (P1.time == 1){
 				PVOStart(P1.PSide, 2, 1);
-			}
-
-			// 位置をずらす
-			if (P1.time == 5){
-				PosAdd(10, 0);
 			}
 
 			// ヒット数セット、８フレ
@@ -494,6 +501,8 @@ void HydParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 
@@ -536,7 +545,7 @@ void HydParam(void)
 				// [ゲージ] 
 				Power(120);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 22, 24, 18);
+				HitTime(10, 22, 24, 18);
 				// [ノックバック]
 				HitVel(-4.0, 0, -2.0, -4);
 				// [ガード属性]
@@ -568,6 +577,10 @@ void HydParam(void)
 				}
 
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+			
 			break;
 			//********************
 			// 225：6C
@@ -738,6 +751,8 @@ void HydParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -823,6 +838,8 @@ void HydParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -853,7 +870,7 @@ void HydParam(void)
 				Damage(98, 0);
 				// [ゲージ] 
 				Power(118);
-				HitTime(8, 40, 40, 18);
+				HitTime(10, 40, 40, 18);
 				// [ノックバック]
 				HitVel(-1.8, -4, -2.2, -3.5);
 				GuardVel(-4.2, -1.5);
@@ -873,6 +890,10 @@ void HydParam(void)
 					SCancel();
 				}
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+
 			break;
 			//********************
 			// 400：ジャンプA
@@ -901,7 +922,9 @@ void HydParam(void)
 				HitTime(5, 14, 18, 12);
 				// [ノックバック]
 				HitVel(-4.6, 0, -1.4, -4.2);
-				P1.GuardF = 1;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -968,7 +991,9 @@ void HydParam(void)
 				HitTime(8, 16, 18, 14);
 				// [ノックバック]
 				HitVel(-4.6, 0, -1.6, -4.6);
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -1042,7 +1067,9 @@ void HydParam(void)
 					HitVel(-4.8, 0, -3.8, 4.5);
 				else { HitVel(-4.8, 0, -3.8, 6.5); }
 
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -1132,6 +1159,9 @@ void HydParam(void)
 			}
 			// 全体フレームを超えたらリセット
 			if (P1.time >= 32)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -1450,6 +1480,7 @@ void HydParam(void)
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2000;
 				H_PosSet(P1.Var[3], 20, -168);
+				P1.Var[10] -= 180;
 			}
 
 			if (P1.time == 13) {
@@ -1511,6 +1542,7 @@ void HydParam(void)
 				H1[P1.Var[3]].var = true;
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2001;
+				P1.Var[10] -= 180;
 			}
 
 			if (P1.time == 13) {
@@ -1572,6 +1604,7 @@ void HydParam(void)
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2000; 
 				H_PosSet(P1.Var[3], 22, -138);
+				P1.Var[10] -= 180;
 			}
 
 			if (P1.time == 13) {
@@ -1633,6 +1666,7 @@ void HydParam(void)
 				H1[P1.Var[3]].var = true;
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2003;
+				P1.Var[10] -= 180;
 			}
 
 			if (P1.time == 12) {
@@ -1703,6 +1737,7 @@ void HydParam(void)
 				H1[P1.Var[3]].var = true;
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2002;
+				P1.Var[10] -= 180;
 			}
 
 			// 重力緩和
@@ -1766,6 +1801,7 @@ void HydParam(void)
 				H1[P1.Var[3]].time = 0;
 				H1[P1.Var[3]].stateno = 2000;
 				H_PosSet(P1.Var[3], 20, -166);
+				P1.Var[10] -= 180;
 			}
 
 			// 重力緩和
@@ -2486,12 +2522,8 @@ void HydParam(void)
 					// ヒット数・ダメージセット
 					if (H1[i].time == 0) {
 						H1[i].HMoveHit = 1;
-						H1[i].A.damage = 90;
-						// 強化
-						if (P1.Var[11] > 0) {
-							H1[i].HMoveHit = 2;
-							H1[i].A.damage = 100;
-						}
+						H1[i].A.damage = 87;
+						H1[i].A.hosyo = 8;
 					}
 					// ダメージ位置セット
 					if (H_triggerT(i, 0, 1)) {
@@ -2774,7 +2806,7 @@ void GetH_HydParam(Helper GH1[], Helper GH2[])
 // 必殺技キャンセル
 void SCancel()
 {
-	if (P1.Senkou[4] > 0) {
+	if (P1.Senkou[4] > 0 && (P1.Var[10] > 180)) {
 		// 地上にいて、ヘルパー[1]が存在しない
 		if (P1.SFlg != 2) {
 			P1.stateno = 600, P1.More = 1,
@@ -2830,7 +2862,7 @@ void ACancel()
 	// [必殺技]
 	if (P1.SFlg == 2) {
 		// D (ノーマル設置、地上発射)
-		if (P1.Senkou[4] > 0) {
+		if (P1.Senkou[4] > 0 && (P1.Var[10] > 180)) {
 			// ヘルパー[2]がある
 			if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8])) {
 					P1.stateno = 606, P1.More = 1,

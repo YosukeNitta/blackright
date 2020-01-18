@@ -3,7 +3,7 @@
 
 
 // 変更するもの
-static const int STAGE_MAX = 3;		// ステージの最大
+static const int STAGE_MAX = 4;		// ステージの最大
 static const int CHARACTERS_MAX = 6;
 
 // むりやりキャラ導入
@@ -18,7 +18,7 @@ static const int SYUICHI = 6;
 //  定数
 //*************
 
-static enum GameScene
+static enum SceneNum
 {
 	NoScene,
 	MenuScene,
@@ -31,7 +31,7 @@ static enum GameScene
 	ReplayScene,
 	ArcadeScene,
 };
-static GameScene gameScene;
+static SceneNum gameScene;
 
 // スクリーン数値
 static const int SCREEN_W = 640;	//画面の横幅
@@ -85,7 +85,7 @@ static const int ROUNDTIME = 99;			// 試合時間
 static const int TR_TIME = 7-6;			// 投げ抜け猶予(-6はヒットストップ)
 static const int VAR_MAX = 50;		// キャラ変数の最大
 static const int SC_TIME = 30;		// スパキャン猶予	
-static const int NC_TIME = 10;		// 通常技キャン猶予	
+static const int NC_TIME = 28;		// 通常技キャン猶予	
 static const int ThrowMuteki_Down = 7;		// 投げ無敵時間
 static const int ThrowMuteki_Guard = 3;		// 投げ無敵時間
 static const int ThrowMuteki_Hit = 5;		// 投げ無敵時間

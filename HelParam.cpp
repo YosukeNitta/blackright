@@ -375,6 +375,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -446,6 +448,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -534,6 +538,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -602,6 +608,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -629,7 +637,7 @@ void HelParam(void)
 				// [ゲージ] 
 				Power(128);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 22, 24, 18);
+				HitTime(10, 22, 24, 18);
 				// [ノックバック]
 				HitVel(-4.4, 0, -2.2, -4);
 				// [ガード属性]
@@ -669,6 +677,10 @@ void HelParam(void)
 				}
 
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+			
 			break;
 			//********************
 			// 300：しゃがみA
@@ -767,6 +779,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -836,6 +850,8 @@ void HelParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -861,7 +877,7 @@ void HelParam(void)
 				// [ゲージ] 
 				Power(120);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 32, 34, 18);
+				HitTime(10, 32, 34, 18);
 				// [ノックバック]
 				HitVel(-1.8, -3.6, -1.8, -3.4);
 				GuardVel(-4.2, -1.8);
@@ -889,6 +905,10 @@ void HelParam(void)
 					SCancel();
 				}
 			}
+			
+			// 3ゲージ
+			Delay3Button(850, 3000);
+			
 			break;
 			//********************
 			// 400：ジャンプA
@@ -993,7 +1013,9 @@ void HelParam(void)
 				HitTime(8, 16, 18, 14);
 				// [ノックバック]
 				HitVel(-4.6, 0, -1.4, -4.0);
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -1059,7 +1081,9 @@ void HelParam(void)
 
 				// [ノックバック]
 				HitVel(-4.8, 0, -3.2, 6.9);
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -1154,6 +1178,9 @@ void HelParam(void)
 			}
 			// 全体フレームを超えたらリセット
 			if (P1.time >= 32)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -1547,7 +1574,7 @@ void HelParam(void)
 				P1.fallF = 1;
 				// [ガード属性]
 				P1.GuardF = 1;
-				P1.HitSE = 11;
+				P1.HitSE = 12;
 				P1.A.yaccel = 0.3;
 			}
 			else if (P1.time >= 28) {

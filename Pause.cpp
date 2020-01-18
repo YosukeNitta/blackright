@@ -316,7 +316,7 @@ int Pause()
 				kettei = 0;
 				Load_1 = 0;
 				Replay_End();
-				return GameScene(ReplayScene);
+				return SceneNum(ReplayScene);
 			}
 
 			// •`‰æ
@@ -722,14 +722,15 @@ void CommandList()
 		{
 			DrawString(tx, TxtDist * 1, "¨ +‚a", Cr);
 			DrawString(tx, TxtDist * 2, "¨ +‚biƒz[ƒ‹ƒh‰Âj", Cr);
-			DrawString(tx, TxtDist * 3, "‚c", Cr);
-			DrawString(tx, TxtDist * 4, "«_¨ +‚`or‚a", Cr);
-			DrawString(tx, TxtDist * 5, "«^© +‚`or‚a", Cr);
-			DrawString(tx - 19, TxtDist * 6, "ƒQ[ƒW‹Z", Cr);
-			DrawString(tx, TxtDist * 7, "«_¨ +‚bi 0.5 j", Cr);
-			DrawString(tx, TxtDist * 8, "«^© +‚bi 0.5 j", Cr);
-			DrawString(tx, TxtDist * 9, "‚`+‚a+‚bi 1 j", Cr);
-			DrawString(tx, TxtDist * 10, "«« +‚ci 3 j", Cr);
+			DrawString(tx, TxtDist * 3, "_ +‚b", Cr);
+			DrawString(tx, TxtDist * 4, "‚c", Cr);
+			DrawString(tx, TxtDist * 5, "«_¨ +‚`or‚a", Cr);
+			DrawString(tx, TxtDist * 6, "«^© +‚`or‚a", Cr);
+			DrawString(tx - 19, TxtDist * 7, "ƒQ[ƒW‹Z", Cr);
+			DrawString(tx, TxtDist * 8, "«_¨ +‚bi 0.5 j", Cr);
+			DrawString(tx, TxtDist * 9, "«^© +‚bi 0.5 j", Cr);
+			DrawString(tx, TxtDist * 10, "‚`+‚a+‚bi 1 j", Cr);
+			DrawString(tx, TxtDist * 11, "«« +‚ci 3 j", Cr);
 		}
 		else if (P[i].Name == HELIOS){
 			DrawString(tx, TxtDist * 1, "¨ +‚`", Cr);

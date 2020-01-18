@@ -68,7 +68,7 @@ int Replay::Mode()
 {
 	if (P_BInput(2) == 1){
 		SEStart(37);
-		ModeChange(GameScene(MenuScene));	// キャラセレへ
+		ModeChange(SceneNum(MenuScene));	// キャラセレへ
 	}
 	// キャラ、カラー、ステージ　を読み込む
 	else if (((P_BInput(1) == 1) || (P_BInput(3) == 1)) && (repName.size() > 0)){
@@ -76,8 +76,15 @@ int Replay::Mode()
 
 		Get_Color(r_color[0], 1);		// カラー決定
 		Get_Color(r_color[1], 2);		// カラー決定
-		GetStageNum(r_stage, r_stage);	// ステージ受け取り
-		Versus_bgmNum(r_stage + 1);
+
+		int stage = r_stage;
+		if (r_stage == 0)stage = GetRand(STAGE_MAX - 1) + 1;
+
+		//GetStageNum(r_stage, r_stage);	// ステージ受け取り
+		//Versus_bgmNum(r_stage + 1);
+		GetStageNum(stage - 1, stage - 1);	// ステージ受け取り
+		Versus_bgmNum(stage);
+
 		Select_SetName(r_name[0], r_name[1]);
 
 		TraningSwitch(false);
@@ -89,7 +96,7 @@ int Replay::Mode()
 		Key_GetString(repName[yPos + (xPos * 7)]);
 		Replay_Mode(1);
 		
-		ModeChange(GameScene(VersusScene));
+		ModeChange(SceneNum(VersusScene));
 	}
 	// キャラ、カラー、ステージ　を読み込む
 	// リプレイデータ削除

@@ -21,9 +21,11 @@ public:
 /**********
 * FPS
 **********/
-bool Update();	//FPS更新
-void Draw();	//FPSを表示
-void Wait();	//
+// クラス作ったのでいらない
+
+//bool Update();	//FPS更新
+//void Draw();	//FPSを表示
+//void Wait();	//
 
 /**********
 * Key
@@ -75,6 +77,10 @@ void Replay_Setting(int n1, int n2, int c1, int c2, int stageNum);
 int Replay_ReserveKey();
 void Replay_EnterSetting(int n1, int n2, int c1, int c2, int stageNum);
 void Key_GetString(std::string st);
+
+void InputDevice_Start();
+int InputDevice_Update();
+void InputDevice_Draw();
 
 /**********
 * Load

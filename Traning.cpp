@@ -156,7 +156,7 @@ void SetTraning()
 		if (P1.button[104] > 0)FirstPosSet(-1);
 		else if (P1.button[106] > 0)FirstPosSet(1);
 		else{ FirstPosSet(0); }
-		ModeChange(GameScene(VersusScene));	// ‰Šú‰»
+		ModeChange(SceneNum(VersusScene));	// ‰Šú‰»
 	}
 
 	//================================================

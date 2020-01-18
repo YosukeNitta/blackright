@@ -388,6 +388,8 @@ void EinParam(void)
 
 				// 投げ
 				DelayThrow(1);
+				// 3ゲージ
+				Delay3Button(850, 3000);
 
 				break;
 			//********************
@@ -471,6 +473,8 @@ void EinParam(void)
 
 				// 投げ
 				DelayThrow(2);
+				// 3ゲージ
+				Delay3Button(850, 3000);
 
 				break;
 
@@ -511,7 +515,7 @@ void EinParam(void)
 					// [ゲージ] 
 					Power(114);
 					// [ヒットストップ・のけぞり時間]
-					HitTime(8, 22, 24, 18);
+					HitTime(10, 22, 24, 18);
 					// [ノックバック]
 					HitVel(-4.2, 0, -2.0, -4);
 					// [ガード属性]
@@ -548,6 +552,10 @@ void EinParam(void)
 					}
 
 				}
+
+				// 3ゲージ
+				Delay3Button(850, 3000);
+
 				break;
 			//********************
 			// 225：6C
@@ -583,7 +591,7 @@ void EinParam(void)
 					// [ゲージ] 
 					Power(128);
 					// [ヒットストップ・のけぞり時間]
-					HitTime(8, 22, 24, 18);
+					HitTime(10, 22, 24, 18);
 					// [ノックバック]
 					HitVel(-4.8, 0, -2.8, -4);
 					// [ガード属性]
@@ -613,6 +621,10 @@ void EinParam(void)
 
 					}
 				}
+
+				// 3ゲージ
+				Delay3Button(850, 3000);
+
 				break;
 			//********************
 			// 300：しゃがみA
@@ -719,6 +731,8 @@ void EinParam(void)
 
 				// 投げ
 				DelayThrow(1);
+				// 3ゲージ
+				Delay3Button(850, 3000);
 
 				break;
 			//********************
@@ -809,6 +823,8 @@ void EinParam(void)
 
 				// 投げ
 				DelayThrow(2);
+				// 3ゲージ
+				Delay3Button(850, 3000);
 
 				break;
 			//********************
@@ -839,7 +855,7 @@ void EinParam(void)
 					Damage(98, 0);
 					// [ゲージ] 
 					Power(118);
-					HitTime(8, 40, 40, 18);
+					HitTime(10, 40, 40, 18);
 					// [ノックバック]
 					HitVel(-1.8, -4, -2.2, -3.5);
 					GuardVel(-4.2, -1.5);
@@ -859,6 +875,10 @@ void EinParam(void)
 						SCancel();
 					}
 				}
+
+				// 3ゲージ
+				Delay3Button(850, 3000);
+
 				break;
 			//********************
 			// 400：ジャンプA
@@ -954,7 +974,9 @@ void EinParam(void)
 					HitTime(8, 16, 18, 14);
 					// [ノックバック]
 					HitVel(-4.6, 0,  -1.6, -4.6);
-					P1.GuardF = 2;
+					// ガード判定
+					if (P1.YVel >= 0.0)P1.GuardF = 2;
+					else { P1.GuardF = 1; }
 					// [喰らい中の浮き]
 					P1.fallF = 1;
 					P1.HitAnim = 1000;
@@ -1026,7 +1048,9 @@ void EinParam(void)
 					HitVel(-4.8, 0, -3.8, 4.5);
 					else { HitVel(-4.8, 0, -3.8, 6.5); }
 
-					P1.GuardF = 2;
+					// ガード判定
+					if (P1.YVel >= 0.0)P1.GuardF = 2;
+					else { P1.GuardF = 1; }
 					// [喰らい中の浮き]
 					P1.fallF = 1;
 					P1.HitAnim = 1000;
@@ -1116,6 +1140,9 @@ void EinParam(void)
 				}
 				// 全体フレームを超えたらリセット
 				if (P1.time >= 32)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+				// 3ゲージ
+				Delay3Button(850, 3000);
 
 				break;
 			//********************
@@ -1548,7 +1575,7 @@ void EinParam(void)
 					
 					// [ノックバック]
 					HitVel(-2.8, -4.7, -2.6, -3.5);
-					GuardVel(-3.8 ,-2.6 * 1.2);
+					GuardVel(-4.0 ,-2.6 * 1.2);
 					P1.HitAnim = 1030;	// 空中喰らい
 					// [喰らい中の浮き]
 					P1.fallF = 1;
@@ -1583,7 +1610,7 @@ void EinParam(void)
 				// 全体フレームを超えたらリセット
 				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 				// ヒット数セット
-				if (P1.time == 14){
+				if (P1.time == 13){
 					P1.MoveHit = 1;	// １回
 				}
 
@@ -2437,15 +2464,19 @@ void EinParam(void)
 					// 速度は 625 で決める
 					// 速度がないときはここで決める
 					if (H1[i].time == 0 && H1[i].HXVel == 0){
-						if (P1.Var[7] == 2)H_VelSet(i, 5.2, -1.2);	//地上設置
-						else { H_VelSet(i, 4.8, -0.4); }	// 空中設置
+						if (P1.Var[7] == 2)H_VelSet(i, 5.4, 1.8);	//地上設置
+						else { H_VelSet(i, 5.0, 5.8); }	// 空中設置
+						//if (P1.Var[7] == 2)H_VelSet(i, 5.4, -1.6);	//地上設置
+						//else { H_VelSet(i, 5.0, -0.8); }	// 空中設置
 					}
 
 					// 5Dなら
+					/*
 					if (P1.Var[7] == 2)
-						H1[i].HYVel += 0.2;
+						H1[i].HYVel += 0.18;
 					if (P1.Var[7] == 4)
-						H1[i].HYVel += 0.3;
+						H1[i].HYVel += 0.24;
+						*/
 
 					/*
 					// 方向転換
@@ -2638,8 +2669,8 @@ void EinParam(void)
 					// ヒット数・ダメージセット
 					if (H1[i].time == 6){
 						H1[i].HMoveHit = 1;
-						H1[i].A.damage = 54;
-						H1[i].A.hosyo = 6;
+						H1[i].A.damage = 50;
+						H1[i].A.hosyo = 10;
 					}
 					
 					// ダメージ位置セット、2フレ以降
@@ -2695,7 +2726,7 @@ void EinParam(void)
 						(H1[i].XPos >(STAGE_WIDTH - GAMENHAJI)) ||
 						(P1.Var[11] >= 5) ||
 						//(P1.stateno >= 1000) ||
-						(H1[i].time > 300)
+						(H1[i].time > 480)
 						//|| (H1[i].XPos > P1.Var[12] + 290 || 
 						//H1[i].XPos < P1.Var[12] - 290)
 						)

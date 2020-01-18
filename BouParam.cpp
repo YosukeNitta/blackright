@@ -233,9 +233,6 @@ void BouParam(void)
 			P1.SFlg = 2, P1.ctrl = 0, P1.Lock = 0;
 			P1.ignoreG = true;
 
-			// ゲージ増加
-			if (P1.time == 0)P1.Power += 25;
-
 			// SEを鳴らす
 			if (P1.time == 1)SEStart(5);
 
@@ -608,6 +605,8 @@ void BouParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -698,6 +697,8 @@ void BouParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -765,6 +766,8 @@ void BouParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -828,6 +831,9 @@ void BouParam(void)
 
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM)P1.ctrl = 1, P1.More = 1, P1.stateno = 0, P1.time = 0;
+
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			
@@ -953,6 +959,9 @@ void BouParam(void)
 					if (P1.Var[12] < P1.D.armor)P1.D.armor--;
 				}
 			}
+
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -1087,6 +1096,9 @@ void BouParam(void)
 				}
 			}
 
+			// 1ゲージ
+			Delay3Button(800, 1000);
+
 			break;
 			//********************
 			// 231：硬直
@@ -1115,7 +1127,87 @@ void BouParam(void)
 
 			break;
 
-			
+			//********************
+			// 240：Bグランド
+			//********************
+		case 240:
+			P1.ctrl = 0, P1.SFlg = 0;
+			// 慣性
+			if (P1.time == 0) {
+				VelSet(0, 0);
+				PosAdd(20, 0);
+			}
+			// SEを鳴らす
+			if (P1.time == 1) {
+				SEStart(3);
+				EffStart(15, P1.XPos, P1.YPos, -10, -(P1.ySize / 1.5),
+					0.24, 0.24, P1.muki);
+			}
+
+			// VO
+			if (P1.time == 1) {
+				PVOStart(P1.PSide, 6, 0);
+			}
+
+			// ヒット数セット
+			if (P1.time == 1) {
+				P1.MoveHit = 1;	// １回
+			}
+
+			// エフェクト
+			if (P1.time == 23 - 1) {
+				SEStart(9);
+				if (P1.muki == 0) {
+					EffStartB(18, (int)P1.XPos + 140, (int)P1.YPos, 0, -7,
+						0.55, 0.06, P1.muki);
+				}
+				else {
+					EffStartB(18, (int)P1.XPos - 140, (int)P1.YPos, 0, -7,
+						0.55, 0.06, P1.muki);
+				}
+			}
+
+			// ダメージセット
+			if (P1.time >= 1) {
+
+				// [ダメージ]
+				Damage(120, 0);
+				// [ゲージ] 
+				Power(180);
+				// [ヒットストップ・のけぞり時間]
+				HitTime(0, 38, 32, 14);
+				// [ノックバック]
+				HitVel(-2.0, -3.2, -2.4, -2.8);
+				// [ガード属性]
+				P1.GuardF = 3;
+
+				// [喰らい中の浮き]
+				P1.fallF = 1;
+				P1.A.boundLevel = 1;
+				P1.HitAnim = 1020;	// 下段喰らい
+
+				P1.HitSE = 12;
+			}
+			else {
+				DamReset();
+			}
+
+			// キャンセル
+			// 応急処置
+			if (P1.StopTime == 0) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.scTime > 0)) {
+					// [必殺技・ゲージ技]
+					HCancel();
+				}
+			}
+
+			// 全体フレームを超えたらリセット
+			if (P1.time >= ANIMELEM)P1.ctrl = 1, P1.More = 1, P1.stateno = 0, P1.time = 0;
+
+			// 1ゲージ
+			Delay3Button(800, 1000);
+
+			break;
 
 			//********************
 			// 300：しゃがみA
@@ -1180,7 +1272,7 @@ void BouParam(void)
 			
 
 			// キャンセル
-			if ((P1.CFlg) && (P1.time >= 1)){
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 				
 				if (P1.Senkou[3] > 0){
 					// 6B
@@ -1237,6 +1329,8 @@ void BouParam(void)
 
 			// 投げ
 			DelayThrow(1);
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -1334,6 +1428,8 @@ void BouParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -1450,6 +1546,9 @@ void BouParam(void)
 			if ((P1.stateno != 320) && (P1.D.armor > 0)){
 				if (P1.Var[14] == 0)P1.D.armor-=2;	// アーマーはがす;
 			}
+
+			// 1ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -1909,6 +2008,9 @@ void BouParam(void)
 			}
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+			// 3ゲージ
+			Delay3Button(800, 1000);
 
 			break;
 			//********************
@@ -2602,85 +2704,6 @@ void BouParam(void)
 			break;
 
 			//********************
-			// 621：Bグランド
-			//********************
-		case 621:
-			P1.ctrl = 0, P1.SFlg = 0;
-			// 慣性
-			if (P1.time == 0) {
-				VelSet(0, 0);
-				PosAdd(20, 0);
-			}
-			// SEを鳴らす
-			if (P1.time == 1) {
-				SEStart(3);
-				EffStart(15, P1.XPos, P1.YPos, -10, -(P1.ySize / 1.5),
-					0.24, 0.24, P1.muki);
-			}
-
-			// VO
-			if (P1.time == 1) {
-				PVOStart(P1.PSide, 6, 0);
-			}
-
-			// ヒット数セット
-			if (P1.time == 1) {
-				P1.MoveHit = 1;	// １回
-			}
-
-			// エフェクト
-			if (P1.time == 23 - 1) {
-				SEStart(9);
-				if (P1.muki == 0) {
-					EffStartB(18, (int)P1.XPos + 140, (int)P1.YPos, 0, -7,
-						0.55, 0.06, P1.muki);
-				}
-				else {
-					EffStartB(18, (int)P1.XPos - 140, (int)P1.YPos, 0, -7,
-						0.55, 0.06, P1.muki);
-				}
-			}
-
-			// ダメージセット
-			if (P1.time >= 1) {
-
-				// [ダメージ]
-				Damage(120, 0);
-				// [ゲージ] 
-				Power(180);
-				// [ヒットストップ・のけぞり時間]
-				HitTime(0, 18, 22, 14);
-				// [ノックバック]
-				HitVel(-2.0, -2.8, -2.4, -2.6);
-				// [ガード属性]
-				P1.GuardF = 3;
-
-				// [喰らい中の浮き]
-				P1.fallF = 1;
-				P1.A.boundLevel = 0;
-				P1.HitAnim = 1020;	// 下段喰らい
-
-				P1.HitSE = 12;
-			}
-			else {
-				DamReset();
-			}
-
-			// キャンセル
-			// 応急処置
-			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 1) && (P1.scTime > 0)) {
-					// [必殺技・ゲージ技]
-					HCancel();
-				}
-			}
-
-			// 全体フレームを超えたらリセット
-			if (P1.time >= ANIMELEM)P1.ctrl = 1, P1.More = 1, P1.stateno = 0, P1.time = 0;
-
-			break;
-
-			//********************
 			// 625：グランド
 			//********************
 		case 625:
@@ -2733,17 +2756,23 @@ void BouParam(void)
 				// [ヒットストップ・のけぞり時間]
 				HitTime(8, 24, 28, 22);
 				// [ノックバック]
-				HitVel(-2.2, -3.4, -1.4, 3.4);
+				HitVel(-2.2, -3.4, -1.4, -3.0);
 				GuardVel(-4.4, -2.4);
 				// [ガード属性]
 				P1.GuardF = 3;
-
 
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1030;	// 下段喰らい
 				P1.fall = 1;
-				P1.A.boundLevel = 3;
+
+				// バウンド消費
+				if (P2.D.boundCount > 0) {
+					HitVel(-2.2, -3.4, -1.4, 3.6);
+					P1.A.bound_yvel = -2.4;
+				}
+
+				P1.A.boundLevel = 3;	// 大バウンド
 				P1.HitSE = 12;
 			}
 			else {
@@ -2819,7 +2848,7 @@ void BouParam(void)
 				Power(0, 320);
 				HitTime(10, 60, 60, 24);
 				// [ノックバック]
-				HitVel(-5.4, -4.8, -5.6, -4.4);
+				HitVel(-6.8, -5.2, -7.0, -4.8);
 				P1.HitAnim = 1030;	// 空中喰らい
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -2852,7 +2881,6 @@ void BouParam(void)
 			P1.ctrl = 0, P1.SFlg = 0;
 
 			if (P1.time == 0)VelSet(0, 0);
-
 
 			// SEを鳴らす、移動
 			if (P1.time == 1){
@@ -3099,10 +3127,8 @@ void SCancel()
 	// 236 + AorB
 	if (((P1.Senkou[1] > 0) || (P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))
 		&& (P1.cmd[1])){		// 先行入力効かせてみる
-		P1.stateno = 621, P1.More = 1,
+		P1.stateno = 620, P1.More = 1,
 			P1.time = 0, P1.A.damage = 0;
-		if (P1.Senkou[1] > 0 || P1.Senkou[3] > 0)
-			P1.stateno = 620;
 	}
 	// 236 + C
 	if ((P1.Senkou[3] > 0) && (P1.cmd[1]) && (P1.Power >= 500)){		// 先行入力効かせてみる

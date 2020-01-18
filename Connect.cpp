@@ -213,17 +213,17 @@ boolean Connect_WaitGameMode()
 	if (gameMode[0] != gameMode[1]){
 
 		// セレクトに先に進んだ
-		if (gameMode[0] == GameScene(SelectScene)){
-			if (gameMode[1] == GameScene(NetworkScene))return true;
-			if (gameMode[1] == GameScene(ResultScene))return true;
+		if (gameMode[0] == SceneNum(SelectScene)){
+			if (gameMode[1] == SceneNum(NetworkScene))return true;
+			if (gameMode[1] == SceneNum(ResultScene))return true;
 		}
 		// バーサス
-		else if (gameMode[0] == GameScene(VersusScene)){
-			if (gameMode[1] == GameScene(SelectScene))return true;
+		else if (gameMode[0] == SceneNum(VersusScene)){
+			if (gameMode[1] == SceneNum(SelectScene))return true;
 		}
 		// リザルト
-		else if (gameMode[0] == GameScene(ResultScene)){
-			if (gameMode[1] == GameScene(VersusScene))return true;
+		else if (gameMode[0] == SceneNum(ResultScene)){
+			if (gameMode[1] == SceneNum(VersusScene))return true;
 		}
 	}
 	return false;

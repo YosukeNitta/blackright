@@ -90,6 +90,7 @@ void CorParam(void)
 		if (P1.ctrl){
 			P1.Var[1] = 0;
 			P1.Var[2] = 0;
+			P1.Var[4] = 0;
 		}
 
 		switch (P1.stateno){
@@ -181,8 +182,10 @@ void CorParam(void)
 		case 30:	// ダッシュ
 			P1.SFlg = 0, P1.ctrl = 1, P1.Lock = 0;
 			P1.XVel = P1.C.runF[0]; //速度を足す
-			if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
-			// SEを鳴らす
+			
+			//if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
+			if (P1.AnimTime < 4)P1.XVel = 0.1; //速度を足す
+																					 // SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
 
@@ -393,7 +396,7 @@ void CorParam(void)
 				}
 			}
 			// ヒット時チェーン
-			if ((P1.CFlg) && (P1.time >= 1)){
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 				// [ジャンプキャンセル]
 				if (P1.keyAtt[8]){		// 先行入力効かせてみる
 					P1.stateno = 40, P1.More = 1,
@@ -433,15 +436,10 @@ void CorParam(void)
 					}
 				}
 				else if (P1.Senkou[1] > 0){		
-					if (key(2)){
+					if (key(2) && (P1.Var[4] == 0)){
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
-					}
-					else{
-						if (P1.Senkou[2] == 0){
-							P1.stateno = 200, P1.More = 1,
-								P1.time = 0, P1.A.damage = 0;
-						}
+						P1.Var[4]++;
 					}
 				}
 				// [必殺技・ゲージ技]
@@ -450,7 +448,9 @@ void CorParam(void)
 
 			// 投げ
 			DelayThrow(1);
-			
+			// 3ゲージ
+			Delay3Button(850, 3000);
+
 			break;
 			
 			//********************
@@ -501,7 +501,7 @@ void CorParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 6)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 					// [ジャンプキャンセル]
 					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -552,6 +552,8 @@ void CorParam(void)
 			
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -603,7 +605,7 @@ void CorParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 8)){
+				if ((P1.CFlg) && (P1.time >= 8) && (P1.A.ncTime > 0)){
 
 					// [通常技]
 					/*
@@ -621,6 +623,8 @@ void CorParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -654,7 +658,7 @@ void CorParam(void)
 				// [ゲージ] 
 				Power(120);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 22, 24, 18);
+				HitTime(10, 22, 24, 18);
 				// [ノックバック]
 				HitVel(-3.8, 0, -2.8, -4);
 				// [ガード属性]
@@ -677,7 +681,7 @@ void CorParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 10)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 					// [必殺技・ゲージ技]
 					// 先行入力
 					if (P1.Senkou[1] > 0){
@@ -691,6 +695,10 @@ void CorParam(void)
 				}
 
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+
 			break;
 			//********************
 			// 300：しゃがみA
@@ -740,8 +748,9 @@ void CorParam(void)
 			else {
 				DamReset();
 			}
+
 			// キャンセル
-			if ((P1.CFlg) && (P1.time >= 5)){
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 				if (P1.Senkou[3] > 0){
 					// スラ
 					if (key(3)){
@@ -777,9 +786,10 @@ void CorParam(void)
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
 					}
-					else{
+					else if(P1.Var[4] == 0) {
 						P1.stateno = 200, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
+						P1.Var[4]++;
 					}
 				}
 				// [必殺技・ゲージ技]
@@ -794,18 +804,11 @@ void CorParam(void)
 				}
 			}
 
-			// 投げ
-			// 2Fに投げをずらし押ししたら
-			if ((P1.time == 1) &&
-				(P1.button[1] == 2 && P1.button[2] == 1) &&
-				(P2.HFlg == 0)
-				) {
-				P1.stateno = 500, P1.More = 1,
-					P1.time = 1, P1.A.damage = 0;
-			}
+			
 
 			// 投げ
 			DelayThrow(1);
+			
 
 			break;
 			//********************
@@ -868,7 +871,7 @@ void CorParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 5)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 					// [通常技]
 					if (P1.Senkou[3] > 0){		// 先行入力効かせてみる
 						// スラ
@@ -906,6 +909,8 @@ void CorParam(void)
 
 			// 投げ
 			DelayThrow(2);
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -938,7 +943,7 @@ void CorParam(void)
 				// [ゲージ] 
 				Power(120);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 22, 24, 18);
+				HitTime(10, 22, 24, 18);
 				// [ノックバック]
 				HitVel(-4.0, 0, -1.8, -4.0);
 				// [ガード属性]
@@ -958,7 +963,7 @@ void CorParam(void)
 			// 応急処置
 			if (P1.StopTime == 0){
 				// キャンセル
-				if ((P1.CFlg) && (P1.time >= 1)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 					// [ジャンプキャンセル]
 					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)){		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -968,6 +973,10 @@ void CorParam(void)
 					SCancel();
 				}
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+
 			break;
 			//********************
 			// 321：スライディング
@@ -1034,6 +1043,10 @@ void CorParam(void)
 					P1.stateno = 321;
 				}
 			}
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
+
 			break;
 			//********************
 			// 400：ジャンプA
@@ -1057,7 +1070,9 @@ void CorParam(void)
 				HitTime(5, 12, 16, 10);
 				// [ノックバック]
 				HitVel(-4.2, 0, -1.4, -4.0);
-				P1.GuardF = 1;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				P1.HitAnim = 1000;
 				P1.HitSE = 10;
 			}
@@ -1203,7 +1218,9 @@ void CorParam(void)
 
 				// [ノックバック]
 				HitVel(-4.8, 0, -2.0, -3.0);
-				P1.GuardF = 2;
+				// ガード判定
+				if (P1.YVel >= 0.0)P1.GuardF = 2;
+				else { P1.GuardF = 1; }
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;
@@ -1450,6 +1467,9 @@ void CorParam(void)
 			}
 			// 全体フレームを超えたらリセット
 			if (P1.time >= 32)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+
+			// 3ゲージ
+			Delay3Button(850, 3000);
 
 			break;
 			//********************
@@ -1787,7 +1807,7 @@ void CorParam(void)
 			// SEを鳴らす、移動
 			if (P1.time == 0){
 				SEStart(21);
-				P1.XVel = -3.4;
+				P1.XVel = -2.8;
 				P1.Var[2]++;
 			}
 

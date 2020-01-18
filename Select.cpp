@@ -47,8 +47,8 @@ static int StageNum;
 static const int StageMax = STAGE_MAX;
 
 // ステージ画像
-static int mStage[STAGE_MAX];
-static int mStageB[STAGE_MAX];
+static int mStage[STAGE_MAX + 1];
+static int mStageB[STAGE_MAX + 1];
 
 // 立ち絵画像
 //static int stand;
@@ -130,17 +130,17 @@ int Select::Mode(void)
 			Arcade_GetData(P[0].name, P[0].color);	// データを送る
 			Arcade_Setting();
 			if (Arcade_Switch(-1) == 1){
-				ModeChange(GameScene(ArcadeScene));
+				ModeChange(SceneNum(ArcadeScene));
 			}
 			else{
-				ModeChange(GameScene(VersusScene));	// 対戦画面へ
+				ModeChange(SceneNum(VersusScene));	// 対戦画面へ
 			}
 		}
 
 		// キャラ・ステージが決定したら
 		if (ketteiNum == 2)
 		{
-			ModeChange(GameScene(VersusScene));	// 対戦画面へ
+			ModeChange(SceneNum(VersusScene));	// 対戦画面へ
 		}
 
 	}
@@ -206,15 +206,17 @@ void Select::Load_1second(){
 	//LoadDivGraph("ob/port.png", Character_Max(), Character_Max(), 1, 100, 140, Port);
 
 	// ステージ
-	if (STAGE_MAX >= 1)mStage[0] = LoadGraph("back/st1.png");
-	if (STAGE_MAX >= 2)mStage[1] = LoadGraph("back/st2.png");
-	if (STAGE_MAX >= 3)mStage[2] = LoadGraph("back/st3.png");
-	//if (STAGE_MAX >= 4)mStage[3] = LoadGraph("back/st4.png");
+	mStage[0] = LoadGraph("back/random.png");
+	if (STAGE_MAX >= 1)mStage[1] = LoadGraph("back/st1.png");
+	if (STAGE_MAX >= 2)mStage[2] = LoadGraph("back/st2.png");
+	if (STAGE_MAX >= 3)mStage[3] = LoadGraph("back/st3.png");
+	if (STAGE_MAX >= 4)mStage[4] = LoadGraph("back/st4.png");
 
-	if (STAGE_MAX >= 1)mStageB[0] = LoadGraph("back/st1_2.png");
-	if (STAGE_MAX >= 2)mStageB[1] = LoadGraph("back/st2_2.png");
-	if (STAGE_MAX >= 3)mStageB[2] = LoadGraph("back/st3_2.png");
-	//if (STAGE_MAX >= 4)mStageB[3] = LoadGraph("back/st4_2.png");
+	mStageB[0] = LoadGraph("back/random2.png");
+	if (STAGE_MAX >= 1)mStageB[1] = LoadGraph("back/st1_2.png");
+	if (STAGE_MAX >= 2)mStageB[2] = LoadGraph("back/st2_2.png");
+	if (STAGE_MAX >= 3)mStageB[3] = LoadGraph("back/st3_2.png");
+	if (STAGE_MAX >= 4)mStageB[4] = LoadGraph("back/st4_2.png");
 
 	// カーソル位置
 	P[0].curX = 2, P[1].curX = 3;
@@ -273,7 +275,7 @@ void Select::Load_1second(){
 		move[cm].sizeG = 1.0;
 
 		if(cm == 5)
-		move[cm].sizeG = 0.8;
+		move[cm].sizeG = 0.6;
 
 	}	// cm
 
@@ -378,6 +380,8 @@ void Select::Draw()
 
 		//DrawFormatString(220, 70, Cr, "ステージ %d", StageNum + 1);
 		//DrawString(220, 70, "ステージ選択", Cr);
+
+		/*
 		switch(StageNum){
 		case 0:
 			DrawString(220, 70, "グリッド", Cr);
@@ -392,29 +396,39 @@ void Select::Draw()
 			DrawString(220, 70, "闘技場", Cr);
 			break;
 		}
+		*/
 
 		// 描画ブレンドモードをアルファブレンド（透明）にする
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 
 		// 左右のステージ
-		if (StageNum < STAGE_MAX - 1){
+		//if (StageNum < STAGE_MAX)
+		{
 			//DrawRotaGraph(420, 180, 0.1, 0, mStage[StageNum + 1], false, 0);
 			// 背景
-			if (mStage[StageNum] != 0)
+			if (StageNum != STAGE_MAX) {
 				DrawRotaGraph(420, 180, 0.27 * 0.6, 0, mStageB[StageNum + 1], false, 0);
-			// ステージ
-			if (mStage[StageNum] != 0)
 				DrawRotaGraph(420, 200, 0.169 * 0.6, 0, mStage[StageNum + 1], true, 0);
+			}
+			else {
+				DrawRotaGraph(420, 180, 0.27 * 0.6, 0, mStageB[0], false, 0);
+				DrawRotaGraph(420, 200, 0.169 * 0.6, 0, mStage[0], true, 0);
+			}
 		}
-		if (StageNum > 0){
+		
+		{
 			//DrawRotaGraph(220, 180, 0.1, 0, mStage[StageNum - 1], false, 0);
 			// 背景
-			if (mStage[StageNum] != 0)
+			if (StageNum != 0) {
 				DrawRotaGraph(220, 180, 0.27 * 0.6, 0, mStageB[StageNum - 1], false, 0);
-			// ステージ
-			if (mStage[StageNum] != 0)
 				DrawRotaGraph(220, 200, 0.169 * 0.6, 0, mStage[StageNum - 1], true, 0);
+			}
+			else {
+				DrawRotaGraph(220, 180, 0.27 * 0.6, 0, mStageB[STAGE_MAX], false, 0);
+				DrawRotaGraph(220, 200, 0.169 * 0.6, 0, mStage[STAGE_MAX], true, 0);
+			}
 		}
+
 		// 描画ブレンドモードをアルファブレンド（透明）にする
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -556,7 +570,7 @@ void InputSelect()
 			}
 			// メニューに戻る or キャラ決定解除
 			else if (ketteiNum == 0 && !P[i].charEnter){
-				ModeChange(GameScene(MenuScene));
+				ModeChange(SceneNum(MenuScene));
 			}
 			SEStart(37);
 			P[0].charEnter = false;	// キャラも未決定に
@@ -675,9 +689,9 @@ void EnterSelect()
 	}
 		// 一周したら戻す
 		if (StageNum < 0){
-			StageNum = StageMax - 1;
+			StageNum = StageMax;
 		}
-		else if (StageNum > StageMax - 1){
+		else if (StageNum > StageMax){
 			StageNum = 0;
 		}
 
@@ -685,9 +699,13 @@ void EnterSelect()
 		if ((ketteiNum == 1) && (kettei))
 		{
 			SEStart(35);
+
+			int stage = StageNum;
+			if (StageNum == 0)stage = GetRand(STAGE_MAX - 1) + 1;
 			
-			GetStageNum(StageNum, mStage[StageNum]);	// ステージ受け取り
-			Versus_bgmNum(StageNum + 1);
+
+			GetStageNum(stage - 1, mStage[stage + 1]);	// ステージ受け取り
+			Versus_bgmNum(stage);
 			
 			// 対戦時のみリプレイ設定
 			if ((BMode == 0) && (GetPrivateProfileInt("Config", "replay", 0, "./config.ini") == 1)){
@@ -800,7 +818,7 @@ void CharAnimetion()
 		//52.0 + ((double)xs / 2.0) - (double)pic[charPos[P[0].curX]][homo[0]].posX,
 		52.0 + ((double)xs / 2.0)
 			- (double)pic[charPos[P[0].curX]][homo[0]].posX + (double)move[charPos[P[0].curX]].air.B[homo[0]].posX,
-		220.0 + ((double)ys / 2.0)
+		200.0 + ((double)ys)
 			- (double)pic[charPos[P[0].curX]][homo[0]].posY + (double)move[charPos[P[0].curX]].air.B[homo[0]].posY,
 		move[P[0].curX].sizeG, 0,
 		P[0].image,
@@ -814,7 +832,7 @@ void CharAnimetion()
 			//52.0 + ((double)xs / 2.0) - (double)pic[charPos[P[0].curX]][homo[0]].posX,
 			((double)SCREEN_W - 52.0) - ((double)xs / 2.0)
 			+ (double)pic[charPos[P[1].curX]][homo[1]].posX - (double)move[charPos[P[1].curX]].air.B[homo[1]].posX,
-			220.0 + ((double)ys / 2.0)
+			200.0 + ((double)ys)
 			- (double)pic[charPos[P[1].curX]][homo[1]].posY + (double)move[charPos[P[1].curX]].air.B[homo[1]].posY,
 			move[P[1].curX].sizeG, 0,
 			P[1].image,

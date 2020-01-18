@@ -14,10 +14,12 @@
 // Main
 //*****
 void ModeChange(int num);
-int Key_Save(void);
-int Key_Load(void);
-int OutNew(int num, int num2);
-int OutSend(int i);
+
+//int Key_Save(void);
+//int Key_Load(void);
+//int OutNew(int num, int num2);
+//int OutSend(int i);
+
 // ƒQ[ƒ€ƒ‚[ƒhæ“¾
 int CheckGameMode();
 //void Main_GetNetwork(boolean net);
@@ -70,8 +72,8 @@ void raw_set();
 /****
 * Config
 ****/
-//int Config();
-//void Load_Config();
+int Config();
+void Load_Config();
 
 //=======
 // Title

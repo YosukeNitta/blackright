@@ -18,14 +18,25 @@ int Arcade::Mode(void)
 {
 	Get_Color(color, 1);		// カラー決定
 	Get_Color(0, 2);		// カラー決定
-	if (enemyName[battleCount] == CORNEL)GetStageNum(2, 2);	// ステージ受け取り;
-	else{ GetStageNum(0, 0); }	// ステージ受け取り
-	Versus_bgmNum(0 + 1);
+
+
+	int stage = stage = GetRand(STAGE_MAX - 1) + 1;
+
+	if (enemyName[battleCount] == EIN)stage = 1;	// ステージ受け取り;
+	else if (enemyName[battleCount] == SYUICHI)stage = 1;	// ステージ受け取り;
+	else if (enemyName[battleCount] == CORNEL)stage = 2;	// ステージ受け取り;
+	else if (enemyName[battleCount] == HELIOS)stage = 3;	// ステージ受け取り;
+	else if (enemyName[battleCount] == HYDE)stage = 4;	// ステージ受け取り;
+	else if (enemyName[battleCount] == BOUNCER)stage = 4;	// ステージ受け取り;
+	GetStageNum(stage - 1, stage - 1);	// ステージ受け取り
+	Versus_bgmNum(stage);
+
+
 	Select_SetName(name, enemyName[battleCount]);
 
 	if ((P1_BInput(1) == 1) || (P1_BInput(3) == 1)){
-		if (battleCount >= Character_Max() - 1)ModeChange(GameScene(MenuScene));
-		else{ ModeChange(GameScene(VersusScene)); }
+		if (battleCount >= Character_Max() - 1)ModeChange(SceneNum(MenuScene));
+		else{ ModeChange(SceneNum(VersusScene)); }
 	}
 
 	return 0;

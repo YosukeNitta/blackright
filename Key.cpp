@@ -53,6 +53,9 @@ static int NetHandle, LostHandle;    // ネットワークハンドル
 //static int DataLength;            // 受信データ量保存用変数
 
 //===================================
+// [ コントローラ設定 ]
+static int device[2];	// 0..1P 1..2P
+static int d_Input[2][3];	// 0..L 1..R 2..1
 
 // 1P、2Pのパッド接続
 static int m_P_Input[2];
@@ -61,7 +64,8 @@ static int m_P_Input[2];
 static vector<int> P1_B;
 static vector<int> P2_B;
 
-// P2NBいらないかも
+// キーボードでの
+static int enter[2];
 
 // 操作の可否
 //static int ctrl[2];
@@ -95,13 +99,38 @@ void GetInput()
 	{
 		// P1
 		int i;
-		i = GetJoypadInputState(DX_INPUT_PAD1);
-		m_P_Input[0] = i;	// iを代入
-
+		if (device[0] == 1) {
+			i = GetJoypadInputState(DX_INPUT_PAD1);
+			m_P_Input[0] = i;
+		}
+		else if (device[0] == 2) {
+			i = GetJoypadInputState(DX_INPUT_PAD2);
+			m_P_Input[0] = i;
+		}
+		else { m_P_Input[0] = 0; }
+		
+		
 		// P2
 		int j;
-		j = GetJoypadInputState(DX_INPUT_PAD2);
-		m_P_Input[1] = j; // jを代入
+		//j = GetJoypadInputState(DX_INPUT_PAD2);
+		//m_P_Input[1] = j; // jを代入
+		if (device[1] == 1) {
+			j = GetJoypadInputState(DX_INPUT_PAD1);
+			m_P_Input[1] = j;
+		}
+		else if (device[1] == 2) {
+			j = GetJoypadInputState(DX_INPUT_PAD2);
+			m_P_Input[1] = j;
+		}
+		else { m_P_Input[1] = 0; }
+
+
+		/*
+		if (j != 0) {
+			m_P_Input[0] = j;	// iを代入
+			m_P_Input[1] = i;	// iを代入
+		}
+		*/
 	}
 }
 
@@ -118,22 +147,40 @@ int P_Input(int n)
 
 int P1_BCheck()
 {
+	if (CheckHitKey(KEY_INPUT_RETURN) == 1)
+	{
+		enter[0] += 1;
+	}
+	else { enter[0] = 0; }
+	if (CheckHitKey(KEY_INPUT_BACK) == 1)
+	{
+		enter[1] += 1;
+	}
+	else { enter[1] = 0; }
+
+
 	DINPUT_JOYSTATE input;
 
-	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
+	GetJoypadDirectInputState(m_P_Input[0], &input);
 
 	if (!network){	//
 		// P1の 上要素 が押されていたら
-		if (((input.POV[0] == 0) || (input.POV[0] == 4500) || (input.POV[0] == 31500)) ||
+		
+		if (
+			((input.POV[0] == 0) || (input.POV[0] == 4500) || (input.POV[0] == 31500)) ||
 			((m_P_Input[0] & pad[co_p[0][0]]) != 0) ||
-			(CheckHitKey(key[co_k[0][0]]) == 1)){
+			(CheckHitKey(key[co_k[0][0]]) == 1)
+			)
+		{
 			P1_B[108] += 1;
 		}
 		else{
 			P1_B[108] = 0;
 		}
+		
 		// 下
-		if (((input.POV[0] == 18000) || (input.POV[0] == 13500) || (input.POV[0] == 22500)) ||
+		if (
+			((input.POV[0] == 18000) || (input.POV[0] == 13500) || (input.POV[0] == 22500)) ||
 			((m_P_Input[0] & pad[co_p[0][1]]) != 0) ||
 			(CheckHitKey(key[co_k[0][1]]) == 1)){
 			P1_B[102] += 1;
@@ -142,7 +189,8 @@ int P1_BCheck()
 			P1_B[102] = 0;
 		}
 		// 左
-		if (((input.POV[0] == 27000) || (input.POV[0] == 22500) || (input.POV[0] == 31500)) ||
+		if (
+			((input.POV[0] == 27000) || (input.POV[0] == 22500) || (input.POV[0] == 31500)) ||
 			((m_P_Input[0] & pad[co_p[0][2]]) != 0) ||
 			(CheckHitKey(key[co_k[0][2]]) == 1)){
 			P1_B[104] += 1;
@@ -151,10 +199,12 @@ int P1_BCheck()
 			P1_B[104] = 0;
 		}
 		// 右
-		if (((input.POV[0] == 9000) || (input.POV[0] == 4500) || (input.POV[0] == 13500)) ||
+		if (
+			((input.POV[0] == 9000) || (input.POV[0] == 4500) || (input.POV[0] == 13500)) ||
 			((m_P_Input[0] & pad[co_p[0][3]]) != 0) ||
 			(CheckHitKey(key[co_k[0][3]]) == 1)){
 			P1_B[106] += 1;
+			P1_B[104] = 0;
 		}
 		else{
 			P1_B[106] = 0;
@@ -255,7 +305,8 @@ int P1_BCheck()
 	}	// 0
 	else if (network){	// networksideを使わず、共通にした
 		// P1の 上要素 が押されていたら
-		if (((m_P_Input[0] & pad[co_p[0][0]]) != 0) ||
+		if (
+			((m_P_Input[0] & pad[co_p[0][0]]) != 0) ||
 			(CheckHitKey(key[co_k[0][0]]) == 1)){
 			P1_NB[108] += 1;
 		}
@@ -270,6 +321,7 @@ int P1_BCheck()
 		else{
 			P1_NB[102] = 0;
 		}
+		
 		// 左
 		if (((m_P_Input[0] & pad[co_p[0][2]]) != 0) ||
 			(CheckHitKey(key[co_k[0][2]]) == 1)){
@@ -278,10 +330,12 @@ int P1_BCheck()
 		else{
 			P1_NB[104] = 0;
 		}
+
 		// 右
 		if (((m_P_Input[0] & pad[co_p[0][3]]) != 0) ||
 			(CheckHitKey(key[co_k[0][3]]) == 1)){
 			P1_NB[106] += 1;
+			P1_NB[104] = 0;
 		}
 		else{
 			P1_NB[106] = 0;
@@ -379,21 +433,25 @@ int P2_BCheck()
 {
 	DINPUT_JOYSTATE input;
 
-	GetJoypadDirectInputState(DX_INPUT_PAD2, &input);
+	GetJoypadDirectInputState(m_P_Input[1], &input);
 
 	// 通常の2P操作
 	if (!network){
 		// P1の 上要素 が押されていたら
-		if (((input.POV[0] == 0) || (input.POV[0] == 4500) || (input.POV[0] == 31500)) ||
+		if (
+			((input.POV[1] == 0) || (input.POV[1] == 4500) || (input.POV[1] == 31500)) ||
 			((m_P_Input[1] & pad[co_p[1][0]]) != 0) ||
-			(CheckHitKey(key[co_k[1][0]]) == 1)){
+			(CheckHitKey(key[co_k[1][0]]) == 1)
+			)
+		{
 			P2_B[108] += 1;
 		}
 		else{
 			P2_B[108] = 0;
 		}
 		// 下
-		if (((input.POV[0] == 18000) || (input.POV[0] == 13500) || (input.POV[0] == 22500)) ||
+		if (
+			((input.POV[1] == 18000) || (input.POV[1] == 13500) || (input.POV[1] == 22500)) ||
 			((m_P_Input[1] & pad[co_p[1][1]]) != 0) ||
 			(CheckHitKey(key[co_k[1][1]]) == 1)){
 			P2_B[102] += 1;
@@ -402,7 +460,8 @@ int P2_BCheck()
 			P2_B[102] = 0;
 		}
 		// 左
-		if (((input.POV[0] == 27000) || (input.POV[0] == 22500) || (input.POV[0] == 31500)) ||
+		if (
+			((input.POV[1] == 27000) || (input.POV[1] == 22500) || (input.POV[1] == 31500)) ||
 			((m_P_Input[1] & pad[co_p[1][2]]) != 0) ||
 			(CheckHitKey(key[co_k[1][2]]) == 1)){
 			P2_B[104] += 1;
@@ -411,10 +470,12 @@ int P2_BCheck()
 			P2_B[104] = 0;
 		}
 		// 右
-		if (((input.POV[0] == 9000) || (input.POV[0] == 4500) || (input.POV[0] == 13500)) ||
+		if (
+			((input.POV[1] == 9000) || (input.POV[1] == 4500) || (input.POV[1] == 13500)) ||
 			((m_P_Input[1] & pad[co_p[1][3]]) != 0) ||
 			(CheckHitKey(key[co_k[1][3]]) == 1)){
 			P2_B[106] += 1;
+			P2_B[104] = 0;
 		}
 		else{
 			P2_B[106] = 0;
@@ -713,6 +774,11 @@ int P_BInput(int P_Num)
 	{
 		if (P1_B[P_Num] != 0)P_InputNum = P1_B[P_Num];
 		else if (P2_B[P_Num] != 0)P_InputNum = P2_B[P_Num];
+
+		// 決定
+		if (P_Num == 1 && (enter[0] > 0))P_InputNum = enter[0];
+		// キャンセル
+		if (P_Num == 2 && (enter[1] > 0))P_InputNum = enter[1];
 	}
 
 	// 注文された値を返す
@@ -769,6 +835,10 @@ int P1_BConfig()
 		P1_B.resize(PAD_MAX);
 		P2_B.resize(PAD_MAX);
 		mOld_B.resize(PAD_MAX);
+
+		device[0] = 1;	// 暫定
+		device[1] = 2;
+
 		Load_1 = 0;
 	}
 
@@ -1403,7 +1473,7 @@ int Replay_LoadKey()
 			// 読み込み終了
 			if (input[i] == EOF){//ファイルの終わりなら
 				FileRead_close(ifp);
-				ModeChange(GameScene(ReplayScene));
+				ModeChange(SceneNum(ReplayScene));
 				goto EXLOAD;//終了
 			}
 		}	// 基本ループ終了
@@ -1532,6 +1602,10 @@ void Key_GetString(string st)
 	gString = st;
 }
 
+//
+// リプレイ
+//
+
 void Replay_End()
 {
 	// オープンできたら
@@ -1554,4 +1628,136 @@ void Replay_Setting(int n1, int n2, int c1, int c2, int stageNum)
 	r_name[0] = n1, r_name[1] = n2;
 	r_color[0] = c1, r_color[1] = c2;
 	r_stage = stageNum;
+}
+
+
+void InputDevice_Start() {
+	device[0] = -1;
+	device[1] = -1;
+}
+
+int InputDevice_Update() {
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT) != 0) {
+		d_Input[0][0]++;
+	}
+	else { d_Input[0][0] = 0; }
+	
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT) != 0) {
+		d_Input[0][1]++;
+	}
+	else { d_Input[0][1] = 0; }
+	
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1) != 0) {
+		d_Input[0][2]++;
+	}
+	else { d_Input[0][2] = 0; }
+
+	// 2P
+	if ((GetJoypadInputState(DX_INPUT_PAD2) & PAD_INPUT_LEFT) != 0) {
+		d_Input[1][0]++;
+	}
+	else { d_Input[1][0] = 0; }
+
+	if ((GetJoypadInputState(DX_INPUT_PAD2) & PAD_INPUT_RIGHT) != 0) {
+		d_Input[1][1]++;
+	}
+	else { d_Input[1][1] = 0; }
+
+	if ((GetJoypadInputState(DX_INPUT_PAD2) & PAD_INPUT_1) != 0) {
+		d_Input[1][2]++;
+	}
+	else { d_Input[1][2] = 0; }
+
+
+	// 左右
+
+	// 左空いてる
+	if (device[0] == -1) {
+		if (d_Input[0][0] == 1) {
+			if(device[0] != 1 && device[1] != 1)
+				device[0] = 1;
+			// →にある場合
+			else if (device[1] == 1)
+				device[1] = -1;
+		}
+		else if (d_Input[1][0] == 1) {
+			if (device[0] != 2 && device[1] != 2)
+			device[0] = 2;
+			// →にある場合
+			else if (device[1] == 2)
+				device[1] = -1;
+		}
+	}
+
+	if (device[1] == -1) {
+		if (d_Input[0][1] == 1) {
+			if (device[0] != 1 && device[1] != 1)
+				device[1] = 1;
+			// 左にある場合
+			else if (device[0] == 1)
+				device[0] = -1;
+		}
+		else if (d_Input[1][1] == 1) {
+			if (device[0] != 2 && device[1] != 2)
+				device[1] = 2;
+			// 左にある場合
+			else if (device[0] == 2)
+				device[0] = -1;
+		}
+	}
+
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1) != 0) {
+		return 1; //完全決定
+	}
+	if ((GetJoypadInputState(DX_INPUT_PAD2) & PAD_INPUT_1) != 0) {
+		return 1; //完全決定
+	}
+
+	/*
+	{
+		// 決定
+		if (device[0] == GetJoypadInputState(DX_INPUT_PAD1) ||
+			device[1] == GetJoypadInputState(DX_INPUT_PAD1)) {
+
+		}
+		if (device[0] == GetJoypadInputState(DX_INPUT_PAD2) ||
+			device[1] == GetJoypadInputState(DX_INPUT_PAD2)) {
+			if ((GetJoypadInputState(DX_INPUT_PAD2) & PAD_INPUT_1) != 0) {
+				return 1; //完全決定
+			}
+		}
+	}
+	*/
+
+	return 0;
+}
+
+void InputDevice_Draw() {
+	if (device[0] == 1){
+		DrawString(20,60,"PAD1", Cr);
+	}
+	else if (device[0] == 2) {
+		DrawString(20, 60, "PAD2", Cr);
+	}
+	else {
+		DrawString(20, 60, "NO INPUT", Cr);
+	}
+
+	if (device[1] == 1) {
+		DrawString(SCREEN_W - 60, 60, "PAD1", Cr);
+	}
+	else if (device[1] == 2) {
+		DrawString(SCREEN_W - 60, 60, "PAD2", Cr);
+	}
+	else {
+		DrawString(SCREEN_W - 100, 60, "NO INPUT", Cr);
+	}
+
+	// 中央
+	// どちらにもない
+	if (device[0] != 1 && device[1] != 1)
+		if (GetJoypadNum() >= 1)DrawString(SCREEN_W / 2 - 40, 50, "PAD1", Cr);
+	if (device[0] != 2 && device[1] != 2)
+		if (GetJoypadNum() >= 2)
+		DrawString(SCREEN_W / 2 - 40, 70, "PAD2", Cr);
 }

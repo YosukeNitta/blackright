@@ -48,6 +48,8 @@ static int aSpeed;	// 攻撃フレーム
 // フレーム、開始フレーム？
 static int mFrame = 0;
 static int mF_Start = 0;
+static int _drawHassei = 0;
+static int _oldState = 0;
 //
 static float m_cPos;
 
@@ -257,7 +259,6 @@ void ObjectDraw()
 			SetDrawBright(255, 255, 255);
 			*/
 
-			// バウンサー
 			Player P[2];
 			int xp, yp, xp2, yp2;
 			P[0] = P1, P[1] = P2;
@@ -355,19 +356,27 @@ void ObjectDraw()
 				}
 
 				// ダン
-				/*
 				if (P[i].Name == HYDE) {
 
 					yp = (SCREEN_H - 480) + 432;
 					int color;
+					/*
 					if (P[i].Var[11] > 0)color = GetColor(255, 215, 0);
 					else if (P[i].Var[10] > 0)color = GetColor(105, 105, 105);
 					else { color = GetColor(205, 205, 205); }
+					*/
+					//if (P[i].Var[10] > 0)color = GetColor(105, 215, 85);
+					color = GetColor(105, 215, 85);
+					//else { color = GetColor(105, 105, 105); }
 
+					
 					int var;
+					/*
 					if (P[i].Var[11] > 0)
 						var = (P[i].Var[11] * 0.15);
 					else { var = ((1800 - P[i].Var[10]) * 0.05); }
+					*/
+					{ var = (P[i].Var[10] * 0.084); }
 
 					if (i == 0) {
 						xp = 100;
@@ -383,6 +392,7 @@ void ObjectDraw()
 					DrawBox(xp, yp,
 						xp2, yp + 15, GetColor(0, 0, 0), true);
 					NoBlend();
+					
 
 					if (i == 0) {
 						xp = 100;
@@ -409,8 +419,17 @@ void ObjectDraw()
 					// ゲージ枠
 					DrawBox(xp, yp,
 						xp2, yp + 16, GetColor(20, 20, 20), false);
+
+					if (i == 0) {
+						xp = 100 - 10;
+					}
+					else {
+						xp = SCREEN_W - 100 + 1;
+					}
+
+					// 本数表示
+					DrawFormatString(xp, yp, Cr, "%d", P[i].Var[10] / 180);
 				}
-				*/
 			}
 
 		}
@@ -730,17 +749,32 @@ void BoxCheck()
 		
 		// 発生表示
 		// 変数が表示されるので、どこでも良い？
-		DrawFormatString(500, 100, Cr, "発生 %d", mHassei);
+		//DrawFormatString(500, 100, Cr, "発生 %d", mHassei);
+		DrawFormatString(500, 100, Cr, "発生 %d", _drawHassei);
 
-		if ((P1.MoveHit == 0) 
-			&& 
+		// ヒットorガードした
+		if ((P1.MoveHit == 0)
+			&&
 			(
-			(P2.stateno == 1000) || (P2.stateno == 1010) || (P2.stateno == 1020) || (P2.stateno == 1030) 
-			|| (P2.stateno == 1060) || (P2.stateno == 1065)
-			|| (P2.stateno == 50) || (P2.stateno == 51) || (P2.stateno == 52)
-			) 
-			&& (P2.time == 0))
-			mHassei = aSpeed + 1;	// 発生記憶
+			(P2.stateno == 1000) || (P2.stateno == 1010) || (P2.stateno == 1020) || (P2.stateno == 1030)
+				|| (P2.stateno == 1060) || (P2.stateno == 1065)
+				|| (P2.stateno == 50) || (P2.stateno == 51) || (P2.stateno == 52)
+				)
+			&& (P2.time == 0)) 
+		{
+			//mHassei = aSpeed + 1;	// 発生記憶
+			_drawHassei = aSpeed + 1;	// ここで設定
+			//if ((_oldState < 1000) || (_oldState < 50 && _oldState > 52))_drawHassei = mHassei + 1;
+		}
+
+		if (P1.ctrl)mHassei = 0;
+		else { 
+			mHassei++; 
+			if (!P2.ctrl)mHassei--;
+		}
+
+		_oldState = P2.stateno;
+
 
 		// フレームチェック
 		DrawFormatString(500, 120, Cr, "硬直差 %d", mFrame);
@@ -766,8 +800,6 @@ void BoxCheck()
 		if ((mF_Start) && (P1.ctrl && P2.ctrl)){
 			mF_Start = 0;
 		}
-
-		
 
 		//DrawFormatString(500, 140, Cr, "補正 %.2f", P1.A.hosei_K);
 		if (S.TSwitch[2] <= 2)DrawFormatString(500, 140, Cr, "ダミー");

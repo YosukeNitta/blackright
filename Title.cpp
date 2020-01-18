@@ -87,7 +87,7 @@ int Title()
 
 	// キー入力で終了
 	if (timeStop >= 10){
-		load = false, ModeChange(GameScene(MenuScene));
+		load = false, ModeChange(SceneNum(MenuScene));
 		kettei = 0;
 
 		// 終了処理

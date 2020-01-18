@@ -972,12 +972,12 @@ boolean GuardCheck()
 			gu = true;
 		}
 		if ((P2.stateno == 610) &&
-			((gTime >= 2) && (gTime <= 17))) {
+			((gTime >= 3) && (gTime <= 16))) {
 			if ((P1.GuardF == 1) || (P1.GuardF == 2))
 				gu = true;
 		}
 		if ((P2.stateno == 611) &&
-			((gTime >= 2) && (gTime <= 17))) {
+			((gTime >= 3) && (gTime <= 16))) {
 			if ((P1.GuardF == 3) || (P1.GuardF == 13))
 				gu = true;
 		}

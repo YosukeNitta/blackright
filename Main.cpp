@@ -35,8 +35,6 @@ using namespace std;
 static int GameMode;	// 現在のモード、メニューで初期化
 static int LoadMode;			// そのモードの準備を初期化する
 static int sw;			// スクショ
-static int sw2;
-static int sw2_2;
 static int window;			// ウィンドウ
 
 static boolean screenMode;		// スクリーンのモード
@@ -72,32 +70,32 @@ public:
 	{
 		// 変更された場合、モード初期化
 		if (LoadMode == 0){
-			if (GameMode == GameScene(MenuScene))
+			if (GameMode == SceneNum(MenuScene))
 			{
 				///Load_Menu();
 				men.Load_First();
 			}
-			else if (GameMode == GameScene(SelectScene)){
+			else if (GameMode == SceneNum(SelectScene)){
 				sel.Load_First();
 				Load_State();	// 画像読み込み初期化、
 				// ここに戻る度に有効
 			}
-			else if (GameMode == GameScene(VersusScene)){
+			else if (GameMode == SceneNum(VersusScene)){
 				Load_Versus();
 			}
-			//else if (GameMode == GameConfig){
-			//Load_Config();
-			//}
-			else if (GameMode == GameScene(ResultScene)){
+			else if (GameMode == SceneNum(ConfigScene)){
+				Load_Config();
+			}
+			else if (GameMode == SceneNum(ResultScene)){
 				Load_Result();
 			}
-			else if (GameMode == GameScene(NetworkScene)){
+			else if (GameMode == SceneNum(NetworkScene)){
 				Load_Network();
 			}
-			else if (GameMode == GameScene(ReplayScene)){
+			else if (GameMode == SceneNum(ReplayScene)){
 				rep.Load_First();
 			}
-			else if (GameMode == GameScene(ArcadeScene)){
+			else if (GameMode == SceneNum(ArcadeScene)){
 				arc.Load_First();
 			}
 			//BGMStart(0);	// BGMを停止
@@ -106,44 +104,43 @@ public:
 		}
 
 		// namespace modeData
-
 		
 
 		//ゲームモードの名前でモードを選ぶ
 		switch (GameMode)
 		{
-		case GameScene(MenuScene):
+		case SceneNum(MenuScene):
 			//Menu();
 			men.All();
 			break;
-		case GameScene(TitleScene):
+		case SceneNum(TitleScene):
 			Title();
 			break;
-		case GameScene(SelectScene):
+		case SceneNum(SelectScene):
 			sel.All();
 			break;
-		case GameScene(VersusScene):
+		case SceneNum(VersusScene):
 			// お互いversusになったら開始
-			if ((Connect_CheckCn()) && (Connect_CheckGetData(0, 9) == GameScene(SelectScene))
+			if ((Connect_CheckCn()) && (Connect_CheckGetData(0, 9) == SceneNum(SelectScene))
 				&& (modeCount < 2)){
 				break;
 			}
 			else{ modeCount = 2; }
 			Versus();
 			break;
-			//case GameConfig:
-			//Config();
-			//break;
-		case GameScene(ResultScene):
+		case SceneNum(ConfigScene):
+			Config();
+			break;
+		case SceneNum(ResultScene):
 			Result();
 			break;
-		case GameScene(NetworkScene):
+		case SceneNum(NetworkScene):
 			Network();
 			break;
-		case GameScene(ReplayScene):
+		case SceneNum(ReplayScene):
 			rep.All();
 			break;
-		case GameScene(ArcadeScene):
+		case SceneNum(ArcadeScene):
 			arc.All();
 			break;
 		default:
@@ -196,10 +193,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 
 	// 起動後最初のモード
-	GameMode = GameScene(TitleScene);
+	GameMode = SceneNum(TitleScene);
 	
 	// すぐトレモへ
-	//GameMode = GameScene(SelectScene);
+	//GameMode = SceneNum(SelectScene);
 	//TraningSwitch(true);
 	//BattleMode(false);
 	// ctrl + K + U or C
@@ -212,9 +209,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// メインループ
 	//
 	//--------------
-	// while( 裏画面描画, メッセージ処理(必要らしい), 画面初期化, ESC入力確認, ゲームモードが0じゃない )
-	while (ProcessMessage() == 0 && ScreenFlip() == 0 && (CheckHitKey(KEY_INPUT_ESCAPE) == 0)
-		&& (GameMode != 0))
+	// while( メッセージ処理(必要らしい), ESC入力確認, ゲームモードが0じゃない )
+	while (ProcessMessage() == 0 && (CheckHitKey(KEY_INPUT_ESCAPE) == 0) && (GameMode != 0))
 	{
 		//----------
 		// 必須処理
@@ -222,7 +218,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		{
 			// ゲーム進行がノーマルなら画面クリア
 			if (sd == 0){
-				if (ClsDrawScreen() != 0)break;
+				if (ClsDrawScreen() != 0)break;	// 画面初期化
 			}
 			// FPS更新
 			fps.Update();	// OK
@@ -249,6 +245,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			Game_Update();
 			
 		}
+		ScreenFlip();	// 表示
 	}
 	// メインループ終了
 
@@ -303,7 +300,7 @@ void Screen_Setting()
 	// 画面モードの設定、サイズを測る
 	SetGraphMode(WindowInfo::width, WindowInfo::height, 16);
 
-	SetChangeScreenModeGraphicsSystemResetFlag(FALSE);	// グラフィックハンドルのリセット防止
+	//SetChangeScreenModeGraphicsSystemResetFlag(FALSE);	// グラフィックハンドルのリセット防止
 														// ウィンドウサイズ変更時に消えないようにする
 
 	// 非アクティブ状態でも動く(動かさないと熱帯できない)
@@ -334,7 +331,6 @@ void Game_Processing()
 	}
 
 	
-
 	// ボタン入力チェック、スロー時はなし
 	// 0～-nは操作する
 	if (sd <= 0){
@@ -418,23 +414,6 @@ void Game_Update()
 	// スクリーンショット
 	if (sw == 1){
 		ScreenShot();
-	}
-
-	//ウィンドウモードに
-	if (CheckHitKey(KEY_INPUT_F4) != 0)sw2++;
-	else { sw2 = 0; }
-	if (CheckHitKey(KEY_INPUT_F4) != 0) {
-		// 最初のみ
-		if (sw2 == 1) {
-			if (sw2_2 == 0) {
-				ChangeWindowMode(0);
-				sw2_2 = 1;
-			}
-			else if (sw2_2 == 1) {
-				ChangeWindowMode(1);
-				sw2_2 = 0;
-			}
-		}
 	}
 }
 

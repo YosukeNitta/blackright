@@ -40,6 +40,8 @@ static void DamReset();
 static void ThrowReject();
 // ずらし投げ
 static void DelayThrow(int num);
+// 3ボタン
+static void Delay3Button(int state, int gauge);
 
 // ヒットエフェクト
 static void HitEff(int g, double x, double y);
@@ -409,7 +411,7 @@ void ThrowReject(){
 /// <param name="num">AorB どちらを先に押したか</param>
 void DelayThrow(int num)
 {
-	// 1以上は止める
+	// 1以上・800以上は止める
 	if (P1.time > 1)return;
 
 	bool te = false;
@@ -430,11 +432,31 @@ void DelayThrow(int num)
 
 	// 投げ
 	if (te == true) {
-		P1.stateno = 500, P1.More = 1,
-			P1.time = 1, P1.A.damage = 0;
 		// 空中技
-		if (P1.stateno >= 400 && P1.stateno < 500)
+		if ((P1.stateno >= 400) && (P1.stateno < 500)) {
 			P1.stateno = 510;
+		}
+		else { P1.stateno = 500; }
+		P1.More = 1,
+		P1.time = 1, P1.A.damage = 0;
+	}
+}
+
+// 3ボタン
+void Delay3Button(int state, int gauge)
+{
+	// 1以上は止める
+	if (P1.time > 1)return;
+
+	// 3ゲージ
+	// 2Fに投げをずらし押ししたら
+	if ((P1.time == 1) &&
+		((P1.button[1] > 0) && (P1.Senkou[2] > 0) && (P1.Senkou[3] > 0)) &&
+		//(P2.HFlg == 0) &&
+		(P1.Power >= gauge)
+		) {
+		P1.stateno = state, P1.More = 1,
+			P1.time = 0, P1.A.damage = 0;
 	}
 }
 

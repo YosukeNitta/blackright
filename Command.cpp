@@ -395,6 +395,12 @@ int Char3_Cmd()
 			P1.stateno = 225;
 		}
 	}
+	//  3C
+	if ((P1.keyAtt[6]) && (P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 240;
+		}
+	}
 	//  J2C
 	if ((P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl)){
 		if ((P1.SFlg == 2)){		// 地上
@@ -416,8 +422,7 @@ int Char3_Cmd()
 	// [グランド]
 	if ((P1.ctrl) && (P1.cmd[1])){
 		if (P1.SFlg != 2){		// 地上
-			if (P1.Senkou[1] > 0 || P1.Senkou[3] > 0)P1.stateno = 620;
-			if (P1.Senkou[2] > 0)P1.stateno = 621;
+			if (P1.Senkou[1] > 0 || P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 620;
 		}
 	}
 	// [コマ投げ]
@@ -633,7 +638,7 @@ int Char5_Cmd()
 	/*******/
 	// Dアクション、Dを押していて操作可能
 	if (P1.ctrl){
-		if (P1.Senkou[4] > 0){
+		if (P1.Senkou[4] > 0 && (P1.Var[10] > 180)){
 			// 地上にいる
 			if ((P1.SFlg != 2)){
 				if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8]))P1.stateno = 601;	// 6D

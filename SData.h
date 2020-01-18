@@ -80,7 +80,7 @@ namespace modeData
 		{
 			return 0;
 		}
-		virtual void Draw(){}
+		virtual void Draw() = 0;
 
 		virtual void All()
 		{
@@ -109,7 +109,7 @@ namespace modeData
 
 		// 1回のみのロード
 		// ここに記述
-		virtual void Load_1second(){}
+		virtual void Load_1second() = 0;
 	};
 
 }// namespace stateData

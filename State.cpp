@@ -587,6 +587,8 @@ void CharLoad()
 
 		P[i].D.armor = 0;
 
+		P[i].A.hbVelX = 0;
+
 		// Var初期化
 		for (int j = 0; j < VAR_MAX; j++){
 			P[i].Var[j] = 0;
@@ -1180,6 +1182,7 @@ void TimeCount()
 				P1.YPos = GROUND, P2.YPos = GROUND;
 				P1.XVel = 0, P2.XVel = 0;
 				P1.YVel = 0, P2.YVel = 0;
+				P1.A.hbVelX = 0, P2.A.hbVelX = 0;
 			}
 			// システム関連
 			if (S.roundTime < 120){
@@ -1267,6 +1270,7 @@ void TimeCount()
 				P1.YPos = GROUND, P2.YPos = GROUND;
 				P1.XVel = 0, P2.XVel = 0;
 				P1.YVel = 0, P2.YVel = 0;
+				P1.A.hbVelX = 0, P2.A.hbVelX = 0;
 
 				P1.Life = P1.C.lifeMax;
 				P2.Life = P2.C.lifeMax;
@@ -1294,6 +1298,7 @@ void TimeCount()
 				P1.YPos = GROUND, P2.YPos = GROUND;
 				P1.XVel = 0, P2.XVel = 0;
 				P1.YVel = 0, P2.YVel = 0;
+				P1.A.hbVelX = 0, P2.A.hbVelX = 0;
 
 				P1.Life = P1.C.lifeMax;
 				P2.Life = P2.C.lifeMax;
@@ -1394,7 +1399,7 @@ void TimeCount()
 			if (!S.TraningFlg){
 				// アケモか対戦か
 				if (Arcade_Switch(-1) == 0){
-					ModeChange(GameScene(ResultScene));	// リザルト
+					ModeChange(SceneNum(ResultScene));	// リザルト
 				}
 				// アケモ
 				else if(Arcade_Switch(-1) == 1){
@@ -1404,19 +1409,19 @@ void TimeCount()
 					else{
 						Arcade_BattleCount(0);	// 勝数
 					}
-					ModeChange(GameScene(ResultScene));	// アケ用のリザルト
+					ModeChange(SceneNum(ResultScene));	// アケ用のリザルト
 				}
 				// 再生 or 録画
 				if (Replay_Mode(-1) > 0){
 					// 再生
 					if (Replay_Mode(-1) == 1){
-						ModeChange(GameScene(ReplayScene));	// リザルト
+						ModeChange(SceneNum(ReplayScene));	// リザルト
 					}
 					Replay_End();
 				}
 			}
 			else{
-				ModeChange(GameScene(VersusScene));	// 対戦画面へループ
+				ModeChange(SceneNum(VersusScene));	// 対戦画面へループ
 			}
 		}
 	}	// roundstate 3

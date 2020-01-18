@@ -40,6 +40,9 @@ int BGMStart(int num)
 			bgm[i + 1] = LoadSoundMem("music/01.mp3");	// ステージ曲 
 			//if(i == 2)bgm[i + 1] = LoadSoundMem("music/03.mp3");	// ステージ曲 
 		}
+		bgm[2] = LoadSoundMem("music/02.mp3");	// ステージ曲 
+		bgm[3] = LoadSoundMem("music/03.mp3");	// ステージ曲 
+		bgm[4] = LoadSoundMem("music/04.mp3");	// ステージ曲
 
 		bgm[11] = LoadSoundMem("music/menu.mp3");	// メニュー
 		bgm[12] = LoadSoundMem("music/select.mp3");	// キャラセレ

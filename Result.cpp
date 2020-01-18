@@ -46,10 +46,10 @@ int Result()
 		if ((P_BInput(1) == 1) || (P_BInput(3) == 1)){
 			SEStart(35);
 			if (nPos == 0){
-				ModeChange(GameScene(ArcadeScene));	// 対戦画面へループ
+				ModeChange(SceneNum(ArcadeScene));	// 対戦画面へループ
 				Replay_Mode(0);	// もう一度リプレイ
 			}
-			else if (nPos == 1)ModeChange(GameScene(MenuScene));	// メニューへ
+			else if (nPos == 1)ModeChange(SceneNum(MenuScene));	// メニューへ
 		}
 		if ((P_BInput(2) == 1)){
 			SEStart(37);
@@ -61,12 +61,12 @@ int Result()
 		if ((P_BInput(1) == 1) || (P_BInput(3) == 1)){
 			SEStart(35);
 			if (nPos == 0){
-				ModeChange(GameScene(VersusScene));	// 対戦画面へループ
+				ModeChange(SceneNum(VersusScene));	// 対戦画面へループ
 				if (BattleMode(-1) == 0)Replay_Mode(2);	// もう一度録画する
 				else{ Replay_Mode(0); }
 				//Replay_Setting(p_name[0], p_name[1], p_color[0], p_color[1], StageNum);
 			}
-			else if (nPos == 1)ModeChange(GameScene(SelectScene));	// キャラセレへ
+			else if (nPos == 1)ModeChange(SceneNum(SelectScene));	// キャラセレへ
 		}
 		if ((P_BInput(2) == 1)){
 			SEStart(37);
@@ -168,7 +168,7 @@ void Draw()
 	}
 
 	// リザルトなら
-	if ((CheckGameMode() == GameScene(ResultScene)) && (time == 10)){
+	if ((CheckGameMode() == SceneNum(ResultScene)) && (time == 10)){
 		// 勝者はどっちだ
 		if (side == 0){
 			DrawString(0, 0, "draw", GetColor(0, 0, 0));

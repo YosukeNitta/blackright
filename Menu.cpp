@@ -15,7 +15,7 @@ static int modeG[7];
 static int back, mode[7];
 // 現在の選択番号, 選択項目の数
 static int SPoint = 0;
-static const int SentakuNum = 7;
+static const int SentakuNum = 6;
 static int next;	// 次の項目へのスクロール
 static int gameTime;	// 時間
 //static void Draw();
@@ -88,6 +88,80 @@ int Menu::Mode()
 		gameTime++;
 		if (gameTime > 300)gameTime = 300;
 
+
+		// ターボモード変更
+		/*
+		if (P_BInput(4) == 1) {
+			if (Versus_GetTurboMode()) {
+				SEStart(35);
+			}
+			else { SEStart(38); }
+			Versus_TurboMode();
+		}
+		*/
+		
+		// 1 秒経過した対応
+		// ARCADE
+		if ((kettei == 1) && (TimeStop > 10) && (SPoint == 0)) {
+			TraningSwitch(false);
+			AISwitch(true);
+			Arcade_Switch(1);
+			BattleMode(3);
+			WinCount(0);
+			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+		}
+		// 対戦
+		if ((kettei == 1) && (TimeStop > 10) && (SPoint == 1)) {
+			TraningSwitch(false);
+			AISwitch(false);
+			Arcade_Switch(0);
+			BattleMode(0);
+			WinCount(0);
+			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+		}
+		// VS.AI
+		if ((kettei == 1) && (TimeStop > 10) && (SPoint == 2)) {
+			TraningSwitch(false);
+			AISwitch(true);
+			Arcade_Switch(0);
+			BattleMode(2);
+			WinCount(0);
+			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+		}
+		// トレモ
+		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 3)) {
+			TraningSwitch(true);
+			AISwitch(false);
+			BattleMode(1);
+			ModeChange(SceneNum(SelectScene));	// トレモ起動してからキャラセレへ
+		}
+		/*
+		// ネットワーク
+		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 4)) {
+			ModeChange(SceneNum(NetworkScene));	// 
+			//ModeChange(SceneNum(ConfigScene));	// 
+		}
+		*/
+		// リプレイ再生
+		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 4)) {
+			ModeChange(SceneNum(ReplayScene));	// 
+		}
+		// 終了
+		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 5)) {
+			//ModeChange(4);
+			ModeChange(0);	// 終了
+		}
+
+		// タイトルへ戻る
+		if (P_BInput(2) == 1) {
+			ModeChange(SceneNum(TitleScene));
+			SEStart(49);
+			BGMStart(0);
+		}
+		// ネットワークに繋いでたなら終了
+		if (Connect_CheckCn())ModeChange(0);	// 終了
+
+
 	}//全体を終了
 
 	return 0;
@@ -116,93 +190,31 @@ void Menu::Draw()
 	case 3:
 		DrawString(drawX, drawY, "様々な状況での動きを確認できます", Cr);
 		break;
+	/*
 	case 4:
 		DrawString(drawX, drawY, "ネット対戦(未実装)", Cr);
 		break;
-	case 5:
+		*/
+	case 4:
 		DrawString(drawX, drawY, "記録したリプレイを再生します", Cr);
 		break;
-	case 6:
+	case 5:
 		DrawString(drawX, drawY, "ゲームを終了します", Cr);
 		break;
 	}
 	
-	// ターボモード変更
-	if (P_BInput(4) == 1){
-		if (Versus_GetTurboMode()){
-			SEStart(35);
-		}
-		else{ SEStart(38); }
-		Versus_TurboMode();
+	// ターボモード表示
+	/*
+	if (Versus_GetTurboMode()){
+		DrawString(2, 2, "Turbo", Cr);
 	}
-	// 表示
+	else
 	{
-		if (Versus_GetTurboMode()){
-			DrawString(2, 2, "Turbo", Cr);
-		}
-		else
-		{
-			DrawString(2, 2, "Normal", Cr);
-		}
+		DrawString(2, 2, "Normal", Cr);
 	}
+	*/
 
-	// 1 秒経過した対応
-	// ARCADE
-	if ((kettei == 1) && (TimeStop > 10) && (SPoint == 0)){
-		TraningSwitch(false);
-		AISwitch(true);
-		Arcade_Switch(1);
-		BattleMode(3);
-		WinCount(0);
-		ModeChange(GameScene(SelectScene));	// キャラセレへ
-	}
-	// 対戦
-	if ((kettei == 1) && (TimeStop > 10) && (SPoint == 1)){
-		TraningSwitch(false);
-		AISwitch(false);
-		Arcade_Switch(0);
-		BattleMode(0);
-		WinCount(0);
-		ModeChange(GameScene(SelectScene));	// キャラセレへ
-	}
-	// VS.AI
-	if ((kettei == 1) && (TimeStop > 10) && (SPoint == 2)){
-		TraningSwitch(false);
-		AISwitch(true);
-		Arcade_Switch(0);
-		BattleMode(2);
-		WinCount(0);
-		ModeChange(GameScene(SelectScene));	// キャラセレへ
-	}
-	// トレモ
-	else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 3)){
-		TraningSwitch(true);
-		AISwitch(false);
-		BattleMode(1);
-		ModeChange(GameScene(SelectScene));	// トレモ起動してからキャラセレへ
-	}
-	// ネットワーク
-	else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 4)){
-		ModeChange(GameScene(NetworkScene));	// 
-	}
-	// リプレイ再生
-	else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 5)){
-		ModeChange(GameScene(ReplayScene));	// 
-	}
-	// 終了
-	else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 6)){
-		//ModeChange(4);
-		ModeChange(0);	// 終了
-	}
-
-	// タイトルへ戻る
-	if (P_BInput(2) == 1){
-		ModeChange(GameScene(TitleScene));
-		SEStart(49);
-		BGMStart(0);
-	}
-	// ネットワークに繋いでたなら終了
-	if (Connect_CheckCn())ModeChange(0);	// 終了
+	
 
 
 	{
@@ -294,4 +306,12 @@ void Menu::Load_1second(){
 	int hozon = mode[1];
 	mode[1] = mode[2];
 	mode[2] = hozon;
+
+	hozon = mode[4];
+	mode[4] = mode[5];
+	mode[5] = hozon;
+
+	hozon = mode[5];
+	mode[5] = mode[6];
+	mode[6] = hozon;
 }

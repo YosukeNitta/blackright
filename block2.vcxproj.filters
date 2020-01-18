@@ -201,6 +201,9 @@
     <ClCompile Include="SyuParam.cpp">
       <Filter>ソース ファイル\システム関連\キャラクター別\ステート</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Define.h">
@@ -259,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="WindowInfo.h">
       <Filter>ヘッダー ファイル\システム設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

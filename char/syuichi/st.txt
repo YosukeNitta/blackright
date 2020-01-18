@@ -1,5 +1,5 @@
 [Data]
-gsize = 1.08;
+gsize = 1.00;
 xsize = 54;
 ysize = 150;
 life = 1020;
