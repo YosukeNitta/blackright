@@ -6,7 +6,7 @@
 
 //インクルード部--------------------------------------------
 #include "pch.h"
-
+#include "MainSystem.h"
 //デファイン部----------------------------------------------
 
 
@@ -815,12 +815,12 @@ void GraphicSetting()
 	//画像をもってくる
 	//P1.Image = P1.GraphImage[P1.aNum1][P1.aNum2];
 	//P2.Image = P2.GraphImage[P2.aNum1][P2.aNum2];
-	P1.Image = Player_ImageGet(P1);
-	P2.Image = Player_ImageGet(P2);
+	P1.image = Player_ImageGet(P1);
+	P2.image = Player_ImageGet(P2);
 
 	// 画像サイズ取得 P1,2
-	GetGraphSize(P1.Image, &P1.GraphW, &P1.GraphH);
-	GetGraphSize(P2.Image, &P2.GraphW, &P2.GraphH);
+	GetGraphSize(P1.image, &P1.GraphW, &P1.GraphH);
+	GetGraphSize(P2.image, &P2.GraphW, &P2.GraphH);
 
 	//---------------
 	// 演出（地震）
@@ -1399,7 +1399,7 @@ void TimeCount()
 			if (!S.TraningFlg){
 				// アケモか対戦か
 				if (Arcade_Switch(-1) == 0){
-					ModeChange(SceneNum(ResultScene));	// リザルト
+					MainSystem::Instance().SetNextMode("Result");
 				}
 				// アケモ
 				else if(Arcade_Switch(-1) == 1){
@@ -1409,19 +1409,20 @@ void TimeCount()
 					else{
 						Arcade_BattleCount(0);	// 勝数
 					}
-					ModeChange(SceneNum(ResultScene));	// アケ用のリザルト
+					// アケ用のリザル
+					MainSystem::Instance().SetNextMode("Result");
 				}
 				// 再生 or 録画
 				if (Replay_Mode(-1) > 0){
 					// 再生
 					if (Replay_Mode(-1) == 1){
-						ModeChange(SceneNum(ReplayScene));	// リザルト
+						MainSystem::Instance().SetNextMode("Replay");
 					}
 					Replay_End();
 				}
 			}
 			else{
-				ModeChange(SceneNum(VersusScene));	// 対戦画面へループ
+				MainSystem::Instance().SetNextMode("Versus");	// ループ
 			}
 		}
 	}	// roundstate 3

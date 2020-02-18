@@ -1,16 +1,17 @@
 #pragma once
 
 #include "SData.h"
-using namespace modeData;
 
 // public で前のクラスのものも使える
-class Replay : public ModeData {
+class Replay : public MData {
 
 public:
-	int Replay::Mode();
+	int Mode();
 	// メニュー描画
-	void Replay::Draw();
+	void Draw();
 
-	int Replay::Load_Reload();
-	void Replay::Load_1second();
+	void Load_Reload();
+	void Load_1second();
+	// 解放
+	void Release();
 };

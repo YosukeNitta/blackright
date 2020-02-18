@@ -66,50 +66,45 @@ namespace stateData
 
 }// namespace stateData
 
-namespace modeData
+
+class MData
 {
+protected:
+	boolean load_1s = false;
+private:
+	
 
-	class ModeData
+public:
+
+	virtual int Mode() = 0;
+	virtual void Draw() = 0;
+
+	virtual void All()
 	{
-	private:
-		boolean load_1s = false;
+		Mode();
+		Draw();
+	}
 
-	public:
-
-		virtual int Mode()
-		{
-			return 0;
+	// mainで読み込む
+	virtual int Load_First()
+	{
+		if (!load_1s) {
+			Load_1second();
+			load_1s = true;
 		}
-		virtual void Draw() = 0;
+		Load_Reload();
 
-		virtual void All()
-		{
-			Mode();
-			Draw();
-		}
+		return 0;
+	}
 
-		// mainで読み込む
-		virtual int Load_First()
-		{
-			if (!load_1s){
-				Load_1second();
-				load_1s = true;
-			}
-			Load_Reload();
+	// モード変更時のロード
+	// ここに記述
+	virtual void Load_Reload() = 0;
 
-			return 0;
-		}
+	// 1回のみのロード
+	// ここに記述
+	virtual void Load_1second() = 0;
 
-		// モード変更時のロード
-		// ここに記述
-		virtual int Load_Reload()
-		{
-			return 0;
-		}
-
-		// 1回のみのロード
-		// ここに記述
-		virtual void Load_1second() = 0;
-	};
-
-}// namespace stateData
+	// 解放
+	virtual void Release() = 0;
+};

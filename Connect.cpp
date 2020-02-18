@@ -200,7 +200,7 @@ void Connect_Get_GetData(BYTE num, BYTE num1, BYTE num2){
 
 void Connect_SetGameMode()
 {
-	gameMode[0] = CheckGameMode();
+	//gameMode[0] = CheckGameMode();
 	// 1ˆÈã‚È‚ç
 	if (getData[0][9] > 0){
 		gameMode[1] = getData[0][9];

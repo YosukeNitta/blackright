@@ -1,5 +1,6 @@
 #include "pch.h"
-
+#include "Result.h"
+#include "MainSystem.h"
 static int nPos;
 static int color[2];
 static int side;
@@ -16,7 +17,7 @@ static int StageNum;
 static int winCount[2];
 static void Draw();
 
-int Result()
+int Result::Mode()
 {
 	if (!load_1){
 		stand[CORNEL] = LoadGraph("ob/standCornell.png");
@@ -46,10 +47,12 @@ int Result()
 		if ((P_BInput(1) == 1) || (P_BInput(3) == 1)){
 			SEStart(35);
 			if (nPos == 0){
-				ModeChange(SceneNum(ArcadeScene));	// 対戦画面へループ
+				MainSystem::Instance().SetNextMode("Versus");	// 対戦画面へループ
 				Replay_Mode(0);	// もう一度リプレイ
 			}
-			else if (nPos == 1)ModeChange(SceneNum(MenuScene));	// メニューへ
+			else if (nPos == 1)
+				MainSystem::Instance().SetNextMode("Menu");	// メニューへ
+
 		}
 		if ((P_BInput(2) == 1)){
 			SEStart(37);
@@ -61,12 +64,13 @@ int Result()
 		if ((P_BInput(1) == 1) || (P_BInput(3) == 1)){
 			SEStart(35);
 			if (nPos == 0){
-				ModeChange(SceneNum(VersusScene));	// 対戦画面へループ
+				// 対戦画面へループ
+				MainSystem::Instance().SetNextMode("Versus");
 				if (BattleMode(-1) == 0)Replay_Mode(2);	// もう一度録画する
 				else{ Replay_Mode(0); }
 				//Replay_Setting(p_name[0], p_name[1], p_color[0], p_color[1], StageNum);
 			}
-			else if (nPos == 1)ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			else if (nPos == 1)MainSystem::Instance().SetNextMode("Select");
 		}
 		if ((P_BInput(2) == 1)){
 			SEStart(37);
@@ -75,12 +79,12 @@ int Result()
 	}
 	
 	
-	Draw();
+	//Draw();
 
 	return 0;
 }
 
-void Draw()
+void Result::Draw()
 {
 	if (time < 10)time++;
 
@@ -151,24 +155,25 @@ void Draw()
 		}
 		else if (winChara[0] == SYUICHI) {
 			if (winChara[1] == winChara[0]) {
-				DrawString(360, SCREEN_H / 2 - 120, "シュウイチ勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 120, "同キャラ勝利セリフ", Cr);
 				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
 			}
 			else {
-				DrawString(360, SCREEN_H / 2 - 120, "同キャラ勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ", Cr);
 				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
 			}
 		}
 		else {
 			{
-				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ入れ忘れ！", Cr);
-				DrawString(360, SCREEN_H / 2 - 100, "ぶっころすわよ！", Cr);
+				DrawString(360, SCREEN_H / 2 - 120, "勝利セリフ", Cr);
+				DrawString(360, SCREEN_H / 2 - 100, "", Cr);
 			}
 		}
 	}
 
 	// リザルトなら
-	if ((CheckGameMode() == SceneNum(ResultScene)) && (time == 10)){
+	//(CheckGameMode() == SceneNum(ResultScene)) 
+	if (time == 10){
 		// 勝者はどっちだ
 		if (side == 0){
 			DrawString(0, 0, "draw", GetColor(0, 0, 0));
@@ -206,8 +211,7 @@ void Draw()
 		if (nPos == 1)color[1] = Oran;
 		else{ color[1] = Cr; }
 
-		// アケで
-		// 2Pが勝っちゃった
+		// アケで2Pが勝っちゃった
 		if (Arcade_Switch(-1) == 1){
 			DrawString(280, SCREEN_H / 2 - 20, "再戦", color[0]);
 			DrawString(280, SCREEN_H / 2, "メニュー", color[1]);
@@ -219,11 +223,20 @@ void Draw()
 	}
 }
 
-void Load_Result()
+void Result::Load_Reload()
 {
 	nPos = 0;
 	BGMStart(0);	// BGMを停止
 	time = 0;
+}
+
+void Result::Load_1second()
+{
+
+}
+
+void Result::Release(void)
+{
 }
 
 void Result_WinSide(int i, int chara, int chara2){

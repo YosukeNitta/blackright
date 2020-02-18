@@ -1,24 +1,22 @@
 //インクルード部--------------------------------------------
 #include "pch.h"
+#include "Title.h"
+#include "MainSystem.h"
+
 static int titleG;
 //static int tGLogo;
 static int fill;
-static boolean load, loadF = false;
+static boolean load;
 static int timeStop;
 static int kettei;
 static int alpha = 255;	// 透明度
 static boolean change = true;
 
 //メニュー画面
-int Title()
+int Title::Mode()
 {
-	if (!loadF)
-	{
-		titleG = LoadGraph("ob/title.png");
-		//tGLogo = LoadGraph("ob/tlogo.png");
-		loadF = true;
-	}
 	
+
 	/*
 	// ロード
 	if (!load)
@@ -36,20 +34,20 @@ int Title()
 	}
 	*/
 
-	if (change){
+	if (change) {
 		if (alpha > 205)alpha -= 3;
 		alpha += 6;
 	}
-	else{
+	else {
 		if (alpha < 50)alpha += 3;
 		alpha -= 6;
 	}
 
-	if (alpha < 0){
+	if (alpha < 0) {
 		change = true;
 		alpha = 0;
 	}
-	else if (alpha > 255){
+	else if (alpha > 255) {
 		change = false;
 		alpha = 255;
 	}
@@ -77,23 +75,45 @@ int Title()
 	}
 
 	// 決定してたらカウント加算
-	if (kettei == 1){
+	if (kettei == 1) {
 		timeStop += 1;
 	}
-	else{
+	else {
 		timeStop = 0;
 	}
 
 
 	// キー入力で終了
-	if (timeStop >= 10){
-		load = false, ModeChange(SceneNum(MenuScene));
+	if (timeStop >= 10) {
+		load = false;
+		//ModeChange(SceneNum(MenuScene));
+		MainSystem::Instance().SetNextMode("Menu");
 		kettei = 0;
-
-		// 終了処理
-		DeleteGraph(titleG);
-		loadF = false;
+		
 	}
 	return 0;	//どこにも当たらなかったら終了
 
 }	//メニュー終了
+
+void Title::Draw()
+{
+
+}
+
+void Title::Load_1second()
+{
+	//titleG = LoadGraph("ob/title.png");
+}
+
+void Title::Load_Reload()
+{
+	titleG = LoadGraph("ob/title.png");
+}
+
+
+void Title::Release(void)
+{
+	// 終了処理
+	DeleteGraph(titleG);
+	//titleG = LoadGraph("ob/title.png");
+}

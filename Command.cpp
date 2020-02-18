@@ -436,14 +436,14 @@ int Char3_Cmd()
 
 	//[EX技]
 	// [大ブーメラン]
-	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Power >= 500)){
+	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Power >= 500 || P1.Var[13] > 0)){
 		if (P1.SFlg != 2){		// 地上
 			if (P1.Senkou[3] > 0)P1.stateno = 625;
 		}
 	}
 	// [0.5投げ]
 	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Senkou[3] > 0) 
-		&& (P1.Power >= 500)){
+		&& (P1.Power >= 500 || P1.Var[13] > 0)){
 		if (P1.SFlg != 2){		// 地上
 			P1.stateno = 610;
 			P1.Var[15] = 1;

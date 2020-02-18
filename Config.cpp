@@ -1,5 +1,5 @@
 #include "pch.h"
-
+#include "MainSystem.h"
 static int Load_1;
 static int P1_Key, P2_Key, Gamen;
 static int inputUP, inputDOWN;
@@ -53,7 +53,7 @@ int Config()
 			// おしっぱを拒否
 			P1_BCheck();
 			// 終了、メニューへ
-			ModeChange(SceneNum(MenuScene));
+			MainSystem::Instance().SetNextMode("Menu");
 		}
 	}
 	else if (SPoint == 1) {
@@ -77,7 +77,7 @@ int Config()
 			// おしっぱを拒否
 			P1_BCheck();
 			// 終了、メニューへ
-			ModeChange(SceneNum(MenuScene));
+			MainSystem::Instance().SetNextMode("Menu");
 		}
 
 	}//全体のループ
@@ -126,7 +126,7 @@ void Update() {
 		// デバイス
 		if (InputDevice_Update() == 1) {
 			// 終了、メニューへ
-			ModeChange(SceneNum(MenuScene));
+			MainSystem::Instance().SetNextMode("Menu");
 		}
 		InputDevice_Draw();
 
@@ -162,7 +162,7 @@ void Update() {
 		P1_BCheck();
 		P2_BCheck();
 		// 終了、メニューへ
-		ModeChange(SceneNum(MenuScene));
+		MainSystem::Instance().SetNextMode("Menu");
 	}
 }
 

@@ -659,7 +659,7 @@ void ObjectDraw()
 				else{ m_size = 1; }
 				if (m_size < 0)m_size = 1;
 
-				if (S.roundTime >= 30)SetAlpha(255 - (S.roundTime - 30) * 12.8);
+				if (S.roundTime >= 30)SetAlpha(255 - S.roundTime - 30 * 12.8);
 				// —§‚¿‚É‚È‚Á‚½‚ç
 				if (S.roundTime > 0)DrawRotaGraph(340, 240, m_size,0,battle[2], true);
 

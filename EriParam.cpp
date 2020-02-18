@@ -748,7 +748,7 @@ void EriParam(void)
 			}
 			// キャンセル、連打キャンセル
 			if ((P1.button[1] == 1) && (P1.time >= 9) && (P1.stateno == 300)){
-				// 下要素が入ってるやん！
+				// 下要素が入ってる
 				if (key(2)){
 					P1.More = 1, P1.time = 0, P1.A.damage = 0;
 				}

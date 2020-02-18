@@ -6,6 +6,7 @@
 
 //インクルード部--------------------------------------------
 #include "pch.h"
+#include "MainSystem.h"
 
 //デファイン部----------------------------------------------
 
@@ -156,7 +157,7 @@ void SetTraning()
 		if (P1.button[104] > 0)FirstPosSet(-1);
 		else if (P1.button[106] > 0)FirstPosSet(1);
 		else{ FirstPosSet(0); }
-		ModeChange(SceneNum(VersusScene));	// 初期化
+		MainSystem::Instance().SetNextMode("Versus");	// 初期化
 	}
 
 	//================================================

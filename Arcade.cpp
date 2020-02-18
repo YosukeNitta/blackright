@@ -1,7 +1,7 @@
 //インクルード部--------------------------------------------
 #include "pch.h"
 #include "Arcade.h"
-using namespace modeData;
+#include "MainSystem.h"
 
 #include <string>	// stringに使う
 #include <vector>
@@ -35,20 +35,18 @@ int Arcade::Mode(void)
 	Select_SetName(name, enemyName[battleCount]);
 
 	if ((P1_BInput(1) == 1) || (P1_BInput(3) == 1)){
-		if (battleCount >= Character_Max() - 1)ModeChange(SceneNum(MenuScene));
-		else{ ModeChange(SceneNum(VersusScene)); }
+		if (battleCount >= Character_Max() - 1)MainSystem::Instance().SetNextMode("Menu");
+		else{ MainSystem::Instance().SetNextMode("Versus"); }
 	}
 
 	return 0;
 }
 // なんどもお。
-int Arcade::Load_Reload()
+void Arcade::Load_Reload()
 {
 	Anten(255);
 	// キャラセレBGM
 	BGMStart(12);
-
-	return 0;
 }
 // 画像のロードなど
 void Arcade::Load_1second()
@@ -93,6 +91,10 @@ void Arcade::Draw(void)
 		DrawGraph(i * 70, 20, port[enemyName[i] - 1], true);
 		NoBlend();
 	}
+}
+
+void Arcade::Release(void)
+{
 }
 
 // -1..確認のみ　0or1..変更

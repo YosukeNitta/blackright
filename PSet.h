@@ -315,7 +315,7 @@ public:
 	int aHV;	// 反転等
 
 	// セットされているキャラ画像
-	int Image;
+	int image;
 
 	//[ 攻撃関連 ]//
 	//攻撃判定
@@ -327,6 +327,11 @@ public:
 
 	// 攻撃設定
 	Attack_t A;
+
+	Character() {
+		GSize = 0.0;
+		XPos = 0.0; YPos = 0.0;
+	}
 
 	// 初期化？
 	void Reset(){
@@ -413,6 +418,23 @@ public:
 	double heSizeY;
 
 	//int HA_GuardTime;		// ガードストップ時間
+
+	Helper() {
+		stateno = 0;
+
+		HGetPow = 0; // ゲージ回収
+		HGivePow = 0;	//与えるゲージ
+		H_GX = 0.0; H_GY = 0.0;	// ヒットバック(地上)
+		H_AX = 0.0, H_AY = 0.0;	// ヒットバック(空中)
+
+		HHitStop = 0;
+		HSSelf = 0;
+		HG_HitTime = 0;		// 地上喰らいの時間
+		HA_HitTime = 0;		// 空中喰らいの時間
+		HG_GuardTime = 0;		// ガード硬直
+
+		fallF = 0;
+	}
 
 	void Reset(){
 		HMoveHit = 0;
@@ -599,7 +621,7 @@ public:
 	int SprPriority;
 	// 色変化
 	int colorC[3];	// 0,r 1,g 2,b
-	int colorCTime;		// 色が変わる！
+	int colorCTime;		// 色が変わる
 	// 残像オンオフ
 	boolean mirage;
 

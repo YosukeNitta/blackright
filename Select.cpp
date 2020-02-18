@@ -6,7 +6,7 @@
 //#include <list>
 //using namespace std;
 #include "Select.h"
-using namespace modeData;
+#include "MainSystem.h"
 
 // キャラセレの動いてるキャラ
 typedef struct Move_t{
@@ -31,7 +31,6 @@ public:
 	int g[256];
 	int b[256];
 }Pallet_t;
-
 
 static boolean Load_1;
 static boolean FLoad;	// 一度だけのロード
@@ -130,17 +129,19 @@ int Select::Mode(void)
 			Arcade_GetData(P[0].name, P[0].color);	// データを送る
 			Arcade_Setting();
 			if (Arcade_Switch(-1) == 1){
-				ModeChange(SceneNum(ArcadeScene));
+				MainSystem::Instance().SetNextMode("Arcade");
 			}
 			else{
-				ModeChange(SceneNum(VersusScene));	// 対戦画面へ
+				//ModeChange(SceneNum(VersusScene));	// 対戦画面へ
+				MainSystem::Instance().SetNextMode("Versus");
 			}
 		}
 
 		// キャラ・ステージが決定したら
 		if (ketteiNum == 2)
 		{
-			ModeChange(SceneNum(VersusScene));	// 対戦画面へ
+			//ModeChange(SceneNum(VersusScene));	// 対戦画面へ
+			MainSystem::Instance().SetNextMode("Versus");
 		}
 
 	}
@@ -151,7 +152,7 @@ int Select::Mode(void)
 
 
 
-int Select::Load_Reload()
+void Select::Load_Reload()
 {
 	Load_1 = 0;
 	Anten(255);
@@ -172,8 +173,6 @@ int Select::Load_Reload()
 		P[i].posY = 0;
 	}
 	mP = P[1];	// ダミー用意
-
-	return 0;
 }
 
 void Select::Load_1second(){
@@ -289,6 +288,9 @@ void Select::Load_1second(){
 	if (charPos.size() > 5)charPos[5] = SYUICHI - 1;
 }
 
+void Select::Release(void)
+{
+}
 
 void Select::Draw()
 {
@@ -417,7 +419,7 @@ void Select::Draw()
 		}
 		
 		{
-			//DrawRotaGraph(220, 180, 0.1, 0, mStage[StageNum - 1], false, 0);
+			//DwrawRotaGraph(220, 180, 0.1, 0, mStage[StageNum - 1], false, 0);
 			// 背景
 			if (StageNum != 0) {
 				DrawRotaGraph(220, 180, 0.27 * 0.6, 0, mStageB[StageNum - 1], false, 0);
@@ -472,7 +474,7 @@ void Select_SetName(int p1, int p2)
 	P[0].name = p1;
 	P[1].name = p2;
 }
-
+                                                                                                                                                                                                                                                                                                                                                                                               
 int BattleMode(int f)
 {
 	if (f != -1)BMode = f;
@@ -490,8 +492,7 @@ void InputSelect()
 			// キャラが決まってない
 			if (!P[i].charEnter){
 				// カラーを上下に
-				if (KInput(InputSide(i, 108))){
-					P[i].curY -= 1;
+				if (KInput(InputSide(i, 108))){P[i].curY -= 1;
 					SEStart(36);
 					oCurY[i] = -1;
 				}
@@ -570,7 +571,7 @@ void InputSelect()
 			}
 			// メニューに戻る or キャラ決定解除
 			else if (ketteiNum == 0 && !P[i].charEnter){
-				ModeChange(SceneNum(MenuScene));
+				MainSystem::Instance().SetNextMode("Menu");
 			}
 			SEStart(37);
 			P[0].charEnter = false;	// キャラも未決定に
@@ -647,13 +648,11 @@ void EnterSelect()
 									}
 								}
 								else{
-									//printfDx("Same\n");
 									Get_Color(P[i].color, i + 1);		// カラー決定
 								}
 							}
 							// 違う
 							else{
-								// printfDx("Ok2\n");
 								Get_Color(P[i].color, i + 1);		// カラー決定
 							}
 						}
@@ -703,7 +702,6 @@ void EnterSelect()
 			int stage = StageNum;
 			if (StageNum == 0)stage = GetRand(STAGE_MAX - 1) + 1;
 			
-
 			GetStageNum(stage - 1, mStage[stage + 1]);	// ステージ受け取り
 			Versus_bgmNum(stage);
 			
@@ -788,27 +786,6 @@ void CharAnimetion()
 	// アニメ内容
 	//int num2[2];
 
-	/*
-	// アニメーション
-	for (int i = 0; i < 2; i++){
-		bTime = 0;
-		for (num[i] = 0; num[i] < STATE2_MAX - 1; num[i]++){
-			bTime += move[charPos[P[i].curX]].air.B[num[i]].time;
-			// 時間が上回っている＆次がある
-			if (//(bTime <= move[i].time) &&
-				(move[charPos[P[i].curX]].air.B[num[i] + 1].time > -2)){
-			}
-			//
-			else{ break; }
-		}
-		// アニメ時間
-		move[i].time++;
-		if (move[charPos[P[i].curX]].air.aTime >= move[i].time){
-			move[i].time = 0;
-		}
-	}
-	*/
-
 	/// キャラクター描画 ///
 	// これ
 	int xs = 0, ys = 0;	// x,yのサイズ取得
@@ -853,29 +830,8 @@ int InputSide(int PSide, int key)
 			n = P2_BInput(key);
 		}
 	}
-	else if (BMode == 1){
-		if (PSide == 0)
-			n = P1_BInput(key);
-		// 2P側
-		else{
-			if ((ketteiNum == 0) && (P[0].charEnter)){
-				n = P1_BInput(key);
-			}
-			else{ n = 0; }
-		}
-	}
-	else if (BMode == 2){
-		if (PSide == 0)
-			n = P1_BInput(key);
-		// 2P側
-		else{
-			if ((ketteiNum == 0) && (P[0].charEnter)){
-				n = P1_BInput(key);
-			}
-			else{ n = 0; }
-		}
-	}
-	else if (BMode == 3){
+	// それ以外
+	else if (BMode >= 1){
 		if (PSide == 0)
 			n = P1_BInput(key);
 		// 2P側

@@ -1,19 +1,19 @@
-#include "SData.h"
-using namespace modeData;
+#pragma once
 
-#ifndef DEF_SELECT_H	//一度定義されていたら、定義しない 
-#define DEF_SELECT_H
+#include "SData.h"
+
 
 // public で前のクラスのものも使える
-class Select : public ModeData {
+class Select : public MData {
 
 public:
 	int Select::Mode();
 	// メニュー描画
 	void Select::Draw();
 
-	int Select::Load_Reload();
+	void Select::Load_Reload();
 	void Select::Load_1second();
+	// 解放
+	void Release();
 };
 
-#endif

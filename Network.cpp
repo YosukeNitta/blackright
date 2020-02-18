@@ -1,5 +1,6 @@
-
 #include "pch.h"
+#include "MainSystem.h"
+#include "Network.h"
 
 static IPDATA Ip;	// グローバル?
 static BYTE Data[2];	// *2なのは1P2P分
@@ -30,10 +31,9 @@ static boolean load_f = false;
 
 
 static void Input();
-static void Draw();
 
 // メイン関数
-int Network()
+int Network::Mode()
 {
 	Input();
 
@@ -73,7 +73,7 @@ int Network()
 				TraningSwitch(false);
 				AISwitch(false);
 				BattleMode(0);
-				ModeChange(SceneNum(SelectScene));
+				MainSystem::Instance().SetNextMode("Select");
 			}
 		}
 		else {
@@ -111,7 +111,7 @@ int Network()
 				TraningSwitch(false);
 				AISwitch(false);
 				BattleMode(0);
-				ModeChange(SceneNum(SelectScene));
+				MainSystem::Instance().SetNextMode("Select");
 			}
 		}
 		else {
@@ -125,54 +125,8 @@ int Network()
 	// 終了
 	if ((sPoint == 0) && (yPoint == 4) && (P1_BInput(1) == 1 || P1_BInput(2) == 1 || P1_BInput(3) == 1)){
 		SEStart(37);
-		ModeChange(SceneNum(MenuScene));
+		MainSystem::Instance().SetNextMode("Menu");
 	}
-
-	return 0;
-}
-
-//  ネットワーク読み込み
-int Load_Network()
-{
-	if (!load_f){
-		Ip.d1 = 0;
-		Ip.d2 = 0;
-		Ip.d3 = 0;
-		Ip.d4 = 0;
-
-		for (int i = 0; i < 5; i++){
-			port[i] = 0;
-		}
-		for (int i = 0; i < ip_x; i++){
-			for (int j = 0; j < ip_y; j++){
-				ip[i][j] = 0;
-			}
-		}
-		port[1] = 7;
-		port[2] = 5;
-
-		load_f = true;
-	}
-
-	Port = 0;
-	// UDP
-	UDPNetHandle = 0;
-	// TCP
-	DataLength = 0;
-
-	sPoint = 0;
-	yPoint = 0;
-	xPoint = 0;
-	nCheck = false;
-
-
-	for (int i = 0; i < sizeof(Data); i++){
-		Data[i] = 0;
-	}
-
-	//Main_GetNetwork(false);
-	Connect_GetCn(false);
-	NB_Reset();
 
 	return 0;
 }
@@ -361,7 +315,7 @@ void Input(){
 	}
 }
 
-void Draw(){
+void Network::Draw(){
 	// ポインター
 	DrawBox(0, yPoint * 20, 20, (yPoint + 1) * 20, Cr, true);
 	// テスト用位置表示
@@ -888,3 +842,57 @@ void Draw() {
 	}
 }
 */
+
+int Network::End() {
+	return 0;
+}
+
+void Network::Load_Reload() {
+	if (!load_f) {
+		Ip.d1 = 0;
+		Ip.d2 = 0;
+		Ip.d3 = 0;
+		Ip.d4 = 0;
+
+		for (int i = 0; i < 5; i++) {
+			port[i] = 0;
+		}
+		for (int i = 0; i < ip_x; i++) {
+			for (int j = 0; j < ip_y; j++) {
+				ip[i][j] = 0;
+			}
+		}
+		port[1] = 7;
+		port[2] = 5;
+
+		load_f = true;
+	}
+
+	Port = 0;
+	// UDP
+	UDPNetHandle = 0;
+	// TCP
+	DataLength = 0;
+
+	sPoint = 0;
+	yPoint = 0;
+	xPoint = 0;
+	nCheck = false;
+
+
+	for (int i = 0; i < sizeof(Data); i++) {
+		Data[i] = 0;
+	}
+
+	//Main_GetNetwork(false);
+	Connect_GetCn(false);
+	NB_Reset();
+}
+
+
+void Network::Load_1second() {
+}
+
+void Network::Release(void)
+{
+}

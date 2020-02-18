@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <iostream>	// 日付取得用
 #include <string>
+#include "MainSystem.h"
 #pragma warning(disable : 4996)	// fscanfのエラー表示を消す
 
 #define CO_MAX (4 + BUTTON_MAX)	// 上下左右、8ボタン
@@ -423,7 +424,7 @@ int P1_BCheck()
 			P1_NB[9] = 0;
 		}
 	}	// 1
-	return 0;	// 終わりっ！閉廷！
+	return 0;	// 終わり
 }
 
 // ボタン入力チェック
@@ -579,7 +580,7 @@ int P2_BCheck()
 	}// ネットワーク処理
 
 
-	return 0;	// 終わりっ！閉廷！
+	return 0;	// 終わり
 }
 
 void InputSend()
@@ -1175,7 +1176,7 @@ void KeySetting_Network()
 			myData[6] = P1_NB[104];
 			myData[7] = P1_NB[106];
 			myData[8] = P1_NB[108];
-			myData[9] = CheckGameMode();
+			//myData[9] = CheckGameMode();
 		}
 		//
 		/////////////////////////////////////////////
@@ -1473,7 +1474,7 @@ int Replay_LoadKey()
 			// 読み込み終了
 			if (input[i] == EOF){//ファイルの終わりなら
 				FileRead_close(ifp);
-				ModeChange(SceneNum(ReplayScene));
+				MainSystem::Instance().SetNextMode("Replay");
 				goto EXLOAD;//終了
 			}
 		}	// 基本ループ終了

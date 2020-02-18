@@ -54,17 +54,19 @@ int BGMStart(int num)
 		SetUseASyncLoadFlag(FALSE);
 
 		// 音量読み込み
-		volumeB = GetPrivateProfileInt("Config", "BGM", 10, "config.ini");
+		volumeB = GetPrivateProfileInt("Config", "BGM", 10, "./config.ini");
 		
 		// 音量設定
 		setB = (int)(volumeB * 23);
-		//if (setB > 255)setB = 255;
-		//else if (setB < 0)setB = 0;
+		
+		if (setB > 255)setB = 255;
+		else if (setB < 0)setB = 0;
+		
 		// ↑のかわり
-		max(0,min(255,setB));	// 右に今の数値を
+		//setB = max(0,min(255,setB));	// 右に今の数値を
 		// 音量の設定
 		for (int i = 0; i < BGM_MAX; i++){
-			ChangeVolumeSoundMem(setB, bgm[i]);
+			//ChangeVolumeSoundMem(255 * 0 / 100, bgm[i]);
 		}
 
 		n_bgm = 0;
@@ -75,8 +77,10 @@ int BGMStart(int num)
 		// 他のBGMを止める
 		StopSoundMem(bgm[i]);
 	}
-	//ChangeVolumeSoundMem(setB, bgm[num]);
+	
+	// BGM鳴らす
 	if (!noSound){
+		ChangeVolumeSoundMem(setB, bgm[num]);
 		// BGM最初から流さない
 		if (n_bgm == num)PlaySoundMem(bgm[num], DX_PLAYTYPE_LOOP, false);	//バックグラウンドで再生;
 		else{ PlaySoundMem(bgm[num], DX_PLAYTYPE_LOOP); }	//バックグラウンドで再生
@@ -110,12 +114,13 @@ int SEStart(int num2)
 		
 
 
-		volumeS = GetPrivateProfileInt("Config", "SE", 10, "config.ini");
+		volumeS = GetPrivateProfileInt("Config", "SE", 10, "./config.ini");
 
 		// SE版
 		setS = (int)(volumeS * 25);
 		if (setS > 255)setS = 255;
 		else if (setS < 0)setS = 0;
+		
 		// 音量の設定
 		for (int i = 0; i < SE_MAX; i++){
 			ChangeVolumeSoundMem(setS, se[i]);
@@ -128,6 +133,7 @@ int SEStart(int num2)
 
 	// 音を鳴らす
 	if ((se[num2] != 0) && (!noSound)){
+		ChangeVolumeSoundMem(setS, se[num2]);
 		PlaySoundMem(se[num2], DX_PLAYTYPE_BACK);	//バックグラウンドで再生
 	}
 

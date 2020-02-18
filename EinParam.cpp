@@ -110,8 +110,6 @@ void EinParam(void)
 					VelSet(0, 0);
 				}
 
-
-				
 				// 投げ無敵付与
 				/*
 				if (P1.Muteki == 10 && P1.time == 0 &&
@@ -160,7 +158,7 @@ void EinParam(void)
 			//********************
 			case 12:
 				P1.SFlg = 0;	//立ち判定に
-				// 最初にロック！
+				// 最初にロック
 				if (P1.time == 0)P1.Lock = 1;
 				// 操作が入ったらモーションキャンセル
 				if (P1.Key != 0)P1.time = 0, P1.stateno = 0, P1.SFlg = 0, P1.More = 1, P1.Lock = 0;
@@ -330,7 +328,6 @@ void EinParam(void)
 					DamReset();
 				}
 				
-
 				// ヒット時チェーン
 				if ((P1.CFlg) && (P1.time >= 5)){
 					// [ジャンプキャンセル]
@@ -440,9 +437,13 @@ void EinParam(void)
 				// 応急処置
 				if (P1.StopTime == 0){
 					if ((P1.CFlg) && (P1.time >= 8)){
-
+						// [ジャンプキャンセル]
+						if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
+							P1.stateno = 40, P1.More = 1,
+								P1.time = 0, P1.A.damage = 0;
+						}
 						// [通常技]
-						if (P1.Senkou[3] > 0){
+						else if (P1.Senkou[3] > 0){
 							// 6C
 							if ((key(6)) && (!key(2)) && (!key(8))){
 								P1.stateno = 225, P1.More = 1,
@@ -723,7 +724,7 @@ void EinParam(void)
 					SCancel();
 				}// キャンセル、連打キャンセル
 				if ((P1.button[1] == 1) && (P1.time >= 9) && (P1.stateno == 300)){
-					// 下要素が入ってるやん！
+					// 下要素が入ってる
 					if (P1.keyAtt[2]){
 						P1.More = 1, P1.time = 0, P1.A.damage = 0;
 					}
@@ -2136,7 +2137,7 @@ void EinParam(void)
 
 				// SEを鳴らす
 				if (P1.time == 1)SEStart(6);
-				// 最初にロック！
+				// 最初にロック
 				if (P1.time == 0)P1.Lock = 1;
 				// 前ジャンプ の 全体フレーム
 				if (P1.time >= ANIMELEM)P1.More = 1, P1.stateno = 0,

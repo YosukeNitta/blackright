@@ -1,0 +1,271 @@
+// 格闘ゲームのプログラム
+//
+#include <stdio.h>	// ファイル操作に必要なヘッダファイル
+#include <string.h>	// 文字列操作に必要なヘッダファイル
+
+#include "pch.h"
+/////////
+
+#include "Fps.h"
+#include "WindowInfo.h"
+
+#include "MainSystem.h"
+
+// vectorを使う
+#include <vector>
+using namespace std;
+
+#pragma warning(disable : 4996)	// fscanfのエラー表示を消す
+
+#pragma region	ローカル変数
+static int sw;			// スクショ
+static int window;			// ウィンドウ
+
+static boolean screenMode;		// スクリーンのモード
+static boolean drawFPS;			// FPS表示
+static int modeCount = 0;	// モードになってからの経過フレーム
+
+static boolean wait;	// 熱帯相手を待って、モードを動かさない
+//static int stop = 0;
+
+#pragma endregion
+
+// 各種項目
+static Fps fps;
+
+// メインシステムクラス
+//static MainSystem sy;
+
+//内部関数宣言部--------------------------------------------
+void Screen_Setting();
+void Game_Processing();
+void Game_Draw();
+void Game_Update();
+void Game_End();
+void Replay_DrawData();
+
+
+//プログラム部----------------------------------------------
+#pragma region メイン関数
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine, int nCmdShow)
+{
+	//画面設定
+	MainSystem::Instance();
+	Screen_Setting();
+
+	// ＤＸライブラリ初期化処理、エラーが起きたら直ちに終了
+	if (DxLib_Init() == -1){ return -1; }
+
+	// これでkeyconfig読み込み
+	P1_BConfig();
+
+	{
+		// 非同期読み込み設定に変更z 
+		//SetUseASyncLoadFlag(TRUE);
+
+		// 重いファイルを読み込む
+		GetDef();
+		LoadAllFile();
+		
+		// 同期読み込み設定に変更
+		//SetUseASyncLoadFlag(FALSE);
+	}
+	
+	// シーンを追加する
+	//ModeManager::Instance().AddMode("Title", new TitleMode);
+	//	シーン管理クラスで開始シーンを登録
+	//ModeManager::Instance().StartMode("Title");
+	//	実行
+	//ModeManager::Instance().Update();
+	
+	// ctrl + K + U or C
+
+	// 描画先を裏画面にセット
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	///-------------
+	//
+	// メインループ
+	//
+	//--------------
+	// while( メッセージ処理(必要らしい), ESC入力確認, ゲームモードが0じゃない )
+	while (ProcessMessage() == 0 && (CheckHitKey(KEY_INPUT_ESCAPE) == 0))
+	{
+		//----------
+		// 必須処理
+		//----------
+		{
+			// ゲーム進行がノーマルなら画面クリア
+			if (ClsDrawScreen() != 0)break;	// 画面初期化
+
+			// FPS更新
+			fps.Update();	// OK
+			// 準備
+			Game_Processing();
+		}
+		//------
+		// 描画
+		//------
+		{
+			//update
+			//draw
+			//filp
+			//wait
+			
+			Game_Draw();
+			//Replay_DrawData();
+			fps.Wait();		// 1フレーム経過するまで待機
+		}
+		//------------
+		// 画面の更新
+		//------------
+		{
+			Game_Update();
+			
+		}
+		ScreenFlip();	// 表示
+
+		// ループ終了
+		if (MainSystem::Instance().CheckEnd())
+			break;
+	}
+	// メインループ終了
+
+	// 終了処理
+	Game_End();
+
+	return 0;				// ソフトの終了 
+
+}//main終了
+#pragma endregion
+
+/////////////////////////////////////////////////////////////////////////////ここまで
+
+
+// 画面設定
+void Screen_Setting()
+{
+	//
+	// フォント読み込み
+	//
+
+	// iniでの設定を読み込む                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+	// 命令の名前、変数名、ない場合の値、場所
+	screenMode = GetPrivateProfileInt("Config", "windowmode", 1, "./config.ini");	// ./が必要(カレントフォルダ)
+	drawFPS = GetPrivateProfileInt("Config", "drawfps", 1, "./config.ini");
+
+	// タイトルを変更
+	SetMainWindowText("blackright");
+
+	// フルスクリーンモード時の解像度モードを4:3を使用するモードに設定
+	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
+
+	// フルスクリーンモード時の画面の拡大モードを最近点モードに設定
+	SetFullScreenScalingMode(DX_FSSCALINGMODE_NEAREST);
+
+	//ウィンドウモードに
+	ChangeWindowMode(screenMode);
+
+	// 画面モードの設定、サイズを測る
+	SetGraphMode(WindowInfo::width, WindowInfo::height, 16);
+
+	//SetChangeScreenModeGraphicsSystemResetFlag(FALSE);	// グラフィックハンドルのリセット防止
+														// ウィンドウサイズ変更時に消えないようにする
+
+	// 非アクティブ状態でも動く(動かさないと熱帯できない)
+	SetAlwaysRunFlag(true);
+
+	// 画面サイズを変更可能に
+	SetWindowSizeChangeEnableFlag(true);
+
+	//= 変数設定 ========
+	//wait = false;	// 対戦相手を待つ
+}
+
+// 入力・FPS更新処理
+#pragma region
+void Game_Processing()
+{
+	
+	// 入力
+	GetInput();	// コントローラが入っているか確認
+
+	// 繋がってるなら
+	if (Connect_CheckCn()){
+		Delay_Check();
+		Connect_SetGameMode();
+	}
+
+	// ボタン入力チェック、スロー時はなし
+	// 0～-nは操作する
+	P1_BCheck();
+	P2_BCheck();
+
+	// スクショの確認
+	if (CheckHitKey(KEY_INPUT_F1) != 0)sw++;
+	else { sw = 0; }
+
+	//Releaseモード時のみ表示したいときなんかは #ifndef _DEBUG で
+	//#ifdef _DEBUG
+	// 音の確認
+	if (CheckHitKey(KEY_INPUT_F2) != 0)StopSound(1);
+	else{ StopSound(0); }
+	//#endif
+
+	// モード毎処理
+	// ロード終了しているなら実行
+	if (GetASyncLoadNum() == 0){
+		MainSystem::Instance().MainMove();
+	}
+}
+#pragma endregion
+
+void Game_Draw()
+{
+	// 読み込み数を表示
+	if (GetASyncLoadNum() != 0){
+		int amari = GetASyncLoadNum() % 5;	// 5ずつ更新
+		// 非同期読み込みの数を描画
+		DrawFormatString(0, SCREEN_H - 20, Cr, "残りファイル %d", GetASyncLoadNum() - amari);
+	}
+
+	//sy.MainDraw();	// FPS等を描画
+	if (drawFPS) { fps.Draw(SCREEN_W - 80, 0); }
+}
+
+/// <summary>
+/// 情報の更新
+/// </summary>
+void Game_Update()
+{
+	// ネットワークに接続中
+	if (Connect_CheckCn()){
+		DrawString(0, SCREEN_H - 20, "接続中", Cr);
+		Delay_Draw();	// ディレイ表示
+		DrawFormatString(0, SCREEN_H - 60, Cr, "side..%d", Connect_CheckSide());
+		DrawFormatString(0, SCREEN_H - 40, Cr, "port..%d", Connect_CheckPort());
+	}
+	// スクリーンショット
+	if (sw == 1){
+		ScreenShot();
+	}
+}
+
+// 終了処理
+void Game_End()
+{
+	BGMStart(0);
+	// ネットワーク切断
+	if (Connect_CheckCn())End_Network();
+	// リプレイ終了
+	if (Replay_Mode(-1) > 0)Replay_End();
+	// トレモ設定保存
+	Tlist_Save();
+	DxLib_End();				// ＤＸライブラリ使用の終了処理
+}
+
+void Replay_DrawData()
+{
+	DrawFormatString(SCREEN_W - 100, SCREEN_H - 20, GetColor(10,10,255), "状態..%d", Replay_Mode(-1));
+}

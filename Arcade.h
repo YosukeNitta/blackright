@@ -1,17 +1,18 @@
 #pragma once
 
 #include "SData.h"
-using namespace modeData;
 
 
 // public で前のクラスのものも使える
-class Arcade : public ModeData {
+class Arcade : public MData {
 
 public:
-	int Arcade::Mode();
+	int Mode();
 	// メニュー描画
-	void Arcade::Draw();
+	void Draw();
 
-	int Arcade::Load_Reload();
-	void Arcade::Load_1second();
+	void Load_Reload();
+	void Load_1second();
+	// 解放
+	void Release();
 };

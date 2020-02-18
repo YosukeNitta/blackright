@@ -68,10 +68,10 @@ int Helper_Graph()
 			if (H1[i].var){
 				// N1, N2 を取得
 				// H1[i].HImage = P1.GraphImage[H1[i].aNum1][H1[i].aNum2];
-				H1[i].Image = pict[P1.PSide - 1][H1[i].aNum1][H1[i].aNum2];
+				H1[i].image = pict[P1.PSide - 1][H1[i].aNum1][H1[i].aNum2];
 
 				// 画像サイズ取得 P1,2
-				GetGraphSize(H1[i].Image, &H1[i].HGraphW, &H1[i].HGraphH);
+				GetGraphSize(H1[i].image, &H1[i].HGraphW, &H1[i].HGraphH);
 
 				// 時間計測
 				//H1[i].time += 1;

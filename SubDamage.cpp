@@ -827,6 +827,12 @@ void HitParam()
 		P2.YVel = 0;
 	}
 
+	// [‹ó“Š‚°ˆ—]
+	if (P1.stateno == 510) 
+	{
+		P1.YVel = 0;
+	}
+
 	// [d—Í]
 	P2.D.yaccel = P1.A.yaccel;
 
@@ -971,13 +977,14 @@ boolean GuardCheck()
 			if((P1.GuardF == 1) || (P1.GuardF == 2))
 			gu = true;
 		}
+		// Žž‚Â•—
 		if ((P2.stateno == 610) &&
-			((gTime >= 3) && (gTime <= 16))) {
+			((gTime >= 4) && (gTime <= 13))) {
 			if ((P1.GuardF == 1) || (P1.GuardF == 2))
 				gu = true;
 		}
 		if ((P2.stateno == 611) &&
-			((gTime >= 3) && (gTime <= 16))) {
+			((gTime >= 4) && (gTime <= 13))) {
 			if ((P1.GuardF == 3) || (P1.GuardF == 13))
 				gu = true;
 		}

@@ -13,7 +13,6 @@
 //*****
 // Main
 //*****
-void ModeChange(int num);
 
 //int Key_Save(void);
 //int Key_Load(void);
@@ -21,7 +20,6 @@ void ModeChange(int num);
 //int OutSend(int i);
 
 // ƒQ[ƒ€ƒ‚[ƒhæ“¾
-int CheckGameMode();
 //void Main_GetNetwork(boolean net);
 //boolean Main_CheckNetwork();
 
@@ -51,7 +49,7 @@ void Select_ReturnCursor();
 /****
 * Versus
 ****/
-int Versus();		//‘Îí
+//int Versus();		//‘Îí
 
 void PauseSetting(int n1);
 void Load_Versus();
@@ -74,17 +72,6 @@ void raw_set();
 ****/
 int Config();
 void Load_Config();
-
-//=======
-// Title
-//=======
-int Title();
-
-//=======
-// NetWork
-//=======
-int Network();
-int Load_Network();
 
 //=======
 // Arcade

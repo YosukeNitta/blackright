@@ -4,7 +4,7 @@
 //#include <list>
 //using namespace std;
 #include "Menu.h"
-using namespace modeData;
+#include "MainSystem.h"
 
 //static boolean load_1 = false;
 //static boolean load_f = false; //一度のみ
@@ -108,7 +108,8 @@ int Menu::Mode()
 			Arcade_Switch(1);
 			BattleMode(3);
 			WinCount(0);
-			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			//ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			MainSystem::Instance().SetNextMode("Select");
 		}
 		// 対戦
 		if ((kettei == 1) && (TimeStop > 10) && (SPoint == 1)) {
@@ -117,7 +118,8 @@ int Menu::Mode()
 			Arcade_Switch(0);
 			BattleMode(0);
 			WinCount(0);
-			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			//ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			MainSystem::Instance().SetNextMode("Select");
 		}
 		// VS.AI
 		if ((kettei == 1) && (TimeStop > 10) && (SPoint == 2)) {
@@ -126,14 +128,16 @@ int Menu::Mode()
 			Arcade_Switch(0);
 			BattleMode(2);
 			WinCount(0);
-			ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			//ModeChange(SceneNum(SelectScene));	// キャラセレへ
+			MainSystem::Instance().SetNextMode("Select");
 		}
 		// トレモ
 		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 3)) {
 			TraningSwitch(true);
 			AISwitch(false);
 			BattleMode(1);
-			ModeChange(SceneNum(SelectScene));	// トレモ起動してからキャラセレへ
+			//ModeChange(SceneNum(SelectScene));	// トレモ起動してからキャラセレへ
+			MainSystem::Instance().SetNextMode("Select");
 		}
 		/*
 		// ネットワーク
@@ -144,22 +148,29 @@ int Menu::Mode()
 		*/
 		// リプレイ再生
 		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 4)) {
-			ModeChange(SceneNum(ReplayScene));	// 
+			//ModeChange(SceneNum(ReplayScene));	// 
+			MainSystem::Instance().SetNextMode("Replay");
 		}
 		// 終了
 		else if ((kettei == 1) && (TimeStop > 10) && (SPoint == 5)) {
 			//ModeChange(4);
-			ModeChange(0);	// 終了
+			//ModeChange(0);	// 終了
+			MainSystem::Instance().EndMainSystem();
+		}
+
+		// F3でネット対戦準備
+		if (CheckHitKey(KEY_INPUT_F3) != 0) {
+			MainSystem::Instance().SetNextMode("Network");
 		}
 
 		// タイトルへ戻る
 		if (P_BInput(2) == 1) {
-			ModeChange(SceneNum(TitleScene));
+			MainSystem::Instance().SetNextMode("Title");
 			SEStart(49);
 			BGMStart(0);
 		}
 		// ネットワークに繋いでたなら終了
-		if (Connect_CheckCn())ModeChange(0);	// 終了
+		//if (Connect_CheckCn())ModeChange(0);	// 終了
 
 
 	}//全体を終了
@@ -280,7 +291,7 @@ int Menu::End() {
 	return 0;
 }
 
-int Menu::Load_Reload(){
+void Menu::Load_Reload(){
 	Anten(255);
 
 	// BGM読み込み
@@ -292,8 +303,6 @@ int Menu::Load_Reload(){
 
 	// リプレイ終了(念のため)
 	Replay_End();
-
-	return 0;
 }
 
 
@@ -314,4 +323,8 @@ void Menu::Load_1second(){
 	hozon = mode[5];
 	mode[5] = mode[6];
 	mode[6] = hozon;
+}
+
+void Menu::Release(void)
+{
 }

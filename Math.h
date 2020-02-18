@@ -122,8 +122,8 @@ void Traning_P2Command(int command[20]);
 //--------
 // result
 //--------
-int Result();
-void Load_Result();
+//int Result();
+//void Load_Result();
 void Result_WinSide(int i, int chara, int chara2);
 void WinCount(int side);
 void Result_GetData(int c1, int c2, int cl1, int cl2, int stage);

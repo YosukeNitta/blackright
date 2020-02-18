@@ -3,7 +3,7 @@
 
 // メニュー部分
 #include "Replay.h"
-using namespace modeData;
+#include "MainSystem.h"
 
 // ファイル名準備
 #include <windows.h>
@@ -68,7 +68,7 @@ int Replay::Mode()
 {
 	if (P_BInput(2) == 1){
 		SEStart(37);
-		ModeChange(SceneNum(MenuScene));	// キャラセレへ
+		MainSystem::Instance().SetNextMode("Menu");
 	}
 	// キャラ、カラー、ステージ　を読み込む
 	else if (((P_BInput(1) == 1) || (P_BInput(3) == 1)) && (repName.size() > 0)){
@@ -96,7 +96,7 @@ int Replay::Mode()
 		Key_GetString(repName[yPos + (xPos * 7)]);
 		Replay_Mode(1);
 		
-		ModeChange(SceneNum(VersusScene));
+		MainSystem::Instance().SetNextMode("Versus");
 	}
 	// キャラ、カラー、ステージ　を読み込む
 	// リプレイデータ削除
@@ -178,7 +178,7 @@ void Replay::Draw()
 	//DrawFormatString(0, SCREEN_H - 20, Cr, "ファイル数%d", repName.size());
 }
 
-int Replay::Load_Reload()
+void Replay::Load_Reload()
 {
 	fileCount = 0;
 	// repファイルロード
@@ -193,7 +193,6 @@ int Replay::Load_Reload()
 	// BGM読み込み
 	BGMStart(11);
 
-	return 0;
 }
 
 void Replay::Load_1second()
@@ -224,6 +223,10 @@ void Replay::Load_1second()
 	SetTransColor(0, 0, 0);
 	// 使い終わったら解放
 	DeleteSoftImage(handle);
+}
+
+void Replay::Release(void)
+{
 }
 
 // リプレイ設定を持ってくる

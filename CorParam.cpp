@@ -154,7 +154,7 @@ void CorParam(void)
 			//********************
 		case 12:
 			P1.SFlg = 0;	//立ち判定に
-			// 最初にロック！
+			// 最初にロック
 			if (P1.time == 0)P1.Lock = 1;
 			// 操作が入ったらモーションキャンセル
 			if (P1.Key != 0)P1.time = 0, P1.stateno = 0, P1.SFlg = 0, P1.More = 1, P1.Lock = 0;
@@ -184,11 +184,11 @@ void CorParam(void)
 			P1.XVel = P1.C.runF[0]; //速度を足す
 			
 			//if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * (P1.AnimTime + 1)); //速度を足す;
-			if (P1.AnimTime < 4)P1.XVel = 0.1; //速度を足す
+			if (P1.AnimTime <= 8)P1.XVel = P1.C.runF[0] * (0.1 * ((float)P1.AnimTime + 1)); //速度を足す;
+			if (P1.AnimTime <= 6)P1.ctrl = 0; //速度を足す
 																					 // SEを鳴らす
 			if ((P1.time == 14) || (P1.time == 31))SEStart(4);
 			if (P1.time > ANIMELEM)P1.time = 0;
-
 
 			break;
 		case 35:	// バックステップ
@@ -798,7 +798,7 @@ void CorParam(void)
 
 			// キャンセル、連打キャンセル
 			if ((P1.button[1] == 1) && (P1.time >= 9) && (P1.stateno == 300)){
-				// 下要素が入ってるやん！
+				// 下要素が入ってる
 				if (P1.button[102] != 0){
 					P1.More = 1, P1.time = 0, P1.A.damage = 0;
 				}
@@ -1037,7 +1037,7 @@ void CorParam(void)
 			//-----------------
 			// スラ
 			if ((P1.button[3] == 1) && (P1.time >= ANIMELEM - 16) && (!P1.CFlg)){
-				// 下要素が入ってるやん！
+				// 下要素が入ってる
 				if (key(2)){
 					P1.More = 1, P1.time = 0, P1.A.damage = 0;
 					P1.stateno = 321;
@@ -1322,7 +1322,7 @@ void CorParam(void)
 			VelSet(0, 0);
 			// SEを鳴らす
 			if (P1.time == 1)SEStart(6);
-			// 最初にロック！
+			// 最初にロック
 			if (P1.time == 0)P1.Lock = 1;
 			// 前ジャンプ の 全体フレーム
 			if (P1.time >= ANIMELEM)P1.More = 1, P1.stateno = 0,

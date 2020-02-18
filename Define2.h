@@ -278,7 +278,7 @@ void HelperReset(int i)
 	H1[i].var = false;
 
 	H1[i].time = 0, H1[i].HAnimTime = 0;
-	H1[i].Image = 0;
+	H1[i].image = 0;
 	H1[i].GSize = P1.GSize;
 	H1[i].Alpha = false;
 
