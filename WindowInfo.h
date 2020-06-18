@@ -5,6 +5,6 @@
 class WindowInfo
 {
 public:
-	static const int width = 640;		//	‰æ–Ê‰¡•
+	static const int width = 640;	//	‰æ–Ê‰¡•
 	static const int height = 480;	//	‰æ–Êc•
 };

@@ -968,7 +968,7 @@ void SyuParam(void)
 				HitTime(10, 22, 22, 20);
 				// [ノックバック]
 				HitVel(-4.2, 0, -2.8, -2.8);
-				GuardVel(-6.4, -4.0);
+				GuardVel(-2.8, -1.2);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -1790,9 +1790,9 @@ void SyuParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(0, 80);
+				Damage(0, 60);
 				// [ゲージ] 
-				Power(140);
+				Power(110);
 				HitTime(2, 45, 45, 0);
 				// [ノックバック]
 				HitVel(-3.0, 0, 0, 0);
@@ -1893,7 +1893,7 @@ void SyuParam(void)
 				P1.A.hitEff = 2;
 			}
 			// 当たったら変更
-			if ((P1.CFlg) && (P1.time >= 7)) {
+			if ((P1.CFlg) && (P1.time >= 5)) {
 				P1.stateno = 515;
 				P1.time = 0, P2.time = 0;
 				P1.More = 1;
@@ -1986,9 +1986,9 @@ void SyuParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(170, 10);
+				Damage(150, 10);
 				// [ゲージ] 
-				Power(300);
+				Power(270);
 
 				HitTime(6, 100, 100, 0);
 				// [ノックバック]
@@ -2545,6 +2545,7 @@ void SyuParam(void)
 				HitTime(0, 60, 60, 22);
 				// [ノックバック]
 				HitVel(-3.2, 0, -1.4, -2.0);
+				GuardVel(-0.1, -0.1);
 				// 一発目
 				if (P1.time < 14) {
 					if (P2.SFlg != 2) {
@@ -2574,9 +2575,10 @@ void SyuParam(void)
 				// [ゲージ] 
 				Power(0, 100);
 
-				HitTime(10, 100, 100, 12);
+				HitTime(10, 100, 100, 2);
 				// [ノックバック]
 				HitVel(-5.0, -3.6, -4.8, -3.2);
+				GuardVel(-0.1, -0.1);
 
 				P1.HitAnim = 1030;	// 空中喰らい
 				// [喰らい中の浮き]

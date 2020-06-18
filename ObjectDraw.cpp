@@ -88,6 +88,10 @@ static int mHXH[2][HM], mHYH[2][HM], mHWH[2][HM], mHHH[2][HM];
 static int m_KeyPos, m_Key;
 static int m_Button[4];
 
+// デバッグ用
+static bool debugDraw;
+static int debug_sw;
+
 // 画面の明るさ
 static int blackOut;
 #pragma endregion
@@ -448,8 +452,8 @@ void ObjectDraw()
 			m_AllDamage = 0;
 		}
 		if (P2.HFlg){
-			m_AllDamage = m_P2_SLife - P2.Life;
-			m_DisplayDamage = m_AllDamage;
+			//m_AllDamage = m_P2_SLife - P2.Life;
+			m_DisplayDamage = m_AllDamage;	// ダメージ表示
 		}
 
 		/**************
@@ -805,10 +809,21 @@ void BoxCheck()
 		if (S.TSwitch[2] <= 2)DrawFormatString(500, 140, Cr, "ダミー");
 		else if (S.TSwitch[2] == 3)DrawFormatString(500, 140, Cr, "プレイヤー操作");
 		else if (S.TSwitch[2] == 4)DrawFormatString(500, 140, Cr, "コンピュータ");
-		//else if (S.TSwitch[7] == 0)DrawFormatString(500, 140, Cr, "通常");
-		//else if (S.TSwitch[7] > 3)DrawFormatString(500, 140, Cr, "何かおかしい");
 
-		//DrawFormatString(500, 160, Cr, "%d", sizeof(Versus()));
+		// デバッグ //
+		if (CheckHitKey(KEY_INPUT_F4) != 0)debug_sw++;
+		else { debug_sw = 0; }
+
+		if (debug_sw == 1) {
+			if (debugDraw)debugDraw = 0;
+			else { debugDraw = 1; }
+		}
+
+		if (debugDraw) {
+			DrawFormatString(500, 160, Cr, "SFLG:%d :%d", P1.SFlg, P2.SFlg);
+			DrawFormatString(500, 180, Cr, "ctrl:%d :%d", P1.ctrl, P2.ctrl);
+			DrawFormatString(500, 200, Cr, "lock:%d :%d", P1.Lock, P2.Lock);
+		}
 
 		// ヘルパー
 		//DrawFormatString(500, 160, Cr, "W.%d time.%d", H1[18].WAtt[1], H1[18].time);
@@ -1223,6 +1238,12 @@ void TestChar(char ch[], int size)
 void AttackSpeed(int i)
 {
 	aSpeed = i;
+}
+
+// ダメージ
+void Damage_Check(int i)
+{
+	m_AllDamage += i;
 }
 
 // フレームチェック

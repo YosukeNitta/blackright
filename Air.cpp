@@ -138,18 +138,12 @@ void load_air(int na, int pSide)
 		// Å‰‚É”šˆµ‚¢‚É‚µ‚ÄA•¶š‚ª“ü‚Á‚Ä‚½‚ç•ÏX‚·‚é
 		iflg = false;
 		{
-			if (inputc[0] == '0')iflg = true;
-			else if (inputc[0] == '1')iflg = true;
-			else if (inputc[0] == '2')iflg = true;
-			else if (inputc[0] == '3')iflg = true;
-			else if (inputc[0] == '4')iflg = true;
-			else if (inputc[0] == '5')iflg = true;
-			else if (inputc[0] == '6')iflg = true;
-			else if (inputc[0] == '7')iflg = true;
-			else if (inputc[0] == '8')iflg = true;
-			else if (inputc[0] == '9')iflg = true;
-			else if (inputc[0] == '-')iflg = true;
-
+			if (inputc[0] == '0' || inputc[0] == '1' ||
+				inputc[0] == '2' || inputc[0] == '3' || 
+				inputc[0] == '4' || inputc[0] == '5' || 
+				inputc[0] == '6' || inputc[0] == '7' || 
+				inputc[0] == '8' || inputc[0] == '9' ||
+				inputc[0] == '-')iflg = true;
 
 			// “Áê(HV‚Ì”»’è)
 			if ((flg == 5) && (num == 5)){
@@ -172,9 +166,7 @@ void load_air(int na, int pSide)
 					air[anum].B[bo].HV = 3;
 					iflg = true;
 				}
-
 			}
-
 
 		}
 

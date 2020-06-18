@@ -270,9 +270,6 @@ boolean H_triggerT(int i, int j, int k)
 //
 //-------------------------------------------------------------------------------
 
-
-
-
 void HelperReset(int i)
 {
 	H1[i].var = false;

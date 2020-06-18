@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include "SData.h"
+#include "Fps.h"
 
 #include "Title.h"
 #include "Menu.h"
@@ -19,6 +20,8 @@ private:
 	MData* _nextMode;	//	現在実行しているシーン
 	int _currentState = 0;	// 0で開始 1でUpdate 2でリリース
 	bool _endMainSystem = false;
+	Fps _fps;
+	boolean _drawFPS;			// FPS表示
 
 	// シングルトンクラスなのでコンストラクタ周りを隠す
 	// コンストラクタ
@@ -34,6 +37,9 @@ private:
 		_currentMode = _modes["Title"];	// 初期モード決定
 		_nextMode = _currentMode;
 		//_currentMode->Load_First();	// 読み込み
+
+		// 設定
+		_drawFPS = GetPrivateProfileInt("Config", "drawfps", 1, "./config.ini");
 	}
 	//MainSystem(const MainSystem&) {}
 	//MainSystem& operator=(const MainSystem&) {}
@@ -42,7 +48,9 @@ public:
 	static MainSystem& Instance();
 
 	// メインメソッド(これに各種モード)
-	void MainMove();
+	void MainLoop();
+
+	void Update();
 
 	void MainDraw()
 	{

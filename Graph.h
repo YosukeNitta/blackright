@@ -33,6 +33,8 @@ void GetH_ObjectDraw(Helper GH1[], Helper GH2[]);
 void TestText(int i, int pos);
 void TestChar(char ch[], int size);
 void AttackSpeed(int i);
+// É_ÉÅÅ[ÉW
+void Damage_Check(int i);
 void Frame_Check();
 void Beat_Check(int state, int pside);
 void ObjectDraw_KeyDisplay();

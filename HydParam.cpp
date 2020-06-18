@@ -1232,9 +1232,9 @@ void HydParam(void)
 				//ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(0, 40);
+				Damage(0, 30);
 				// [ゲージ] 
-				Power(50);
+				Power(35);
 				HitTime(0, 45, 45, 0);
 				// [ノックバック]
 				HitVel(0, 0, 0, 0);
@@ -1334,7 +1334,7 @@ void HydParam(void)
 				P1.A.hitEff = 2;
 			}
 			// 当たったら変更
-			if ((P1.CFlg) && (P1.time >= 7)){
+			if ((P1.CFlg) && (P1.time >= 5)){
 				P1.stateno = 515;
 				P1.time = 0, P2.time = 0;
 				P1.More = 1;
@@ -1426,9 +1426,9 @@ void HydParam(void)
 					ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(170, 10);
+				Damage(150, 10);
 				// [ゲージ] 
-				Power(300);
+				Power(270);
 
 				HitTime(0, 100, 100, 0);
 				// [ノックバック]
@@ -2144,6 +2144,14 @@ void HydParam(void)
 				VelSet(-0.8, 0);
 				if (P1.time == 52)VelSet(-5.4, 0);
 				SEStart(40);
+
+				
+			}
+
+			if (P1.time == 114) {
+				EffStartB(16, P1.XPos, P1.YPos, 0, -(P1.ySize / 1.5),
+					0.25, 0.25, P1.muki);
+				P1.Var[10] = 180 * 6;
 			}
 
 			// 終了

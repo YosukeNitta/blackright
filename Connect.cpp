@@ -1,12 +1,16 @@
 #include "pch.h"
+#include "NetData.h"
 
 static const int PUT_MAX = 10;	// 記録するフレームの最大
 static const int DATA_MAX = 10;
 
+
+static NetData* netData;	// ネットワーク設定に関するデータ
 // 接続
 static boolean network = false;
 // 0.なし 1.ホスト 2.クライアント
 static int connectSide = 0;
+
 // 相手のIPアドレス
 static IPDATA Ip;
 // ネットワークハンドル
@@ -65,11 +69,17 @@ int Connect_CheckPort()
 	return Port;
 }
 
+// ネットデータ取得
+void Connect_GetNetData(NetData* gNetData) 
+{
+	netData = gNetData;
+}
+
 // ハンドル取得
 void Connect_GetNetHandle(int num)
 {
 	NetHandle = num;
-}\
+}
 // ハンドル確認
 int Connect_CheckNetHandle()
 {

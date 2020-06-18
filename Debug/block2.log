@@ -1,2 +1,15 @@
-﻿  Sound.cpp
+﻿  ObjectDraw.cpp
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(277,20): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(281,20): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(338,16): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(341,31): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(352,31): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(358,11): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(357,18): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(383,28): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(602,60): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(609,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(666,54): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\ObjectDraw.cpp(267,21): warning C4101: 'yp2': ローカル変数は 1 度も使われていません。
   block2.vcxproj -> C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Debug\blackright.exe

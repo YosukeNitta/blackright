@@ -12,11 +12,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   HydParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HydParam.cpp(2031,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HydParam.cpp(2031,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HydParam.cpp(2071,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -28,11 +28,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HydParam.cpp(2680,27): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
   EriParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EriParam.cpp(1252,21): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EriParam.cpp(1251,44): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EriParam.cpp(1251,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -68,11 +68,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   SameParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SameParam.cpp(264,20): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SameParam.cpp(274,21): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SameParam.cpp(278,23): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
@@ -111,29 +111,29 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
   コンパイル中...
   EinParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1202,25): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1202,11): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1201,74): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1882,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1882,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2022,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2022,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2042,25): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2067,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2067,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2127,26): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2126,31): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2126,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2159,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2159,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2240,24): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2239,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2715,100): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1913,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(1913,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2053,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2053,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2073,25): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2098,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2098,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2158,26): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2157,31): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2157,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2190,37): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2190,22): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2271,24): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2270,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\EinParam.cpp(2829,100): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
   Fps.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   HelDamage.cpp
@@ -204,10 +204,10 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(239,1): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message : 'sprintf' の宣言を確認してください
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(823,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(821,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(837,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(835,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(799,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(797,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(813,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Select.cpp(811,52): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
   Sound.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   State.cpp
@@ -252,11 +252,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   SyuParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(396,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2049,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2049,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -266,13 +266,13 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2449,42): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2511,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2511,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2651,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2651,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2665,108): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2665,63): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2665,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2733,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2733,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2653,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2653,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2667,108): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2667,63): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2667,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2735,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\SyuParam.cpp(2735,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   Title.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   Traning.cpp
@@ -282,11 +282,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   BouParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\BouParam.cpp(80,24): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\BouParam.cpp(79,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\BouParam.cpp(79,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -318,11 +318,11 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\BouParam.cpp(3023,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   CorParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\CorParam.cpp(1516,24): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\CorParam.cpp(1516,10): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\CorParam.cpp(1515,73): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -350,61 +350,61 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\CorParam.cpp(3452,42): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
   HelParam.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(372,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(371,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(401,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(400,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1489,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1488,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1488,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1488,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1551,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1550,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1550,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1550,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1630,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1629,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1629,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1629,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1900,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1900,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1961,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1961,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2021,24): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2020,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2020,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2156,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2156,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2165,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2164,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2164,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2164,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2269,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2269,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2297,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2297,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2304,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2304,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2326,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2326,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2458,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2459,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2460,52): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2464,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2463,35): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2463,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2488,23): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2490,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2491,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2496,23): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2561,55): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2561,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2637,27): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2635,55): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2635,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2650,25): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2786,97): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(369,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(368,19): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(398,20): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define2.h(397,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1492,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1491,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1491,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1491,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1554,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1553,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1553,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1553,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1633,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1632,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1632,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1632,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1903,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1903,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1964,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(1964,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2024,24): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2023,40): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2023,26): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2159,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2159,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2168,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2167,41): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2167,29): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2167,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2272,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2272,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2300,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2300,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2307,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2307,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2329,36): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2329,21): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2461,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2462,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2463,52): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2467,25): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2466,35): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2466,20): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2491,23): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2493,17): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2494,27): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2499,23): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2564,55): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2564,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2640,27): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2638,55): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2638,43): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2653,25): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\HelParam.cpp(2789,97): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
   Effect.cpp
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Effect.cpp(34,77): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
@@ -456,6 +456,6 @@ C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_ne
 C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Define.h(33,2): warning C4091: 'static ': 変数が何も宣言されていないときは、'SceneNum' の左辺を無視します。
   コード生成しています。
   Previous IPDB not found, fall back to full compilation.
-  All 1921 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 1926 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   コード生成が終了しました。
   block2.vcxproj -> C:\Users\babu9\OneDrive\ドキュメント\Visual Studio 2017\Projects\block2_network_2\Release\blackright.exe

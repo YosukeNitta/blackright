@@ -166,10 +166,16 @@ int EinCmd()
 				P1.stateno = 600;
 				if (P1.Senkou[1] > P1.Senkou[2]){
 					if (P1.Senkou[1] > P1.Senkou[3])P1.Var[6] = 1;
-					else{ P1.Var[6] = 3; }
+					else{ 
+						//P1.Var[6] = 3; 
+						P1.stateno = 602;
+					}
 				}
 				else if (P1.Senkou[2] > P1.Senkou[3])P1.Var[6] = 2;
-				else{ P1.Var[6] = 3; }
+				else{ 
+					//P1.Var[6] = 3; 
+					P1.stateno = 602;
+				}
 			}
 		}
 		else if (P1.SFlg == 2){	// ‹ó’†

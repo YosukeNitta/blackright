@@ -2,6 +2,7 @@
 #include <iostream>	// 日付取得用
 #include <string>
 #include "MainSystem.h"
+#include "NetData.h"
 #pragma warning(disable : 4996)	// fscanfのエラー表示を消す
 
 #define CO_MAX (4 + BUTTON_MAX)	// 上下左右、8ボタン
@@ -16,7 +17,7 @@ static int Port;
 static int network_side = 0;	// 1,1P 2,2P
 
 static const int PUT_MAX = 10;	// 記録するフレームの最大
-static const int DATA_MAX = 10;
+static const int DATA_MAX = 10;	// どう違うわけ？
 
 static int P1_NB[PAD_MAX]; 
 
@@ -38,6 +39,13 @@ static int net_time = 1;
 // [ パケットロス ] //
 static int lostKey = 0;
 
+//===================================
+// [ UDP ] //
+static int UDPNetHandle;        // ネットワークハンドル
+static int NetHandle;    // ネットワークハンドル
+//static int DataLength;            // 受信データ量保存用変数
+
+//===================================
 // [ リプレイ ] //
 static int replayMode = 0;	// 0.なし 1.再生 2.録画
 static int rTimeCount;
@@ -46,12 +54,6 @@ static FILE *fp;
 static int r_color[2], r_name[2], r_stage;	// リプレイ用データ
 static string gString;
 static int r_key[2][8];
-
-//===================================
-// [ UDP ] //
-static int UDPNetHandle;        // ネットワークハンドル
-static int NetHandle, LostHandle;    // ネットワークハンドル
-//static int DataLength;            // 受信データ量保存用変数
 
 //===================================
 // [ コントローラ設定 ]

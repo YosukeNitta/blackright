@@ -15,13 +15,17 @@ static void PSetSend();
 static char t_State[6] = { "State" };	// sffno
 static char t_sflg[5] = { "sflg" };
 static char t_ctrl[5] = { "ctrl" };
+
+static char t_type[5] = { "type" };
+static char t_value[6] = { "value" };
+
 static char t_time[5] = { "time" };
 static char t_lock[5] = { "lock" };
 static char t_advancing[10] = { "advancing" };
 
 static char t_S[2] = { "S" };
 static char t_trigger1[9] = { "trigger1" };
-static char t_icoico[5] = { "t_==" };
+static char t_icole[2] = { "=" };
 
 class Flag{
 public:
@@ -36,27 +40,34 @@ public:
 };
 
 // アクション内容、ステートによって数はまちまち
+/*
 class ActState{
 public:
-	int actionNum;	// 番号で命令を決める
-	int num[4];	// 命令で代入する数字
+	int typeNum;	// 番号で命令を決める
+	int value[4];	// 命令で代入する数字
 	ActState(){
-		actionNum = 0;
+		typeNum = 0;
 		for (int i = 0; i < 4; i++){
-			num[i] = 0;
+			value[i] = 0;
 		}
 	}
 };
+*/
 
 // 実行するアクション内容
 class Action{
 public:
+	int typeNum;	// 番号で命令を決める
 	vector<Flag>flg;		// 実行する条件
-	vector<ActState>aSt;	// アクションの内容
+	int value[4];	// 命令で代入する数字
+	//vector<ActState>aSt;	// アクションの内容
 					// flgの条件が許可された時に実行
 					// 数はまちまち
 	Action(){
-
+		typeNum = 0;
+		for (int i = 0; i < 4; i++) {
+			value[i] = 0;
+		}
 	}
 };
 
@@ -64,7 +75,7 @@ public:
 class State{
 public:
 	int num;	// ステート番号
-	boolean ctrl;
+	boolean ctrl;	// -1なら変更しない
 	int sflg;
 	vector<Action>act;	// 実行するアクションと条件
 						// 数はステートによってまちまち
@@ -90,10 +101,15 @@ void Load_StateDef(int name){
 
 	int i, fp;
 	int row, nextSt;	// セットするシステム
+	int type;	// セットする内容の番号
 	//int trigger;	// トリガー設定、0..なし 1..条件 2..条件でのアクション
+	int actNum;	// アクションの登録番号
+	int triggerNum;	// -1..使わない 0..x 1..=とか 2..y 
 	int icole;	// イコール、フラグの比較に使う  -1..なし 0..== 1..>= 2..<=
 	row = -2;
 	nextSt = -1;
+	actNum = -1;
+	triggerNum = -1;
 	icole = -1;
 
 	int input[NAME_MAX];
@@ -179,8 +195,9 @@ void Load_StateDef(int name){
 			else if (inputc[0] == '-')iflg = true;
 		}
 
-		// 名前だったら
+		// 数字だったら
 		if (iflg){
+			// 命令の番号
 			switch (row)
 			{
 			case 0:	// stateNum
@@ -194,14 +211,30 @@ void Load_StateDef(int name){
 			case 2:	// ctrl
 				St[name][nextSt].ctrl = atoi(inputc);
 				break;
+
+			case 3:	// type
+				St[name][nextSt].act[actNum].typeNum = atoi(inputc);
+				break;
+			case 4:	// value
+				St[name][nextSt].act[actNum].value[0] = atoi(inputc);
+				break;
+
 			case 10:	// time
 				//St[name][nextSt].act[0].aSt[0].num[0];
 				break;
+			/*
 			case 11:	// lock
-				//St[name][nextSt].act[0].aSt[0].num[0] = atoi(inputc);
+				St[name][nextSt].act[0].value = atoi(inputc);
 				break;
+				*/
 			case 12:	// advancing
 				//St[name][nextSt].act[0].aSt[0].num[0] = atoi(inputc);
+				break;
+			case 13:	// trigger中の最後
+				if (triggerNum == 2) {
+					St[name][nextSt].act[actNum].flg[0].num[triggerNum] = atoi(inputc);
+					triggerNum++;
+				}
 				break;
 			default:
 				break;
@@ -214,6 +247,8 @@ void Load_StateDef(int name){
 			// "State"
 			if (strcmp(inputc, t_State) == 0){
 				row = 0;
+				actNum = -1;
+				triggerNum = -1;	// トリガーを初期化
 			}
 			// "sflg"
 			if (strcmp(inputc, t_sflg) == 0){
@@ -223,13 +258,31 @@ void Load_StateDef(int name){
 			if (strcmp(inputc, t_ctrl) == 0){
 				row = 2;
 			}
+			// "type"
+			if (strcmp(inputc, t_type) == 0) {
+				actNum++;
+				row = 3;
+				St[name][nextSt].act.push_back(Action());
+			}
+			// "value"
+			if (strcmp(inputc, t_value) == 0) {
+				// triggerが終了したら
+				row = 4;
+			}
 			// "time"
 			if (strcmp(inputc, t_time) == 0){
-				row = 10;
+				//row = 10;
+				if (triggerNum == 0 || triggerNum == 2) {
+					St[name][nextSt].act[actNum].flg[0].num[triggerNum] = -315;	// P1.time
+					triggerNum++;
+				}
 			}
 			// "lock"
 			if (strcmp(inputc, t_lock) == 0){
-				row = 11;
+				// type中なら
+				if (row == 3) {
+					St[name][nextSt].act[actNum].typeNum = 20;	// lock..20版
+				}
 			}
 			// "advancing"
 			if (strcmp(inputc, t_advancing) == 0){
@@ -237,15 +290,26 @@ void Load_StateDef(int name){
 			}
 			// "trigger1"
 			if (strcmp(inputc, t_trigger1) == 0){
-				//trigger = 1;
-				//St[name][nextSt].act.push_back(Action());
-				//St[name][nextSt].act[0].flg.push_back(Flag());
+				row = 13;
+				triggerNum = 0;
+				
+				St[name][nextSt].act[actNum].flg.push_back(Flag());
 				//St[name][nextSt].act[0].aSt.push_back(ActState());
 			}
-			// "=="
-			if (strcmp(inputc, t_icoico) == 0){
-				icole = 0;
+			// "="
+			if (strcmp(inputc, t_icole) == 0){
+				if (triggerNum == 1) {
+					St[name][nextSt].act[actNum].flg[0].num[triggerNum] = 0;	// P1.time
+					triggerNum++;
+				}
+				//icole = 0;
 			}
+		}
+
+		// トリガーが2以上
+		if (triggerNum > 2) {
+			triggerNum = -1;
+			row = 4;
 		}
 		if (input[i] == EOF){//ファイルの終わりなら
 			goto EXFILE;//終了
@@ -269,15 +333,27 @@ void FirstState(){
 			break;
 		}
 	}
-	// 見つからなかったらデフォルト
+	// 見つからなかったらデフォルト設定を使う
 	if (!check){
 		for (int i = 0; i < St[0].size(); i++){
 			if (St[0][i].num == P1.stateno){
-				P1.SFlg = St[0][i].sflg;
-				P1.ctrl = St[0][i].ctrl;
+				// -1以外なら
+				if (St[0][i].sflg != -1) {
+					P1.SFlg = St[0][i].sflg;
+				}
+				if (St[0][i].ctrl != -1) {
+					P1.ctrl = St[0][i].ctrl;
+				}
+
 				for (int j = 0; j < St[0][i].act.size(); j++){
-					// プレイヤー数値の番号を取得
-					P1.Lock = St[0][i].act[j].aSt[0].num[0];
+					// ロック
+					if (St[0][i].act[0].typeNum == 20) {
+						if ((St[0][i].act[0].flg[0].num[0] == -315) &&
+							(St[0][i].act[0].flg[0].num[1] == 0))
+							// P1.lock決定
+							if (P1.time == St[0][i].act[0].flg[0].num[2])
+								P1.Lock = St[0][i].act[0].value[0];
+					}
 				}
 				//if ((P1.time) == (St[P1.Name][i].act[0].flg[0].num[2])){
 					/*
@@ -400,6 +476,8 @@ void ChangeState()
 
 void SameParam()
 {
+	// ここで読み込み
+	if (P1.stateno >= 5 && P1.stateno <= 6)FirstState();
 	// 状態を読み込み
 	if (P1.stateno >= 40 && P1.stateno <= 57)FirstState();
 
@@ -409,10 +487,10 @@ void SameParam()
 		// 5 振り向き
 		//********************
 	case 5:
-		P1.SFlg = 0, P1.ctrl = 1;
-		VelSet(0, 0);
+		//P1.SFlg = 0, P1.ctrl = 1;
 		if (P1.time == 0){
-			P1.Lock = 1;
+			VelSet(0, 0);
+			//P1.Lock = 1;
 		}
 		if (P1.time >= ANIMELEM){
 			P1.Lock = 0;
@@ -422,10 +500,9 @@ void SameParam()
 		// 6 振り向き（しゃがみ）
 		//********************
 	case 6:
-
-		P1.SFlg = 1, P1.ctrl = 1;
-		VelSet(0, 0);
+		//P1.SFlg = 1, P1.ctrl = 1;
 		if (P1.time == 0){
+			VelSet(0, 0);
 			P1.Lock = 1;
 		}
 		if (P1.time >= ANIMELEM){
@@ -690,7 +767,7 @@ void SameParam()
 		*/
 
 	case 50:	// 立ちガード 硬直
-		P1.SFlg = 0;
+		//P1.SFlg = 0;
 		P1.YVel = 0;
 		P1.Muteki = 1, P1.mutekiF = 2;
 		// 最初にロック！
@@ -735,7 +812,7 @@ void SameParam()
 		
 		break;
 	case 51:	// しゃがみ 硬直
-		P1.SFlg = 1;	// 追加
+		//P1.SFlg = 1;	// 追加
 		P1.YVel = 0;
 		P1.Muteki = 1, P1.mutekiF = 2;
 		if (P1.time == 0){

@@ -614,20 +614,20 @@ void HitParam()
 {
 	
 	hosei = (P1.A.cl_max - ((P1.HitCount - 1) * P1.A.comboLate)) * P1.A.hosei_K;
-
+	int damage = 0;	// 決定するダメージ
 	// [ダメージ補正]
 	if (P1.HitCount == 0){			// 初段ダメージ
-		P2.Life -= P1.A.damage;
+		damage += P1.A.damage;
 		
 		// カウンターヒット
 		if (P2.D.counter){		
 			// フェイタル追加ダメ
-			if(P2.D.fatal)P2.Life -= 20;
+			if(P2.D.fatal)damage += 20;
 			// 投げ以外ならダメ増加
 			if ((P1.A.damage + P1.A.hosyo) > 200){
-				P2.Life -= 40;
+				damage += 40;
 			}
-			else{ P2.Life -= (P1.A.damage + P1.A.hosyo) * 0.2; }
+			else{ damage += (int)((P1.A.damage + P1.A.hosyo) * 0.2f); }
 
 			if (P1.HitStop > 0){
 				P1.G_HitTime += 2;
@@ -644,26 +644,27 @@ void HitParam()
 		{
 			// 強制補正のが小さい
 			if (P1.A.hosei_K < P1.A.cl_min){
-				P2.Life -= (int)(P1.A.damage * P1.A.hosei_K);
+				damage += (int)(P1.A.damage * P1.A.hosei_K);
 			}
 			// 最低ダメージ
 			else{
-				P2.Life -= (int)(P1.A.damage * P1.A.cl_min);
+				damage += (int)(P1.A.damage * P1.A.cl_min);
 			}
 		}
 		else
 		{ 
-			P2.Life -= (int)(P1.A.damage * hosei);
+			damage += (int)(P1.A.damage * hosei);
 		}
 	}
 	
-	/*
-	else if (P1.HitCount >= 11){
-		P2.Life -= (int)((P1.A.damage * 0.15) * P1.A.hosei_K);
-	}
-	*/
 	// [保障ダメージ]
-	P2.Life -= P1.A.hosyo;
+	damage += P1.A.hosyo;
+
+	// ダメージ反映
+	P2.Life -= damage;
+	// トレモ
+	Damage_Check(damage);
+
 	// kill
 	if ((!P1.A.kill) && (P2.Life <= 0))P2.Life = 1;
 

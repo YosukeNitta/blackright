@@ -309,7 +309,7 @@ void EinParam(void)
 					Damage(45, 0);
 
 					// [ゲージ] 
-					P1.GetPow = 25, P1.GivePow = 12;
+					P1.GetPow = 24, P1.GivePow = 12;
 					// [ヒットストップ・のけぞり時間]
 					HitTime(6, 12, 16, 10);
 					// [ノックバック]
@@ -416,7 +416,7 @@ void EinParam(void)
 					Damage(76, 0);
 
 					// [ゲージ] 
-					Power(88);
+					Power(84);
 					HitTime(8, 18, 20, 16);
 
 					// [ノックバック]
@@ -512,9 +512,9 @@ void EinParam(void)
 				if ((P1.time >= 9) && (P1.time <= 18)){
 
 					// [ダメージ]
-					Damage(96, 0);
+					Damage(98, 0);
 					// [ゲージ] 
-					Power(114);
+					Power(118);
 					// [ヒットストップ・のけぞり時間]
 					HitTime(10, 22, 24, 18);
 					// [ノックバック]
@@ -588,9 +588,9 @@ void EinParam(void)
 				if ((P1.time >= 1)){
 
 					// [ダメージ]
-					Damage(106, 0);
+					Damage(96, 0);
 					// [ゲージ] 
-					Power(128);
+					Power(116);
 					// [ヒットストップ・のけぞり時間]
 					HitTime(10, 22, 24, 18);
 					// [ノックバック]
@@ -666,14 +666,14 @@ void EinParam(void)
 					Damage(42, 0);
 
 					// [ゲージ] 
-					Power(24);
+					Power(21);
 
 					// [ヒットストップ・のけぞり時間]
 					HitTime(6, 12, 16, 10);
 	
 					// [ノックバック]
 					HitVel(-3.1, 0, -1.6, -4.8);
-					P1.GuardF = 3;
+					P1.GuardF = 1;
 					// [喰らい中の浮き]
 					P1.fallF = 1;
 					P1.HitAnim = 1010;	// 下段喰らい
@@ -766,7 +766,7 @@ void EinParam(void)
 					Damage(75, 0);
 
 					// [ゲージ] 
-					Power(86);
+					Power(80);
 
 					HitTime(8, 18, 20, 16);
 
@@ -853,9 +853,9 @@ void EinParam(void)
 				if (P1.time >= 1){
 
 					// [ダメージ]
-					Damage(98, 0);
+					Damage(92, 0);
 					// [ゲージ] 
-					Power(118);
+					Power(108);
 					HitTime(10, 40, 40, 18);
 					// [ノックバック]
 					HitVel(-1.8, -4, -2.2, -3.5);
@@ -902,15 +902,15 @@ void EinParam(void)
 					// [ダメージ]
 					Damage(40, 0);
 					// [ゲージ] 
-					Power(30, 15);
+					Power(30);
 
 					// [ヒットストップ・のけぞり時間]
 					HitTime(5, 14, 18, 12);
 					// [ノックバック]
 					HitVel(-4.6, 0, -1.4, -4.2);
 					// ガード判定
-					if (P1.YVel >= 0.0)P1.GuardF = 2;
-					else{ P1.GuardF = 1; }
+					P1.GuardF = 1;
+					
 					//P1.GuardF = 1;
 					// [喰らい中の浮き]
 					P1.fallF = 1;
@@ -1219,10 +1219,10 @@ void EinParam(void)
 					ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 					// [ダメージ]
-					Damage(0, 180);
+					Damage(0, 160);
 					P1.A.hosei_K = 0.5;
 					// [ゲージ] 
-					Power(300);
+					Power(270);
 					HitTime(6, 45, 45, 0);
 					// [ノックバック]
 					HitVel(-2, -3.4, 0, 0);
@@ -1296,7 +1296,7 @@ void EinParam(void)
 					P1.A.hitEff = 2;
 				}
 				// 当たったら変更
-				if ((P1.CFlg) && (P1.time >= 7)){
+				if ((P1.CFlg) && (P1.time >= 5)){
 					P1.stateno = 515;
 					P1.time = 0, P2.time = 0;
 					P1.More = 1;
@@ -1323,13 +1323,13 @@ void EinParam(void)
 				P1.ignoreG = true;
 				
 				// バグ防止の浮き
-				if ((P1.time == 0) && (P1.YPos+20 >= GROUND)){
+				if ((P1.time == 0) && (P1.YPos + 20 >= GROUND)) {
 					P1.YPos = GROUND - 20;
 				}
 
 				// 距離をとる
 				if (P1.time == 0){
-					P1.YPos -= 2;
+					P1.YPos -= 5;
 					P2.YPos = P1.YPos - 1;
 		
 					int dist = P2.xSize + 5;
@@ -1388,9 +1388,9 @@ void EinParam(void)
 					ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 					// [ダメージ]
-					Damage(170, 10);
+					Damage(150, 10);
 					// [ゲージ] 
-					Power(300);
+					Power(270);
 
 					HitTime(0, 100, 100, 0);
 					// [ノックバック]
@@ -1445,10 +1445,10 @@ void EinParam(void)
 					HelperReset(1);
 					H1[1].var = false;
 
-					if (P1.Var[6] == 1)H1[1].HXVel = 9.8;
+					if (P1.Var[6] == 1)H1[1].HXVel = 10.8;
 					else if (P1.Var[6] == 2)H1[1].HXVel = 13.8;
 					else if (P1.Var[6] == 3){
-						H_VelSet(1, 6.6, -6);
+						H_VelSet(1, 8.6, -8.8);
 					}
 				}
 				// 呼び出し.[1]	飛び道具
@@ -1456,6 +1456,12 @@ void EinParam(void)
 					H1[1].var = true;
 					H1[1].time = 0;
 					H1[1].stateno = 2010;
+				}
+
+				// ヘルパー削除
+				if (P1.time >= 33) {
+					HelperReset(0);
+					H1[0].var = false;
 				}
 
 				// ヒット時キャンセル
@@ -1467,8 +1473,33 @@ void EinParam(void)
 				}
 
 				// 全体フレームを超えたらリセット
-				if (P1.time >= 48)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
+
+				break;
+
+			//********************
+			// 602 大ブメ(C版)
+			//********************
+			case 602:
+				P1.ctrl = 0, P1.SFlg = 0;
+				
+				// SEを鳴らす
+				if (P1.time == 12) {
+					SEStart(22);
+				}
+
+				if ((P1.time == 1) && (P1.StopTime == 0))PVOStart(P1.PSide, 19, 0);
+
+				// ヘルパー呼び出し.[5]
+				if (P1.time == 14) {
+					HelperReset(5);
+					H1[5].var = true;
+					H1[5].time = 0;
+					H1[5].stateno = 2032;
+				}
+				// 終了・58F
+				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
 				break;
 			//********************
@@ -1479,8 +1510,8 @@ void EinParam(void)
 				P1.ignoreG = true;
 				// 速度をつける
 				if (P1.time == 0){
-					P1.XVel = -1.8;
-					P1.YVel = -3;
+					P1.XVel = -1.42;
+					P1.YVel = -2.8;
 				}
 				// SEを鳴らす
 				if (P1.time == 1){
@@ -1495,10 +1526,10 @@ void EinParam(void)
 					HelperReset(1);
 					H1[1].var = false;
 
-					if (P1.Var[6] == 1)H_VelSet(1, 6.2, 6.2);
-					else if (P1.Var[6] == 2)H_VelSet(1, 8.9, 8.9);
+					if (P1.Var[6] == 1)H_VelSet(1, 8.2, 8.2);
+					else if (P1.Var[6] == 2)H_VelSet(1, 10.0, 10.0);
 					else if (P1.Var[6] == 3){
-						H_VelSet(1, 9.5, 0);
+						H_VelSet(1, 12.8, 0);
 					}
 				}
 				// 呼び出し.[1]	飛び道具
@@ -1509,7 +1540,7 @@ void EinParam(void)
 				}
 
 				// 重力緩和
-				VelAdd(0, P1.C.yAccel-0.2);
+				VelAdd(0, P1.C.yAccel-0.20);
 				
 				// ヒット時キャンセル
 				if (P1.StopTime == 0){
@@ -1542,7 +1573,7 @@ void EinParam(void)
 
 
 				// 全体フレームを超えたらリセット
-				if (P1.time >= 17)P1.stateno = 11, P1.SFlg = 1, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.stateno = 0, P1.SFlg = 0, P1.ctrl = 1;
 
 				break;
 			//********************
@@ -1693,12 +1724,12 @@ void EinParam(void)
 				}
 
 				// ヘルパー削除
-				if (P1.time >= 23){
+				if (P1.time >= 25){
 					HelperReset(0);
 					H1[0].var = false;
 				}
 				// 全体フレームを超えたらリセット
-				if (P1.time >= 36)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
 				break;
 			//********************
@@ -1750,7 +1781,7 @@ void EinParam(void)
 				}
 
 				// 全体フレームを超えたらリセット
-				if (P1.time >= 17)P1.stateno = 11, P1.SFlg = 1, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.stateno = 0, P1.SFlg = 0, P1.ctrl = 1;
 
 				break;
 
@@ -1860,7 +1891,7 @@ void EinParam(void)
 					H1[5].stateno = 2030;
 				}
 				// 終了・58F
-				if (P1.time >= 58)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
 				break;
 			//********************
@@ -2046,7 +2077,7 @@ void EinParam(void)
 
 
 				// 終了・34
-				if (P1.time >= 34)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
+				if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
 
 				break;
 				//********************
@@ -2331,7 +2362,7 @@ void EinParam(void)
 					//***************
 
 					// 全体フレーム33or他のステートへ
-					if ((H1[i].time > 33) || 
+					if ((H1[i].time > 32) || 
 						(P1.stateno != 600 && P1.stateno != 620)){
 						HelperReset(i);
 					}
@@ -2497,7 +2528,7 @@ void EinParam(void)
 					// ヒット数・ダメージセット
 					if (H1[i].time == 4){
 						H1[i].HMoveHit = 1;
-						H1[i].A.damage = 75;
+						H1[i].A.damage = 70;
 					}
 
 					// ダメージ位置セット、5フレ以降
@@ -2635,6 +2666,89 @@ void EinParam(void)
 					if (H1[i].HAnimTime >= P1.animElem[H1[i].stateno])H1[i].HAnimTime = 0;
 					// 終了条件、時間経過or喰らい
 					if ((H1[i].time > 44) || (P1.stateno >= 1000))
+					{
+						HelperReset(i);
+					}
+					break;
+
+					//********************
+					// 2032 大ブーメラン (Ｃ版)
+					//********************
+				case 2032:
+
+					//***************
+					//  基本設定
+					//***************
+					// 座標設定
+					if (H1[i].time == 0) {
+						H1[i].muki = P1.muki;
+						H1[i].HXVel = 8;
+
+						H_PosSet(i, 0, -100);
+					}
+					// 速度設定
+					if (H1[i].time == 0) {
+						H1[i].HXVel = 12.0;
+					}
+					// 速度設定
+					if (H1[i].time == 16) {
+						H1[i].HXVel = 1.4;
+					}
+					if (H1[i].time == 30) {
+						H1[i].HXVel = -13.4;
+					}
+
+
+					// ヒット数・ダメージセット
+					if ((H1[i].time == 1) ||
+						(H1[i].time == 31)) {
+						H1[i].HMoveHit = 1;
+						H1[i].A.damage = 65;
+					}
+
+					// ダメージ位置セット、2フレ以降
+					if (H1[i].time >= 1) {
+
+						//[ 攻撃判定セット ]
+						//H2_AttSet(i, 0, 80, 60, -40, -108);
+
+						// [ヒット・ガードサウンド]
+						H1[i].HHitSE = 12, H1[i].HGuardSE = 17;
+						// [ゲージ] 
+						H1[i].HGetPow = 50, H1[i].HGivePow = 25;
+						//[ ガード条件 ]
+						H1[i].HGuardF = 1;
+
+						// [ヒット硬直]
+						H_HitTime(i, 6, 36, 40, 16);
+						H1[i].HSSelf = 0;
+
+						// [ヒット時のアニメ]
+						H1[i].HHitAnim = 1000;
+
+						// [ノックバック]
+						H_HitVel(i,
+							-1.8, 0, -1.2, -3.4);
+
+						if (H1[i].time >= 25) {
+							H_HitVel(i, 1.1, -4.1,
+								1, -4.3);
+							// ヒット硬直
+							H_HitTime(i, 6, 20, 22, 16);
+							H1[i].HSSelf = 0;
+						}
+
+					}
+
+					H_Move(i);
+
+					//***************
+					//  行動内容
+					//***************
+					// アニメをループさせる
+					if (H1[i].HAnimTime >= P1.animElem[H1[i].stateno])H1[i].HAnimTime = 0;
+					// 終了条件、時間経過or喰らい
+					if ((H1[i].time > 39) || (P1.stateno >= 1000))
 					{
 						HelperReset(i);
 					}
@@ -2892,17 +3006,18 @@ void SCancel()
 	// 236 + 攻撃
 	if ((P1.cmd[1]) && (!H1[1].var)){		// 画面にヘルパー１がない
 		if ((P1.Senkou[1] > 0) ||
-			(P1.Senkou[2] > 0) ||
-			(P1.Senkou[3] > 0)){
+			(P1.Senkou[2] > 0)){
 			P1.stateno = 600, P1.More = 1,
 				P1.time = 0, P1.A.damage = 0;
 			if (P1.Senkou[1] >= P1.Senkou[2]){
-				if (P1.Senkou[1] >= P1.Senkou[3])P1.Var[6] = 1;
-				else{ P1.Var[6] = 3; }
+				P1.Var[6] = 1;
 			}
-			else if (P1.Senkou[2] >= P1.Senkou[3])P1.Var[6] = 2;
-			else{ P1.Var[6] = 3; }
+			else { P1.Var[6] = 2; }
 		}
+	}
+	if ((P1.cmd[1]) && (P1.Senkou[3] > 0)) {		// 画面にヘルパー１がない
+		P1.stateno = 602, P1.More = 1,
+			P1.time = 0, P1.A.damage = 0;
 	}
 
 	// 214 + AorB
@@ -3002,7 +3117,9 @@ void ACancel()
 				else{ P1.Var[6] = 3; }
 			}
 			else if (P1.Senkou[2] >= P1.Senkou[3])P1.Var[6] = 2;
-			else{ P1.Var[6] = 3; }
+			else{ 
+				P1.Var[6] = 3; 
+			}
 		}
 	}
 

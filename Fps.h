@@ -8,6 +8,7 @@ public:
 	const int N = 60;	//60 •½‹Ï‚ğæ‚éƒTƒ“ƒvƒ‹”
 	const int FPS = 60;	//60 İ’è‚µ‚½FPS
 
+	Fps();
 	bool Update();
 	void Draw(int drawX, int drawY);
 	void Wait();

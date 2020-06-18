@@ -1530,10 +1530,10 @@ void CorParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(0, 180);
+				Damage(0, 160);
 				P1.A.hosei_K = 0.5;
 				// [ゲージ] 
-				Power(300);
+				Power(270);
 				HitTime(6, 45, 45, 0);
 				// [ノックバック]
 				HitVel(-2.6, -3.4, 0, 0);
@@ -1607,7 +1607,7 @@ void CorParam(void)
 				P1.A.hitEff = 2;
 			}
 			// 当たったら変更
-			if ((P1.CFlg) && (P1.time >= 7)){
+			if ((P1.CFlg) && (P1.time >= 5)){
 				P1.stateno = 515;
 				P1.time = 0, P2.time = 0;
 				P1.More = 1;
@@ -1695,9 +1695,9 @@ void CorParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(170, 10);
+				Damage(150, 10);
 				// [ゲージ] 
-				Power(300);
+				Power(270);
 
 				HitTime(6, 100, 100, 0);
 				// [ノックバック]

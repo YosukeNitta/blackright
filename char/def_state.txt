@@ -1,3 +1,17 @@
+// 振り向き
+[State 5]
+sflg	= 0;
+ctrl	= 1;
+
+type = lock;
+trigger1 = time = 0;
+value = 1;
+
+//しゃがみ振り向き
+[State 6]
+sflg	= 1;
+ctrl	= 1;
+
 // ジャンプ移行
 [State 40]
 sflg	= 0;
@@ -38,10 +52,6 @@ ctrl	= 0;
 sflg	= 0;
 ctrl	= 0;
 
-trigger1 = time == 0;
-lock = 1;
-advancing = false;
-
 // 屈ガード
 [State 51]
 sflg	= 1;
@@ -50,11 +60,6 @@ ctrl	= 0;
 // 空ガード
 [State 52]
 sflg	= 2;
-ctrl	= 0;
-
-// 空ガード
-[State 55]
-sflg	= 0;
 ctrl	= 0;
 
 // 空投げ抜け

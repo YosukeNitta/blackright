@@ -456,15 +456,15 @@ void HitParam(int i)
 
 
 	hosei = (P1.A.cl_max - ((P1.HitCount - 1) * P1.A.comboLate)) * P1.A.hosei_K;
-
+	int damage = 0;
 	// [ダメージ補正]
 	if (P1.HitCount == 0){	// 1Hit
-		P2.Life -= H1[i].A.damage;
+		damage += H1[i].A.damage;
 		// カウンターヒット
 		if (P2.D.counter){
 			// フェイタル追加ダメ
-			if (P2.D.fatal)P2.Life -= 20;
-			P2.Life -= (int)H1[i].A.damage * 0.2;
+			if (P2.D.fatal)damage += 20;
+			damage += (int)H1[i].A.damage * 0.2;
 			if (H1[i].HHitStop > 0)H1[i].HHitStop += 2;
 			if (H1[i].HHitStop > 0){
 				H1[i].HG_HitTime += 2;
@@ -477,15 +477,18 @@ void HitParam(int i)
 	else if (P1.HitCount >= 1){
 		// ダメが減りすぎ
 		if (hosei < P1.A.cl_min){
-			P2.Life -= (int)(H1[i].A.damage *P1.A.cl_min);
+			damage += (int)(H1[i].A.damage *P1.A.cl_min);
 		}
 		else{
-			P2.Life -= (int)(H1[i].A.damage *hosei);
+			damage += (int)(H1[i].A.damage *hosei);
 		}
 	}
 	// [保障ダメージ]
-	P2.Life -= H1[i].A.hosyo;
-
+	damage += H1[i].A.hosyo;
+	// ダメージ反映
+	P2.Life -= damage;
+	// トレモ
+	Damage_Check(damage);
 
 
 	// [アニメ設定]
