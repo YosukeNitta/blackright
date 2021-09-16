@@ -171,7 +171,6 @@ void H_KuraiSet(int n, int i, int W, int H, int X, int Y);
 void H_KuraiReset();
 void H_AttSet(int n, int i, int W, int H, int X, int Y);
 void H_AttReset();
-
 //---------------------
 //
 // SameParam

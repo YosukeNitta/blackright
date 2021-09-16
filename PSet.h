@@ -2,6 +2,7 @@
 
 #include "Define.h"
 #include "DxLib.h"
+#include <string>
 
 class Pict {
 
@@ -144,6 +145,8 @@ public:
 typedef struct {
 
 public:
+	char name[NAME_MAX];	// キャラクター名
+
 	double walkF, walkB;			// 
 	double runF[2], runB[2];		// 
 	double jumpY, jumpF[2], jumpB, jumpA;	// Yのジャンプ力、前後のX距離、空中ジャンプの高さ
@@ -168,13 +171,13 @@ public:
 	double wall_xvel;
 	double wall_yvel;
 	int wall;		// バウンドレベル、0：なし、１：小バウンド、２：大バウンド
-	boolean counter;	// カウンター判定、１：あり
+	int counter;	// カウンター判定、0：なし  1：あり  2：強制
 	int armor;		// アーマー回数
 	//X,Yの喰らい速度
 	//double hitVelX, hitVelY;
 	int selfTime;	// 自動めくりガードの時間
 	int nokezori;	// のけぞり時間
-	boolean fatal;	// フェイタルカウンター
+	boolean fatal;	// フェイタルカウンター(ダメージ増加0)
 	double addVelX;	// アドガでの距離
 
 }Damage_t;
@@ -186,6 +189,7 @@ typedef struct {
 public:
 	int damage;	// 攻撃力、ちなみにshortの最大は3万くらい
 	int hosyo;	// 最低ダメージ保障
+	int kezuri;	// 削りダメージ
 
 	int A_GuardTime;		// ガード時間
 

@@ -1,12 +1,22 @@
 #pragma once
 #include <DxLib.h>
 
+/*
+---------------------------
+ モード毎データ
+---------------------------
+
+それぞれ切り替えて使用するので、ゲーム中で動かすのは一つのみ
+
+*/
+
 class ModeData
 {
 private:
 	boolean load_1s = false;
 
 public:
+	// 毎フレーム実行する
 	virtual void Update() = 0;
 
 	virtual void Draw() = 0;

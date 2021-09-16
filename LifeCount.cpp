@@ -17,13 +17,14 @@
 //ﾃﾞｰﾀ定義部------------------------------------------------
 
 static int Load_1;
+static boolean Load_1data = false;
 static int mOldPower[2];
 static int oldAdd[2];
 static int mPlaySnd;
 static Player mP[2];
 
-static int time;
-
+static int time = 0;
+static int recoverTime[2];
 //内部関数宣言部--------------------------------------------
 
 //パワー量の設定
@@ -45,6 +46,13 @@ void PowerSet();
 
 void LifeCount()
 {
+	// 一度のみロード
+	if (!Load_1data) {
+		recoverTime[0] = 0;
+		recoverTime[1] = 0;
+		Load_1data = true;
+	}
+
 	// ゲージ管理
 	PowerSet();
 	if (P1.Life <= 0){
@@ -227,7 +235,31 @@ void PowerSet()
 	}
 	else{ time = 1; }
 
+	// 個人での時間計測
+	P[0] = P1, P[1] = P2;
+	for (int side = 0; side < 2; side++) {
+		// 喰らいではない
+		// ガードでもない
+		if ((P[side].HFlg == 0) &&
+			(P[side].stateno < 50 || P[side].stateno > 59)) {
+			// 時間経過
+			recoverTime[side]++;
+			// ガードゲージ
+			// 一定時間で回復
+			if (recoverTime[side] % 10 == 0) {
+				if (P[side].aGauge > 0) {
+					P[side].aGauge += 2;
+				}
+			}
+			// 1フレでリセット
+			if (recoverTime[side] > 60)
+				recoverTime[side] = 1;
+		}
+	}
+	P1 = P[0], P2 = P[1];
+
 	// ガークラ
+	// 1フレ前はゲージがあった
 	if (P1.aGauge <= 0 && oldAdd[0] > 0){
 		SEStart(33);
 		S.StopTime = 15;
@@ -264,7 +296,7 @@ void PowerSet()
 	}
 	oldAdd[0] = P1.aGauge, oldAdd[1] = P2.aGauge;
 
-	if (time % 20 == 0){
+	if (time % 10 == 0){
 		if (P1.aGauge <= 0){
 			P1.GRecovery+=20;
 		}
@@ -272,15 +304,31 @@ void PowerSet()
 			P2.GRecovery+=20;
 		}
 	}
+	
 	// ガードゲージ
-	if (time % 60 == 0){
-		if (P1.aGauge > 0){
-			P1.aGauge += 10;
-		}
-		if (P2.aGauge > 0){
-			P2.aGauge += 10;
+	/*
+	// 一定時間で回復
+	if (recoverTime[0] % 10 == 0) {
+		if (P1.aGauge > 0) {
+			P1.aGauge += 2;
 		}
 	}
+	if(recoverTime[1] % 10 == 0){
+		if (P2.aGauge > 0) {
+			P2.aGauge += 2;
+		}
+	}
+	*/
+	/*
+	if (time % 60 == 0){
+		if (P1.aGauge > 0){
+			P1.aGauge += 5;
+		}
+		if (P2.aGauge > 0){
+			P2.aGauge += 5;
+		}
+	}
+	*/
 
 	// ガードゲージ復活
 	if (P1.GRecovery >= GUARD_MAX){

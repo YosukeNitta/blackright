@@ -1,10 +1,11 @@
 //インクルード部--------------------------------------------
 #include "pch.h"
+#include "System.h"
 
 static int oldSt;
+static int reversalTime;
 static int xDist, yDist;
 
-static boolean random(int num);
 static void charAI(int num);
 
 
@@ -51,25 +52,30 @@ void AI_Move()
 	}
 
 	// 前歩き
-	if ((random(20)) && (P2.ctrl) && (P2.SFlg != 2) && (P2.stateno != 20)){
+	if ((random(30)) && (P2.ctrl) && (P2.SFlg != 2) && (P2.stateno != 20)){
 		P2.stateno = 20;
 	}
 	if ((P2.ctrl) && (P2.SFlg != 2) && ((P2.stateno == 20) || (oldSt == 20))
 		&& ((P2.stateno != 21) || (oldSt != 21))){
 		P2.stateno = 20;
 		if ((P2.time >= 13) || (P2.time >= P2.animElem[P2.stateno])){
-			P2.stateno = 0, P2.time = 0, P2.ctrl = 1;
+			// 確率で停止
+			if (random(80)) {
+				P2.stateno = 0, P2.time = 0, P2.ctrl = 1;
+			}
 		}
 	}
 	// 後ろ歩き
-	if ((random(10)) && (P2.ctrl) && (P2.SFlg != 2) && (P2.stateno != 21)){
+	if ((random(30)) && (P2.ctrl) && (P2.SFlg != 2) && (P2.stateno != 21)){
 		P2.stateno = 21;
 	}
 	if ((P2.ctrl) && (P2.SFlg != 2) && ((P2.stateno == 21) || (oldSt == 21))
 		&& ((P2.stateno != 20) || (oldSt != 20))){
 		P2.stateno = 21;
 		if ((P2.time >= 12) || (P2.time >= P2.animElem[P2.stateno])){
-			P2.stateno = 0, P2.time = 0, P2.ctrl = 1;
+			if (random(80)) {
+				P2.stateno = 0, P2.time = 0, P2.ctrl = 1;
+			}
 		}
 	}
 
@@ -166,16 +172,14 @@ void AI_Move()
 	// 二段ジャンプ
 	if ((P2.ctrl) && (P2.SFlg == 2) && ((P2.stateno >= 41) && (P2.stateno <= 43)) && 
 		(P2.YPos < GROUND - 30) && (P2.AirJump > 0)){
-		if (random(40)){
+		if (random(10)){
 			P2.stateno = 45;
 			// ジャンプ方向
 			if (random(550)){	// 前
-				if (P2.muki == 0)P2.button[106] = 1;
-				else{ P2.button[104] = 1; }
+				P2.keyAtt[6]++;
 			}
 			else if (random(200)){	// 後ろ
-				if (P2.muki == 0)P2.button[104] = 1;
-				else{ P2.button[106] = 1; }
+				P2.keyAtt[4]++;
 			}	// 垂直
 			else{ P2.button[104] = 0, P2.button[106] = 0; }
 		}
@@ -251,13 +255,14 @@ void AI_Move()
 	if ((P2.stateno == 1035 || P2.stateno == 1030) && (random(800))){
 		P2.button[1]++;
 		// 受け身方向
-		if (random(200)){
-			P2.keyAtt[6] = 0;
-			P2.keyAtt[4] = 1;
-		}
-		else if (random(100)){
+		if (random(600)){
 			P2.keyAtt[6] = 1;
 			P2.keyAtt[4] = 0;
+		}
+		// 前受け身
+		else if (random(600)){
+			P2.keyAtt[6] = 0;
+			P2.keyAtt[4] = 1;
 		}
 		else{ 
 			P2.keyAtt[6] = 0;
@@ -273,6 +278,16 @@ void AI_Move()
 
 	// キャラ別行動
 	charAI(P2.Name);
+
+	//----------------
+	// 共通処理
+	//----------------
+	// ジャンプ回数設定、2回まで
+	if ((P2.SFlg != 2) && (P2.YPos == GROUND) && (P2.stateno != 40)) {
+		P2.AirJump = P2.C.airJump;
+		P2.airDash = P2.C.airDash;
+		P2.hyJump = false;
+	}
 
 	oldSt = P2.stateno;
 	Get_PSet(P1, P2);
@@ -357,31 +372,54 @@ void charAI(int num)
 	// コーネル
 	else if (num == CORNEL){
 		// ジャンプ
-		if ((P2.ctrl) && (P2.SFlg != 2) && (xDist < 350)){
-			if (random(10)){
+		if ((P2.ctrl) && (P2.SFlg != 2) && (xDist < 460)) {
+			if (random(8)) {
 				P2.stateno = 40;
 				// ジャンプ方向
-				{	// 前
+				if (random(600)) {	// 前
 					if (P2.muki == 0)P2.button[106] = 1;
-					else{ P2.button[104] = 1; }
+					else { P2.button[104] = 1; }
+				}
+				//
+				else if (random(200)) {	// 後ろ
+					if (P2.muki == 0)P2.button[104] = 1;
+					else { P2.button[106] = 1; }
 				}
 			}
 		}
 		// 地上攻撃
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)){
-			if ((random(80)) && (xDist < 130) && (yDist < 120))P2.stateno = 210;
+			// シュート
+			if ((random(8)) && (xDist > 220 && xDist < 300) && (yDist < 120))P2.stateno = 630;
+			// スラ
+			if ((random(20)) && (xDist > 180 && xDist < 220) && (yDist < 120))P2.stateno = 320;
+			// 5C
 			if ((random(50)) && (xDist < 170) && (yDist < 120))P2.stateno = 220;
-
+			if ((random(80)) && (xDist < 130) && (yDist < 120))P2.stateno = 210;
+			
+			
 			// 対空
-			if ((random(200)) && (xDist <= 175) && (yDist > 140) && (P1.YVel > -1))P2.stateno = 320;
+			if ((random(200)) && (xDist <= 175) && (yDist > 140) && (P1.YVel > -1))P2.stateno = 321;
 		}
 		// 空中
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg == 2)){
 			if ((random(200)) && (xDist < 180) && (yDist < 200) && (P2.YVel > 0))P2.stateno = 420;
+			// JD
+			if ((random(30)) && (xDist > 80) && (P2.YPos < GROUND - 100))P2.stateno = 430;
 		}
 		// ゲージ技
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)){
-			if ((random(20)) && (xDist > 190) && (P2.Power >= 2000) && (!H2[1].var))P2.stateno = 810;
+			if ((random(10)) && (xDist > 240) && (P2.Power >= 2000) && (!H2[1].var))P2.stateno = 810;
+		}
+		// リバサ
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)
+			&& (oldSt == 1055) && (P1.stateno < 1000)) {
+			// バクステ
+			if ((random(100)) && (xDist < 150))P2.stateno = 35;
+			// 昇竜
+			if ((random(250)) && (xDist < 150))P2.stateno = 621;
+			// 1ゲージぶっぱ
+			if ((random(100)) && (xDist < 150) && (P2.Power >= 1000))P2.stateno = 820;
 		}
 		// キャンセル
 		if ((!P2.ctrl) && (P2.CFlg) && (!P1.ctrl) && (P2.StopTime == 0) && (P2.time > 0)){
@@ -398,8 +436,8 @@ void charAI(int num)
 				P2.stateno = 602, P2.time = 0, P2.ctrl = 0;
 			}
 
-			// 2C追撃
-			if ((P2.stateno == 320) && (P2.scTime > 5) && (P1.SFlg == 2)){
+			// 3C追撃
+			if ((P2.stateno == 321) && (P2.scTime > 5) && (P1.SFlg == 2)){
 				P2.stateno = 620, P2.time = 0, P2.ctrl = 0;
 			}
 		}
@@ -444,7 +482,9 @@ void charAI(int num)
 		}
 		// アーマー
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2) && (P1.time > 0)){
-			if ((random(20)) && (xDist > 230) && (P2.D.armor <= 0))P2.stateno = 600;
+			if ((random(20)) && (xDist > 320) && (P2.D.armor <= 0))P2.stateno = 600;
+			// スタンプ
+			if ((random(10)) && (xDist > 400))P2.stateno = 240;
 		}
 		// 6Cアーマー
 		if ((P2.stateno == 226) && (P1.stateno >= 1000)){
@@ -456,28 +496,67 @@ void charAI(int num)
 				P2.stateno = 800, P2.time = 0, P2.ctrl = 0;
 			}
 			// ジャンプキャンセル
-			if ((P2.stateno == 210) && (random(200) || P1.HFlg == 1) && (P2.scTime > 5) && (P1.SFlg == 2)){
+			if ((P2.stateno == 210) && (P1.HFlg == 1) && (P2.scTime > 5) && (P1.SFlg == 2)){
 				P2.stateno = 40, P2.time = 0, P2.ctrl = 0;
-				//P2.button[108]++;
 				if (P2.muki == 0)P2.button[106]++;
 				else{ P2.button[104]++; }
 			}
 		}
 		// 対空から追撃
-		if ((P2.ctrl) && (P2.stateno == 42) && (P1.stateno == 1030)){
-			P2.stateno = 410, P2.time = 0, P2.ctrl = 0;
+		if ((P2.ctrl) && (P2.stateno == 42) && (P1.HFlg == 1)){
+			P2.stateno = 615, P2.time = 0, P2.ctrl = 0;
 		}
 	}
 	// ヘリオス
 	if (num == HELIOS){
+		// ジャンプ
+		if ((P2.ctrl) && (P2.SFlg != 2) && (xDist < 460)) {
+			if (random(8)) {
+				P2.stateno = 40;
+				// ジャンプ方向
+				if (random(400)) {	// 前
+					if (P2.muki == 0)P2.button[106] = 1;
+					else { P2.button[104] = 1; }
+				}
+				//
+				else if (random(300)) {	// 後ろ
+					if (P2.muki == 0)P2.button[104] = 1;
+					else { P2.button[106] = 1; }
+				}
+			}
+		}
 		// 地上
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)){
-			if ((random(40)) && (xDist <= 185) && (yDist < 120))P2.stateno = 210;
-			if ((random(8)) && (xDist > 185) && (P2.Var[11] < 3000))P2.stateno = 600;
-			if ((xDist > 210)){
-				if (!H2[0].var){
-					if ((random(10)))P2.stateno = 630;
+			// 2C
+			if ((random(30)) && (xDist <= 235) && (yDist < 120))P2.stateno = 320;
+			// 5B
+			if ((random(40)) && (xDist <= 200) && (yDist < 120))P2.stateno = 210;
+
+			// チャージ
+			// 走っていないなら
+			if ((random(90)) && (xDist >= 260) && (P2.Var[11] < 3000) 
+				&& (P2.stateno != 30))P2.stateno = 600;
+
+			// ゲージないと下がる
+			if ((random(200)) && (xDist < 260) && (P2.Var[11] < 3000))P2.stateno = 21;
+
+			// 波動
+			if ((xDist > 240)){
+				if ((!H2[0].var) && (P2.Var[11] >= 2000)) {
+					if ((random(20))) {
+						P2.stateno = 635;
+					}
 				}
+				else if (!H2[0].var){
+					if ((random(10))) {
+						P2.stateno = 630;
+					}
+				}
+			}
+
+			// 走る
+			if (H2[0].var) {
+				if((random(200)) && (xDist > 120))P2.stateno = 30;
 			}
 
 			// 対空
@@ -490,9 +569,16 @@ void charAI(int num)
 
 		// ゲージ技
 		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)){
-			if ((random(10)) && (xDist < 110) && (P2.Power >= 1000))P2.stateno = 800;
+			if ((random(5)) && (xDist > 160) && (P2.Power >= 1000))P2.stateno = 810;
 		}
-
+		// リバサ
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)
+			&& (oldSt == 1055) && (P1.stateno < 1000)) {
+			// バクステ
+			if ((random(200)) && (xDist < 150))P2.stateno = 35;
+			// 当身
+			if ((random(400)) && (xDist < 150) && (P2.Var[11] > 1000))P2.stateno = 625;
+		}
 		// キャンセル
 		if ((!P2.ctrl) && (P2.CFlg) && (!P1.ctrl) && (P2.StopTime == 0) && (P2.time > 0)){
 
@@ -520,11 +606,222 @@ void charAI(int num)
 				else{ P2.button[104]++; }
 			}
 		}
+		// チャージを維持
+		if ((!P2.ctrl) && (P2.stateno == 600 || P2.stateno == 601)) {
+			if(xDist > 260)P2.button[4]++;
+		}
 		// 対空から追撃
 		if ((P2.ctrl) && (P2.stateno == 42) && (P1.stateno == 1030)){
 			P2.stateno = 410, P2.time = 0, P2.ctrl = 0;
 		}
 	}
+
+	// ダン
+	else if (num == HYDE) {
+		// ジャンプ
+		if ((P2.ctrl) && (P2.SFlg != 2) && (xDist < 420)) {
+			if (random(8)) {
+				P2.stateno = 40;
+				// ジャンプ方向
+				if (random(300)) {	// 前
+					if (P2.muki == 0)P2.button[106] = 1;
+					else { P2.button[104] = 1; }
+				}
+				//
+				else if (random(600)) {	// 後ろ
+					if (P2.muki == 0)P2.button[104] = 1;
+					else { P2.button[106] = 1; }
+				}
+			}
+		}
+		// 地上攻撃
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)) {
+
+			if ((random(100)) && (xDist < 80) && (yDist < 120))P2.stateno = 300;
+			if ((random(80)) && (xDist < 130) && (yDist < 120))P2.stateno = 210;
+			if ((random(50)) && (xDist > 160 && xDist < 202) && (yDist < 120))P2.stateno = 320;
+			
+			// 弾撃ち
+			if (P2.Var[10] >= 180) {
+				// 下弾
+				if ((random(50)) && (xDist > 240) && (yDist < 120)) {
+					P2.stateno = 602;
+					// たまにN
+					if (random(300))P2.stateno = 600;
+				}
+				// 上弾
+				if ((random(20)) && (xDist > 200) && (yDist > 20))P2.stateno = 601;
+			}
+			//  リロード
+			else {
+				if ((random(80)) && (xDist > 290))P2.stateno = 630;
+			}
+			// 対空
+			if ((random(200)) && (xDist <= 175) && (yDist > 140) && (P1.YVel > -1.2))P2.stateno = 220;
+		}
+		// 空中
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg == 2)) {
+			if ((random(200)) && (xDist < 180) && (yDist < 200) && (P2.YVel > 0))P2.stateno = 420;
+
+			// 弾撃ち
+			if (P2.Var[10] >= 180) {
+				// 下弾
+				if ((random(60)) && (xDist > 100) && (P2.YPos < GROUND - 80))P2.stateno = 605;
+				// 上弾
+				if ((random(10)) && (xDist > 120))P2.stateno = 606;
+			}
+		}
+		// ゲージ技
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)) {
+			// 3ゲージぶっぱ
+			if ((random(20)) && (xDist > 190) && (P2.Power >= 3000))P2.stateno = 850;
+		}
+		// リバサ
+		if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)
+			&& (oldSt == 1055) && (P1.stateno < 1000)) {
+			// バクステ
+			if ((random(500)) && (xDist < 150))P2.stateno = 35;
+		}
+		// エリアル
+		if ((!P2.ctrl) && (P2.SFlg == 2) && (P2.CFlg) && (!P1.ctrl) && (P2.StopTime == 0) && (P2.time > 0)) {
+			// ジャンプキャンセル
+			if ((P2.stateno == 220) && (random(100)) && (P2.scTime > 5) && (P2.AirJump > 0) && (P1.SFlg == 2)) {
+				P2.stateno = 45, P2.time = 0, P2.ctrl = 0;
+			}
+			if ((P2.stateno == 220) && (random(100)) && (P2.scTime > 5)) {
+				P2.stateno = 600, P2.time = 0, P2.ctrl = 0;
+			}
+			else if ((P2.stateno == 600) && (random(100)) && (P2.scTime > 5)) {
+				P2.stateno = 601, P2.time = 0, P2.ctrl = 0;
+			}
+		}
+	}
+	// シュウイチ
+	else if (num == SYUICHI) {
+	// ジャンプ
+	if ((P2.ctrl) && (P2.SFlg != 2) && (xDist < 400)) {
+		if (random(8)) {
+			P2.stateno = 40;
+			// ジャンプ方向
+			if (random(400)) {	// 前
+				if (P2.muki == 0)P2.button[106] = 1;
+				else { P2.button[104] = 1; }
+			}
+			//
+			else if (random(300)) {	// 後ろ
+				if (P2.muki == 0)P2.button[104] = 1;
+				else { P2.button[106] = 1; }
+			}
+		}
+	}
+	// 地上攻撃
+	if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)) {
+		if ((random(100)) && (xDist < 100) && (yDist < 120))P2.stateno = 300;
+		if ((random(80)) && (xDist > 120 && xDist < 180) && (yDist < 120))P2.stateno = 210;
+		if ((random(40)) && (xDist > 180 && xDist < 240) && (yDist < 120))P2.stateno = 320;
+		// 6C
+		if ((random(30)) && (xDist > 230 && xDist < 330) && (yDist < 120))P2.stateno = 225;
+		// 対空
+		if ((random(200)) && (xDist <= 175) && (yDist > 140) && (P1.YVel > -0.9))P2.stateno = 205;
+	}
+	// 空中
+	if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg == 2)) {
+		// JB
+		if ((random(200)) && (xDist < 170) && (yDist < 200) && (P2.YVel > 0))P2.stateno = 410;
+		// JC
+		if ((random(200)) && (xDist < 180) && (yDist >= 200) && (P2.YPos < P1.YPos))P2.stateno = 420;
+	}
+	// ゲージ技
+	if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2)) {
+		// 1ゲージぶっぱ
+		if ((random(20)) && (xDist < 120) && (P2.Power >= 1000) && (P1.HFlg == 0))P2.stateno = 810;
+	}
+	// リバサ
+	if ((P2.ctrl) && (P2.stateno < 200) && (P2.SFlg != 2) 
+		&& (oldSt == 1055) && (P1.stateno < 1000)) {
+		// バクステ
+		if ((random(200)) && (xDist < 150))P2.stateno = 35;
+		// 当身
+		if ((random(80)) && (xDist < 150))P2.stateno = 610;
+		// 当身(下段)
+		if ((random(60)) && (xDist < 150))P2.stateno = 611;
+		// 1ゲージぶっぱ
+		if ((random(200)) && (xDist < 150) && (P2.Power >= 1000))P2.stateno = 810;
+	}
+	// キャンセル
+	if ((!P2.ctrl) && (P2.CFlg) && (!P1.ctrl) && (P2.StopTime == 0) && (P2.time > 0)) {
+
+		// 6C > 214C
+		if ((P2.stateno == 225) && (P2.scTime > 5) && (P2.Power >= 1000) && (random(50))) {
+			P2.stateno = 811, P2.time = 0, P2.ctrl = 0;
+			//ゲージ消費 
+			P2.Power -= 1000;
+		}
+
+		// 236B > 236C
+		// 入れ込む
+		if ((P2.stateno == 621) && (P2.scTime > 5) && (P2.Power >= 1000)) {
+			P2.stateno = 800, P2.time = 0, P2.ctrl = 0;
+		}
+
+		// 236A > 236C
+		// たまにミスる
+		if ((P2.stateno == 620) && (P2.scTime > 5) && (P2.Power >= 1000) && (P1.HFlg == 1 || random(80))) {
+			P2.stateno = 800, P2.time = 0, P2.ctrl = 0;
+		}
+
+		// C > 236A
+		if ((P2.stateno == 220) && (P2.scTime > 5)) {
+			P2.stateno = 620, P2.time = 0, P2.ctrl = 0;
+			// たまに中段
+			if (random(100))P2.stateno = 621;
+		}
+		// B > C
+		if ((P2.stateno == 210) && (P2.scTime > 5)) {
+			P2.stateno = 220, P2.time = 0, P2.ctrl = 0;
+		}
+
+		// 2A > B
+		if ((P2.stateno == 300) && (P2.scTime > 5)) {
+			P2.stateno = 210, P2.time = 0, P2.ctrl = 0;
+		}
+
+		// JC
+		if ((P2.stateno == 410) && (P2.scTime > 5)) {
+			/*
+			if (P1.SFlg == 2) {
+				P2.stateno = 420, P2.time = 0, P2.ctrl = 0;
+			}
+			*/
+		}
+
+		// ジャンプキャンセル
+		if ((P2.stateno == 205) && (random(200) || P1.HFlg == 1) && (P2.scTime > 5) && (P1.SFlg == 2)) {
+			P2.stateno = 40, P2.time = 0, P2.ctrl = 0;
+			//P2.button[108]++;
+			if (P2.muki == 0)P2.button[106]++;
+			else { P2.button[104]++; }
+		}
+	}
+	// エリアル
+	if ((!P2.ctrl) && (P2.SFlg == 2) && (P2.CFlg) && (!P1.ctrl) && (P2.StopTime == 0) && (P2.time > 0)) {
+		// ジャンプキャンセル
+		if ((P2.stateno == 410) && (P2.scTime > 0) && (P2.AirJump > 0) && (P1.HFlg == 1)) {
+			P2.stateno = 45, P2.time = 0, P2.ctrl = 0;
+			P2.keyAtt[6]++;
+		}
+		// JC
+		if ((P2.stateno == 410) && (P2.scTime > 5) && (P1.HFlg == 1)) {
+			P2.stateno = 420, P2.time = 0, P2.ctrl = 0;
+		}
+	}
+	// 対空から追撃
+	if ((P2.ctrl) && (P2.stateno == 42) && (P1.stateno == 1030)) {
+		// JBを出す
+		P2.stateno = 410, P2.time = 0, P2.ctrl = 0;
+	}
+
+	}	// シュウイチここまで
 }
 
 // 順番を逆にする
@@ -550,6 +847,7 @@ void GetH_AI(Helper GH1[], Helper GH2[])
 
 }
 
+/*
 boolean random(int num)
 {
 	boolean f;
@@ -558,3 +856,4 @@ boolean random(int num)
 
 	return f;
 }
+*/

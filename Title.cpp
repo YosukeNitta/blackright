@@ -7,7 +7,7 @@ static int titleG;
 //static int tGLogo;
 static int fill;
 static boolean load;
-static int timeStop;
+static int _timeStop;
 static int kettei;
 static int alpha = 255;	// 透明度
 static boolean change = true;
@@ -64,6 +64,15 @@ int Title::Mode()
 		SetAlpha(alpha);
 		DrawString(240, 400, "PRESS START BUTTON", Cr);
 		NoBlend();
+
+		// 次シーン移行の暗転
+		if ((_timeStop <= 11) && (kettei == 1)) {
+			int num = _timeStop * 25;
+			if (num > 255) num = 255;
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, num);
+			DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
 	}
 
 	// キー入力
@@ -76,20 +85,19 @@ int Title::Mode()
 
 	// 決定してたらカウント加算
 	if (kettei == 1) {
-		timeStop += 1;
+		_timeStop += 1;
 	}
 	else {
-		timeStop = 0;
+		_timeStop = 0;
 	}
 
 
 	// キー入力で終了
-	if (timeStop >= 10) {
+	if (_timeStop >= 11) {
 		load = false;
 		//ModeChange(SceneNum(MenuScene));
 		MainSystem::Instance().SetNextMode("Menu");
 		kettei = 0;
-		
 	}
 	return 0;	//どこにも当たらなかったら終了
 
@@ -108,6 +116,8 @@ void Title::Load_1second()
 void Title::Load_Reload()
 {
 	titleG = LoadGraph("ob/title.png");
+	_timeStop = 0;
+	kettei = 0;
 }
 
 

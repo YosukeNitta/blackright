@@ -1,9 +1,8 @@
 #pragma once
 #include "DxLib.h"
-
+#include "WindowInfo.h"
 
 // 変更するもの
-static const int STAGE_MAX = 4;		// ステージの最大
 static const int CHARACTERS_MAX = 6;
 
 // むりやりキャラ導入
@@ -34,8 +33,8 @@ static enum SceneNum
 static SceneNum gameScene;
 
 // スクリーン数値
-static const int SCREEN_W = 640;	//画面の横幅
-static const int SCREEN_H = 480;	//画面の縦幅
+static const int SCREEN_W = WindowInfo::width;	//画面の横幅
+static const int SCREEN_H = WindowInfo::height;	//画面の縦幅
 
 // ステージ数値
 static const int STAGE_WIDTH = 1280;	//ステージの横幅(1280)
@@ -66,6 +65,10 @@ static const int BUTTON_MAX = 9;		// ボタン設定の最大
 static const int KEY_MAX = 256;		// キー入力の最大
 static const int PAD_MAX = 119;		// パッド入力の最大
 
+// ネット対戦設定
+// レバー+4ボタン+スタート
+static const int KEYLOG_MAX = 9;
+
 // 判定
 static const int HIT_MAX = 10;		// 喰らい判定.MAX
 static const int ATT_MAX = 10;		// 攻撃判定.MAX
@@ -82,7 +85,7 @@ static const int HM = HELPER_MAX;	// 文字数削減用
 // ゲーム内部数値 //
 static const int LIFECOUNT_MAX = 2;	// ライフカウンタの最大値
 static const int ROUNDTIME = 99;			// 試合時間
-static const int TR_TIME = 7-6;			// 投げ抜け猶予(-6はヒットストップ)
+static const int TR_TIME = 5;			// 投げ抜け猶予
 static const int VAR_MAX = 50;		// キャラ変数の最大
 static const int SC_TIME = 30;		// スパキャン猶予	
 static const int NC_TIME = 28;		// 通常技キャン猶予	

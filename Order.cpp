@@ -172,3 +172,13 @@ void Draw_SaveScreen()
 	if(GHandle != 0)
 		DrawGraph(0, 0, GHandle, false);
 }
+
+// —” (999‚Ü‚Å‚Ì”‚ÅŠm—¦‚ğw’è)
+boolean random(int num)
+{
+	boolean f;
+	if (GetRand(999) < num)f = true;
+	else { f = false; }
+
+	return f;
+}

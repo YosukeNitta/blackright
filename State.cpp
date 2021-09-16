@@ -33,6 +33,9 @@ static int bo;	// ブラックアウト停止
 // コマンド入力中止
 static bool stopCmd;
 
+// リプレイ1コマ進める
+static int replay1Move;
+
 //内部関数宣言部--------------------------------------------
 // 無敵時間計測
 void MutekiCount();
@@ -500,23 +503,48 @@ int CharMove(void)
 	// ポーズ画面
 	//
 	//**************
+	
+		// ポーズボタンor
 		if (
 			((!S.TraningFlg) && (P_BInput(7) == 1))
 			||
 			((S.TraningFlg) && (P1_BInput(7) == 1))
+			||
+			(replay1Move == 1)
 		){
+			// ネット対戦がオンなら戻る
+			// トレモなら続行
+			if (GetNetOn() && (!S.TraningFlg)) {
+				Select_ReturnCursor();	// カーソル戻す
+				MainSystem::Instance().SetNextMode("Select");
+				return 0;
+			}
+
 			// 録画をオフにする
 			S.TSwitch[7] = 0;
 
 			// 一度だけ操作を受け付けない
-			P1_BCheck();
-			P2_BCheck();
+			//P1_BCheck();
+			//P2_BCheck();
+			setP1_B(2, 2);
+			setP1_B(7, 2);
+			setP1_B(106, 2);
+			setP2_B(7, 2);
+			
 			GetP_Pause(P1, P2);
 			GetS_Pause(S);
 
 			// ポーズ画面に移行
+			// 1コマ進行時は効果音なし
+			if (replay1Move == 1) {
+				replay1Move = 0;
+			}
+			else {
+				SEStart(35);
+			}
 			PauseSetting(1);
 			raw_set();	// 左右いれっぱを一度だけオフ
+			
 		}
 		return 0;
 }
@@ -675,6 +703,9 @@ void CharLoad()
 	SubState_DashReset();
 
 	fpSet = 0;
+
+	// リプレイ1コマもついでに初期化
+	replay1Move = 0;
 }
 
 void Get_PSet(Player GP1, Player GP2)
@@ -771,6 +802,7 @@ void AttackSetting()
 		GetS_HelDamage(S);
 		HelperDamCheck();
 	}
+	// 2pチェック
 	if ((P1.stateno < 1060) || (P1.stateno >= 1070)){
 		GetP_HelDamage(P2, P1);
 		GetH_HelDamage(H2, H1);
@@ -1274,6 +1306,8 @@ void TimeCount()
 
 				P1.Life = P1.C.lifeMax;
 				P2.Life = P2.C.lifeMax;
+				//P1.Power = 0;
+				//P2.Power = 0;
 				P1.aGauge = GUARD_MAX;
 				P2.aGauge = GUARD_MAX;
 				P1.GRecovery = 0;
@@ -1302,6 +1336,8 @@ void TimeCount()
 
 				P1.Life = P1.C.lifeMax;
 				P2.Life = P2.C.lifeMax;
+				//P1.Power = 0;
+				//P2.Power = 0;
 				P1.aGauge = GUARD_MAX;
 				P2.aGauge = GUARD_MAX;
 				P1.GRecovery = 0;
@@ -1356,22 +1392,29 @@ void TimeCount()
 	// 終了
 	else if (S.roundState == 3){
 		S.roundTime++;
+		/*
+		if (S.roundTime < 20) {
+			S.StopTime++;
+		}
+		*/
 		if (S.StopTime == 0)S.StopTime++;
 		
 		// 勝者
 		if (S.roundTime == 1){
+			// ドロー
 			if (P1.Life <= 0 && P2.Life <= 0){
-				Result_WinSide(0, -1, -1);
-				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
+				Result_WinSide(0, -1, -1, P1.C.name, P2.C.name);
 				WinCount(3);
 			}
+			// 2P勝利
 			else if (P1.Life <= 0){
-				Result_WinSide(2, P2.Name, P1.Name);
+				Result_WinSide(2, P2.Name, P1.Name, P2.C.name, P1.C.name);
 				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
 				WinCount(2);
 			}
+			// 1P勝利
 			else if (P2.Life <= 0){
-				Result_WinSide(1, P1.Name, P2.Name);
+				Result_WinSide(1, P1.Name, P2.Name, P1.C.name, P2.C.name);
 				//Result_GetData(P1.Name, P2.Name, 1, 2, S.NowStage);
 				WinCount(1);
 			}
@@ -1508,6 +1551,11 @@ void StopTime_Add(int n)
 void StopCmd(boolean cmd)
 {
 	stopCmd = cmd;
+}
+
+// リプレイを1コマ進める
+void setReplay1Move(int num) {
+	replay1Move = num;
 }
 
 ///////////////////////////////////////////////////////////////////////

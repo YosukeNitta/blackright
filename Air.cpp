@@ -425,6 +425,17 @@ EXFILE:
 				air[n] = air[52];
 			}
 
+			// リフガ
+			if (n == 57) {
+				air[n] = air[50];
+			}
+			else if (n == 58) {
+				air[n] = air[51];
+			}
+			else if (n == 59) {
+				air[n] = air[52];
+			}
+
 			// 空ダ
 			else if (n == 60) {
 				air[n] = air[30];
@@ -586,6 +597,7 @@ EXFILE:
 	// Selectにも送る
 	Select_GetName(N);
 	GetN_SameParam(N);
+	GetN_Result(N);
 }
 
 // P1のNameに合ったものをnameCにコピー

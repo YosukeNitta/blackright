@@ -1,11 +1,12 @@
 [Data]
+name = syuichi;
 gsize = 1.00;
 xsize = 54;
 ysize = 150;
 life = 1020;
-walk.f = 2.0;
-walk.b = -2.16;
-run.f = 4.1, -3.6;
+walk.f = 1.95;
+walk.b = -2.0;
+run.f = 3.8, -4.5;
 run.b = -2.8, -4.0;
 jump.y = -10.4; -9.9
 jump.a = -8.4;
@@ -14,6 +15,6 @@ jump.b = -2.4;
 yaccel = 0.52;
 airjump = 1;
 airdash = 1;
-combolate = 0.08;
+combolate = 0.10;
 clmax = 0.60;
 clmin = 0.15;

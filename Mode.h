@@ -5,6 +5,7 @@
 //===============================================================================
 #include "SSet.h"
 #include "PSet.h"
+#include "NetData.h"
 //#include "vector"
 
 #ifndef DEF_MODE_H	//一度定義されていたら、定義しない
@@ -70,8 +71,8 @@ void raw_set();
 /****
 * Config
 ****/
-int Config();
-void Load_Config();
+//int Config();
+//void Load_Config();
 
 //=======
 // Arcade
@@ -82,4 +83,12 @@ void Arcade_GetData(int gName, int gColor);
 void Arcade_BattleCount(int n);
 void Arcade_Setting();
 
+//==============
+// MainSystem
+//==============
+void Main_GetNetData(NetData* net);
+// 0でオフ
+void ChangeNetOn(int n);
+// キーログをメインにセットsocketに使用
+void Main_SetKeyLog(BYTE key[KEYLOG_MAX]);
 #endif

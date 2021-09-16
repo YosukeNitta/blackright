@@ -98,7 +98,6 @@
     <ClCompile Include="Config.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Connect.cpp" />
     <ClCompile Include="CorParam.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -150,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="Key.cpp" />
     <ClCompile Include="LifeCount.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="WinMain.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -196,6 +198,7 @@
   <ItemGroup>
     <ClInclude Include="Arcade.h" />
     <ClInclude Include="Char.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Define2.h" />
     <ClInclude Include="Fps.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="SData.h" />
     <ClInclude Include="Select.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SSet.h" />
     <ClInclude Include="System.h" />

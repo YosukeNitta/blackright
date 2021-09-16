@@ -202,9 +202,12 @@ void DamageCheck()
 void DamageEnter()
 {
 	// アーマー、超必殺・投げ以外は受けない、地上限定
-	// ここじゃない
-	if ((P1.MoveHit > 0) && (P2.D.armor > 0) && ((P1.stateno < 800) && (P1.stateno != 520)) && (P1.attF != 2)
-		&& (P2.SFlg != 2 || P2.stateno == 30)){
+	// 下段のしゃがみ通常技は取れない
+	// && (P1.A.damage + P1.A.hosyo < 130)// ダメージ130以下
+	//((P2.stateno != 200) && (P2.stateno != 300) && (P2.stateno != 500))// 投げと小技中は無効
+	if ((P1.MoveHit > 0) && (P2.D.armor > 0) && ((P1.stateno < 800) && (P1.stateno != 520)) && (P1.attF != 2) 
+		&& (!((P1.A.damage + P1.A.hosyo >= 90) && (P1.GuardF == 3) && (P1.stateno >= 301 && P1.stateno < 400)))
+		&& (P2.SFlg != 2)){
 
 		//---------------
 		// 共通設定
@@ -255,7 +258,7 @@ void DamageEnter()
 				P1.A.heSizeX, P1.A.heSizeY, P2.muki);
 
 			// [ヒットストップ、のけぞり時間]
-			P2.StopTime = P1.HitStop;
+			P2.StopTime = P1.HitStop + 2;
 			P1.StopTime = P1.HSSelf;
 			/*
 			if (P2.SFlg != 2){
@@ -309,6 +312,7 @@ void DamageEnter()
 		if (GuardCheck())
 		// [ガードの設定]
 		{
+			// ガードポイント
 			if ((P2.Name == SYUICHI) && ((P2.stateno >= 600) && (P2.stateno < 820))) {
 				if (P2.stateno == 600){
 					P2.time = gTime;
@@ -318,9 +322,12 @@ void DamageEnter()
 				if ((P2.stateno == 610) || (P2.stateno == 611)) {
 					P2.time = 0;
 					P2.stateno = 615;
-					P1.StopTime = 10, P2.StopTime = 10;
+					S.StopTime = 10;
+					//P1.StopTime = 10, P2.StopTime = 10;
 					P1.CFlg = 0;
 					SEStart(19);
+
+					// ???
 				}
 				// 当身成立
 				if (P2.stateno == 810) {
@@ -345,6 +352,7 @@ void DamageEnter()
 
 }
 
+// ガードポイント
 void GuardPoint()
 {
 	// [ゲージ回収]
@@ -352,8 +360,8 @@ void GuardPoint()
 	P2.Power += P1.GivePow / 2;
 
 	// SE
-	if (P2.D.nokezori >= 18)SEStart(17);
-	else { SEStart(16); }
+	if (P2.D.nokezori >= 18)SEStart(19);
+	else { SEStart(19); }
 
 	// [ヒットエフェクト]
 	int posX, posY;
@@ -372,12 +380,12 @@ void GuardPoint()
 	// エフェクト開始
 	{ posX = 20 + GetRand(10); }
 	{
-		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
-			0.2, 0.6 + effSize, P2.muki);
+		EffStart(18, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.08, 0.2 + effSize, P2.muki);
 	}
 
 	// ヒットストップ、のけぞり時間
-	P2.StopTime = P1.HitStop;
+	P2.StopTime = P1.HitStop + 2;
 	P1.StopTime = P1.HSSelf;
 	if (P1.StopTime < 0)P1.StopTime = 0;
 	if (P2.StopTime < 0)P2.StopTime = 0;
@@ -400,18 +408,35 @@ void GuardParam()
 
 	// [削り]
 	int kezuri;
-	kezuri = (P1.A.damage + P1.A.hosyo) / 10;
-
-	if (P1.stateno >= 600){
-		P2.Life -= kezuri;
+	// ガークラ時は増やす
+	if (P2.aGauge <= 0) {
+		kezuri = (int)(P1.A.damage + P1.A.hosyo) * 0.125;
 	}
-	else if ((P1.stateno >= 220 && P1.stateno < 300) || 
-			(P1.stateno >= 320 && P1.stateno < 400)){
-		if (kezuri >= 8)kezuri = 8;
-		P2.Life -= kezuri;
+	else {
+		kezuri = (int)(P1.A.damage + P1.A.hosyo) * 0.075;
 	}
 
-	// 
+	// 削りダメ決定
+	if ((P1.stateno >= 600) &&
+		!(P2.stateno >= 57 && P2.stateno <= 59)){
+		P2.Life -= kezuri;
+	}
+	// ガークラ時の削り
+	else if ((P2.aGauge <= 0) &&
+		(P1.stateno >= 200 && P1.stateno < 500)) {
+		//if (kezuri > 10)kezuri = 10;
+		P2.Life -= kezuri;
+	}
+	/*
+	// 通常技で削る
+	else if ((P1.stateno >= 210 && P1.stateno < 300) || 
+			(P1.stateno >= 310 && P1.stateno < 400)){
+		if (kezuri > 10)kezuri = 10;
+		P2.Life -= kezuri;
+	}
+	*/
+
+	// ガークラしてないならKOしない
 	if ((P2.Life <= 0) && (P2.aGauge > 0))P2.Life = 1;	// 削り殺し防止
 
 	// [ゲージ回収]
@@ -421,35 +446,46 @@ void GuardParam()
 	boolean gotoCrash = false;
 
 	// [ガードゲェジ減少]
-	if (P2.aGauge > 0 && P2.SFlg == 2){
+	// ドットの時は地上でも減る
+	//(P2.aGauge > 0 && P2.SFlg == 2)
+	//|| (P2.aGauge > 0 && P2.Life == 1)
+	if (P2.aGauge > 0){
 		int n = 0;
 		// 削り量決定
 		if (P2.SFlg == 2){
 			n = (P1.A.damage + P1.A.hosyo) * 1.1 + 20;
 		}
+		// 地上
 		else{
-			//n = (int)((float)(P1.A.damage + P1.A.hosyo) * 0.55);
+			n = (int)((float)(P1.A.damage + P1.A.hosyo) * 0.50);
 		}
 
 		// 初段
 		if (P1.A.guardCount == 0){
-			if (n > 250)n = 250;
-			else if (n < 50)n = 50;
+			if (n > 300)n = 300;
+			// 50だった
+			else if (n < 10)n = 10;
 		}
 		// ガード中
 		else{ 
 			switch (P1.A.guardCount){
 				case 1:
-					n = ((float)n * 0.95);  break;
-				case 2:
 					n = ((float)n * 0.90);  break;
+				case 2:
+					n = ((float)n * 0.80);  break;
 				default:
-					n = ((float)n * 0.85);  break;
+					n = ((float)n * 0.70);  break;
 			}
 			// 最大値制限
-			if (n > 200)n = 200;
-			else if (n < 20)n = 20;
+			if (n > 250)n = 250;
+			else if (n < 10)n = 10;
 		}
+
+		// 削り量アップ
+		if (P2.stateno >= 57 && P2.stateno <= 59) {
+			n += 10 + kezuri;
+		}
+
 		// 数値変更
 		P2.aGauge -= n;
 		TestText(n, 1);
@@ -482,13 +518,14 @@ void GuardParam()
 		if (P2.aGauge <= 0){
 			gotoCrash = true;
 			P1.A.guardCount = 0;
-			P1.A.guard_gx = -2.0;
+			P1.A.guard_gx = -1.8;
 			P1.A.guard_ax = -1.1;
 			P1.GY = 0.0;
 			P1.AY = -5.0;
 			P2.D.yaccel = 0.14;
-			P2.Life -= 50;
-			P1.CFlg = 0;
+			P2.Life -= 20;
+			// 連打技のみキャンセル停止
+			if(P1.stateno == 200 || P1.stateno == 300)P1.CFlg = 0;
 			if (P2.Life <= 0)P2.Life = 1;	// 削り殺し防止
 		}
 	}
@@ -498,15 +535,25 @@ void GuardParam()
 
 	// ガークラではない
 	if (!gotoCrash){
-		// [アニメ設定]
-		if (P2.SFlg == 0)P2.stateno = 50;
-		if (P2.SFlg == 1 || (P2.keyAtt[2] > 0))P2.stateno = 51;
-		if (P2.SFlg == 2)P2.stateno = 52;
-
+		// EXガード
+		if (P2.stateno >= 57 && P2.stateno <= 59) {
+			if (P2.keyAtt[2] > 0)P2.stateno = 58;
+			else { P2.stateno = 57; }
+			if (P2.SFlg == 2)P2.stateno = 59;
+		}
+		// 通常ガード
+		else {
+			// [アニメ設定]
+			if (P2.SFlg == 0)P2.stateno = 50;
+			if (P2.SFlg == 1 || (P2.keyAtt[2] > 0))P2.stateno = 51;
+			if (P2.SFlg == 2)P2.stateno = 52;
+		}
+		
 		// ガード時間
 		P2.D.nokezori = P1.G_GuardTime;
 		if ((P2.SFlg == 2) && (P1.A.A_GuardTime > 0))P2.D.nokezori = P1.A.A_GuardTime;
 	}
+	// ガークラ
 	else{
 		// [アニメ設定]
 		if (P2.SFlg == 0)P2.stateno = 1000;
@@ -518,7 +565,9 @@ void GuardParam()
 	}
 
 	// SE
-	if (P2.D.nokezori >= 18)SEStart(17);
+	if (P2.D.nokezori >= 18 || (P2.stateno >= 57 && P2.stateno <= 59)) {
+		SEStart(17);
+	}
 	else{ SEStart(16); }
 
 	// [ヒットエフェクト]
@@ -540,6 +589,12 @@ void GuardParam()
 	if (!gotoCrash){
 		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
 			0.2, 0.6 + effSize, P2.muki);
+		// ガークラ手前の点滅
+		if (P2.aGauge < GUARD_MAX * 0.25) {
+			// 中段エフェクト
+			P2.colorCTime = 4;
+			P2.colorC[0] = 255, P2.colorC[1] = 138, P2.colorC[2] = 138;
+		}
 	}
 	else{
 		EffStart(15, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
@@ -586,6 +641,7 @@ void GuardParam()
 			P2.YVel = P1.GY; 
 		}
 	}
+
 	// 空中ガードの速度、適度に
 	if (!gotoCrash){
 		if (P2.SFlg == 2){
@@ -593,6 +649,18 @@ void GuardParam()
 			else if (P2.YVel > -0.2)P2.YVel = -0.2;
 
 			if (P2.XVel < -2)P2.XVel = -2;
+		}
+	}
+
+	// リフガ設定
+	if (P2.stateno >= 57 && P2.stateno <= 59) {
+		P2.XVel += (P1.A.guard_gx * 0.5);
+		P2.D.nokezori += 2;
+		// リフガエフェクト
+		if (P2.aGauge >= GUARD_MAX * 0.25) {
+			// 中段エフェクト
+			P2.colorCTime = 2;
+			P2.colorC[0] = -1, P2.colorC[1] = -1, P2.colorC[2] = -1;
 		}
 	}
 
@@ -620,23 +688,40 @@ void HitParam()
 		damage += P1.A.damage;
 		
 		// カウンターヒット
-		if (P2.D.counter){		
+		if (P2.D.counter > 0){		
 			// フェイタル追加ダメ
 			if(P2.D.fatal)damage += 20;
 			// 投げ以外ならダメ増加
+			// 200以上は+40にとどめる
 			if ((P1.A.damage + P1.A.hosyo) > 200){
 				damage += 40;
 			}
 			else{ damage += (int)((P1.A.damage + P1.A.hosyo) * 0.2f); }
 
+			// 有利フレーム増加
 			if (P1.HitStop > 0){
 				P1.G_HitTime += 2;
 				P1.A_HitTime += 2;
+				// フェイタル
+				if (P2.D.fatal) {
+					P1.G_HitTime += 4;
+					P1.A_HitTime += 4;
+					P1.HitStop += 4;
+					P1.HSSelf += 4;
+					P1.A.hosei_K = 1.1;
+				}
 			}
-			P2.colorCTime = 5;
+			
+
+			// 赤色に
+			P2.colorCTime = 6;
+			if (P2.D.fatal)P2.colorCTime = 8;
 			P2.colorC[0] = 255, P2.colorC[1] = 0, P2.colorC[2] = 0;
+
+			// システム表記
+			if(P1.PSide == 1)Display_Text(1, 1);
+			else if (P1.PSide == 2)Display_Text(1, 2);
 		}
-		
 	}
 	else if (P1.HitCount >= 1){		// 初段以降
 		// ダメが減少しすぎ
@@ -756,9 +841,16 @@ void HitParam()
 	else{ posY = P2.ySize; }
 
 	{ posX = 20 + GetRand(10); }
+	// ヒットエフェクトがある
 	if (P1.A.hitEff != 0){
+
+		// 衝撃波
+		float xsize, ysize;
+		xsize = ysize = 0.2;
+		if (P2.D.counter > 0)xsize = ysize = 0.24;
 		EffStart(10, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
-			0.2, 0.2, P2.muki);
+			xsize, ysize, P2.muki);
+
 		for (int i = 0; i < 6; i++){
 			float rand = GetRand(4);
 			rand = (rand * 0.01) + 0.07;
@@ -926,20 +1018,23 @@ boolean GuardCheck()
 	// 空中ガード可否
 	boolean airGuard = false;
 
+	
 	// 向きが同じなら6入力でも空中ガード可能
-	if ((P2.SFlg == 2) && (P2.keyAtt[6] != 0) && (P2.aGauge > 0) && (P2.stateno != 60 && P2.stateno != 65)){
-		if (P2.muki == 0){
-			if (P1.XPos < P2.XPos)airGuard = true;
+	if (P2.ctrl && P2.SFlg == 2) {
+		if ((P2.keyAtt[6] != 0) && (P2.aGauge > 0) && (P2.stateno != 60 && P2.stateno != 65)) {
+			if (P2.muki == 0) {
+				if (P1.XPos < P2.XPos)airGuard = true;
+			}
+			else if (P2.muki == 1) {
+				if (P2.XPos < P1.XPos)airGuard = true;
+			}
 		}
-		else if (P2.muki == 1){
-			if (P2.XPos < P1.XPos)airGuard = true;
-		}
-	}
 
-	// 空ガ条件
-	if ((P2.SFlg == 2) && (P2.keyAtt[4] != 0) && (P2.aGauge > 0) && 
-		(P2.stateno != 60 && P2.stateno != 65)){
-		airGuard = true;
+		// 空ガ条件
+		if ((P2.keyAtt[4] != 0) && (P2.aGauge > 0) &&
+			(P2.stateno != 60 && P2.stateno != 65)) {
+			airGuard = true;
+		}
 	}
 
 	if (
@@ -948,10 +1043,21 @@ boolean GuardCheck()
 		// 相手が空中ではない &&
 		// ジャンプ移行以外 || 操作可能で空ガok || 既にガード中
 		(
+		/*
 		(P2.ctrl || P2.stateno == 47) && 
 		((P2.keyAtt[4] != 0) || ((P2.D.selfTime > 0) && (P2.keyAtt[6] != 0) && (P1.SFlg == 2))) && 
-		(P2.SFlg != 2) && 
-		(P2.stateno != 40) || (P2.ctrl) && (airGuard) || (P2.stateno >= 50 && P2.stateno <= 59)
+		(P2.SFlg != 2 && P2.stateno != 40) || 
+		(P2.ctrl) && (airGuard) || (P2.stateno >= 50 && P2.stateno <= 59)
+		*/
+
+		// 地上ガード
+		// 空中ガード
+		// 連続ガード
+		// 起き上がりめくりガード
+		((P2.ctrl || P2.stateno == 47) && (P2.keyAtt[4] != 0) && (P2.SFlg != 2)) ||
+		(airGuard) ||
+		(P2.stateno >= 50 && P2.stateno <= 59) ||
+		((P2.keyAtt[4] != 0 || P2.keyAtt[6] != 0) && (P2.D.selfTime > 0) && (P1.SFlg == 2) && (P2.ctrl))
 		)
 	   )
 		{
@@ -962,38 +1068,54 @@ boolean GuardCheck()
 			// 中段
 			((P1.GuardF == 2)
 			&& ((P2.SFlg == 0 && (P2.keyAtt[2] == 0)) || P2.SFlg == 2)) ||	// 下を入れていない
+
 			// 下段
-			(P1.GuardF == 3)
-			&& (((P2.SFlg == 1) || (P2.keyAtt[2] > 0)) || (P2.SFlg == 2)) || 
+			((P1.GuardF == 3)
+			&& ((P2.SFlg == 1 || P2.keyAtt[2] > 0) || P2.SFlg == 2)) || 
+			
 			// 空ガ不可
-			(P1.GuardF == 4)
-			&& ((P2.SFlg == 0) || ((P2.SFlg == 1) || (P2.keyAtt[2] > 0)))
+			((P1.GuardF == 4)
+			&& (P2.SFlg == 0 || P2.SFlg == 1))
 			)
 			gu = true;
 	}
 	// ガードポイント
 	if ((!gu) && (P2.Name == SYUICHI)) {
-		if ((P2.stateno == 600) && 
-			((gTime >= 1) && (gTime <= 50))) {
-			if((P1.GuardF == 1) || (P1.GuardF == 2))
-			gu = true;
+		// 硬破斬	3～51まで取れる
+		// 相手が超必以下の技
+		// 威力130以下
+		if ((P2.stateno == 600) && (P2.Var[13] == 0) &&
+			((gTime >= 3 - 1) && (gTime <= 50))) {
+			if (((P1.GuardF == 1) || (P1.GuardF == 2) || (P1.GuardF == 4)) &&
+				((P1.A.damage + P1.A.hosyo) < 130) && (P1.stateno < 800) && (P2.Var[12] == 0)) {
+				gu = true;
+				P2.Var[12]++;
+			}
 		}
 		// 時つ風
 		if ((P2.stateno == 610) &&
-			((gTime >= 4) && (gTime <= 13))) {
-			if ((P1.GuardF == 1) || (P1.GuardF == 2))
-				gu = true;
+			((gTime >= 3) && (gTime <= 13))) {
+			if ((P1.GuardF == 1) || (P1.GuardF == 2)) {
+				// 打撃なら成立
+				if (P1.attF == 1)gu = true;
+			}
 		}
+		// 時つ風下段
 		if ((P2.stateno == 611) &&
-			((gTime >= 4) && (gTime <= 13))) {
-			if ((P1.GuardF == 3) || (P1.GuardF == 13))
-				gu = true;
+			((gTime >= 3) && (gTime <= 13))) {
+			if ((P1.GuardF == 3) || (P1.GuardF == 13)) {
+				// 打撃なら成立
+				if (P1.attF == 1)
+					gu = true;
+			}
 		}
 		// 超当身
 		if ((P2.stateno == 810) &&
 			((gTime >= 0) && (gTime <= 21))) {
-			if ((P1.GuardF == 1) || (P1.GuardF == 2) || (P1.GuardF == 3))
-				gu = true;
+			if ((P1.GuardF == 0) || (P1.GuardF == 1) || (P1.GuardF == 2) || (P1.GuardF == 3) || (P1.GuardF == 13)) {
+				// 打撃なら成立
+				if(P1.attF == 1)gu = true;
+			}
 		}
 	}
 

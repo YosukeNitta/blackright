@@ -20,7 +20,7 @@ int Arcade::Mode(void)
 	Get_Color(0, 2);		// カラー決定
 
 
-	int stage = stage = GetRand(STAGE_MAX - 1) + 1;
+	int stage = stage = GetRand(getMaxStage() - 1) + 1;
 
 	if (enemyName[battleCount] == EIN)stage = 1;	// ステージ受け取り;
 	else if (enemyName[battleCount] == SYUICHI)stage = 1;	// ステージ受け取り;

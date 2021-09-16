@@ -39,6 +39,10 @@ void Frame_Check();
 void Beat_Check(int state, int pside);
 void ObjectDraw_KeyDisplay();
 void AddGaugeDraw(int power, int side);
+// 文字表示
+// 1..カウンター
+// side..3で両方
+void Display_Text(int text, int side);
 void SetBlack(int b);
 
 /****
@@ -58,5 +62,15 @@ void EasyEffDraw(int num1, int time, int EffXP, int EffYP, int basePosX, int bas
 void GetP_Effect(Player GP1, Player GP2);
 void GetS_Effect(System_t GS);
 void GetH_Effect(Helper GH1[], Helper GH2[]);
+
+/****
+* Stage
+****/
+int getMaxStage();
+int getStageGraph(int stageNum, int pictNum);
+int drawStageGraph(int stageNum, int pictNum,
+					float x, float y, float size);
+int drawStageGraphAll(int stageNum, float x, float y, float size);
+void StageLoad();
 
 #endif

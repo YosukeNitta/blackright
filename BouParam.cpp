@@ -47,6 +47,8 @@ void BouParam(void)
 	//=============
 	// キャラ別事前設定
 	//=============
+
+
 	P1.Var[11] = P1.D.armor;	// アーマー数表示
 
 	// 3ゲージ
@@ -131,9 +133,13 @@ void BouParam(void)
 		if (P1.ctrl){
 			P1.Var[1] = 0;
 			P1.Var[2] = 0;
+			P1.Var[5] = 0;
 		}
-		// 連打スイッチ
-		//if (P1.ctrl)P1.Var[20] = 0;
+		// 空ガフラグ
+		else {
+			P1.Var[5]++;
+			if (P1.Var[5] > 600)P1.Var[3] = 600;
+		}
 
 		if((P1.stateno != 610) && (P1.stateno != 611))P1.Var[15] = 0;
 		// アーマーキャンセル
@@ -240,6 +246,8 @@ void BouParam(void)
 
 			//速度を足す
 			if (P1.time == 0){
+				EffStart(16, P1.XPos, P1.YPos, -31, -(P1.ySize / 1.1),
+					0.04, 0.25, P1.muki);
 				VelSet(P1.C.runF[0], P1.C.runF[1]);
 				if (P1.Var[13] > 0)P1.XVel += 2.6;
 			}
@@ -259,9 +267,15 @@ void BouParam(void)
 				P1.More = 1;
 				P1.SFlg = 0;
 				P1.ctrl = 1;
-				P1.ignoreG = false, VelSet(0,0);
+				P1.ignoreG = false;
+				VelSet(0,0);
 				P1.YPos = GROUND;
 				SEStart(6);
+
+				// 着地エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+				
 			}
 
 			break;
@@ -272,6 +286,8 @@ void BouParam(void)
 			if (P1.time == 0)SEStart(6);
 			VelSet(0, 0);
 			P1.YPos = GROUND;
+
+			
 
 			// 終了
 			if (P1.time >= ANIMELEM){
@@ -319,6 +335,13 @@ void BouParam(void)
 			if (P1.time == 1)SEStart(6);
 			VelSet(0, 0);
 			P1.YPos = GROUND;
+
+			// 着地エフェクト
+			if (P1.time == 1) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+			}
 
 			// 終了
 			if (P1.time >= ANIMELEM + 1){
@@ -535,10 +558,13 @@ void BouParam(void)
 				HitTime(6, 14, 18, 12);
 				// [ノックバック]
 				HitVel(-3.4, 0, -1.6, -4.8);
+				GuardVel(-3.8, -1.8);
 				// [ガード属性]
 				P1.GuardF = 1;
 				// [ヒット時のアニメ]
 				P1.HitAnim = 1010;
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				// [ヒットサウンド]
 				SESet(10, 16);
 
@@ -549,9 +575,9 @@ void BouParam(void)
 				DamReset();
 			}
 			// ヒット時チェーン
-			if ((P1.CFlg) && (P1.time >= 1)){
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)){
 				// [ジャンプキャンセル]
-				if (P1.keyAtt[8]){		// 先行入力効かせてみる
+				if (P1.K_Senkou[8]) {		// 先行入力効かせてみる
 					P1.stateno = 40, P1.More = 1,
 						P1.time = 0, P1.A.damage = 0;
 				}
@@ -587,7 +613,7 @@ void BouParam(void)
 					}
 				}
 				// 先行入力
-				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 3)){
+				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 3) && (P1.A.ncTime > NC_TIME - 18)){
 					if (key(2)){
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
@@ -649,7 +675,10 @@ void BouParam(void)
 
 				// [ノックバック]
 				HitVel(-3.0, 0, -1.7, -4.4);
-				P1.GuardF = 1;
+				// [ガード属性]
+				if (P1.Var[5] >= 12)P1.GuardF = 1;	// 空ガ可
+				else { P1.GuardF = 4; }	// 空ガ不可
+
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;	// 上段喰らい
@@ -661,7 +690,7 @@ void BouParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 1)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 4)){
 					// [ジャンプキャンセル]
 					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -763,7 +792,7 @@ void BouParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 1)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.scTime > 0)){
 					// [必殺技・ゲージ技]
 					SCancel();
 				}
@@ -791,6 +820,11 @@ void BouParam(void)
 				PVOStart(P1.PSide, 3, 0);
 			}
 
+			// 位置をずらす
+			if (P1.time == 0) {
+				PosAdd(6.0, 0);
+			}
+
 			// アーマーカウント
 			if (P1.time == 0)P1.Var[12] = P1.D.armor;
 			
@@ -807,7 +841,7 @@ void BouParam(void)
 				// [ゲージ] 
 				Power(150);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(10, 25, 25, 23);
+				HitTime(10, 24, 24, 20);
 				// [ノックバック]
 				HitVel(-4.2, 0, -2.8, -2.8);
 				GuardVel(-6.2, -4.0);
@@ -829,7 +863,7 @@ void BouParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 1)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.scTime > 0)){
 					// [必殺技・ゲージ技]
 					SCancel();
 				}
@@ -901,6 +935,9 @@ void BouParam(void)
 				P1.A.wallLevel = 2;
 				P1.A.wall_xvel = 1.2;
 				P1.A.wall_yvel = -6.8;
+				// 振動
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 				P1.HitAnim = 1030;	// 下段喰らい
 
 				P1.HitSE = 14;
@@ -1042,8 +1079,8 @@ void BouParam(void)
 				// [ガード属性]
 				P1.GuardF = 1;
 
-				P1.A.quakeTime = 2;
-				P1.A.quakeY = 2;
+				P1.A.quakeTime = 4;
+				P1.A.quakeY = 4;
 
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -1140,7 +1177,7 @@ void BouParam(void)
 			break;
 
 			//********************
-			// 240：Bグランド
+			// 240：グランド
 			//********************
 		case 240:
 			P1.ctrl = 0, P1.SFlg = 0;
@@ -1168,6 +1205,8 @@ void BouParam(void)
 
 			// エフェクト
 			if (P1.time == 23 - 1) {
+				S.quakeTime = 2;
+				S.quakeY = 2;
 				SEStart(9);
 				if (P1.muki == 0) {
 					EffStartB(18, (int)P1.XPos + 140, (int)P1.YPos, 0, -7,
@@ -1281,11 +1320,13 @@ void BouParam(void)
 
 				// [ノックバック]
 				HitVel(-3.4, 0, -1.6, -4.8);
-
+				GuardVel(-3.8, -1.8);
 
 				P1.GuardF = 1;
 
 				P1.HitAnim = 1010;	// 下段喰らい
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				P1.HitSE = 10;
 			}
 			else {
@@ -1326,7 +1367,7 @@ void BouParam(void)
 							P1.time = 0, P1.A.damage = 0;
 					}
 				}
-				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 3)){		// 先行入力効かせてみる
+				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 3) && (P1.A.ncTime > NC_TIME - 18)){		// 先行入力効かせてみる
 					if (key(2)){
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
@@ -1364,13 +1405,9 @@ void BouParam(void)
 			if ((P1.time == 0) && (P1.XVel > 0))VelSet(P1.XVel / 1.5, 0);
 			// 位置をずらす
 			if (P1.time == 5){
-				if (P1.muki == 0){
-					P1.XPos += 5;
-				}
-				else{
-					P1.XPos -= 5;
-				}
+				PosAdd(5.0, 0);
 			}
+			/*
 			// 位置をずらす
 			if (P1.time == 9){
 				if (P1.muki == 0){
@@ -1380,6 +1417,8 @@ void BouParam(void)
 					P1.XPos += 5;
 				}
 			}
+			*/
+
 			// SE
 			if (P1.time == 1)SEStart(1);
 			// 全体フレームを超えたらリセット
@@ -1419,7 +1458,7 @@ void BouParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0){
-				if ((P1.CFlg) && (P1.time >= 1)){
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 4)){
 					// [通常技]
 					if (P1.Senkou[3] > 0){		// 先行入力効かせてみる
 						// 6B
@@ -1634,6 +1673,8 @@ void BouParam(void)
 				HitVel(-4.2, 0, -1.4, -4.0);
 				P1.GuardF = 1;
 				P1.HitAnim = 1000;
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				P1.HitSE = 10;
 			}
 			else {
@@ -1761,6 +1802,7 @@ void BouParam(void)
 			P1.ctrl = 0, P1.SFlg = 2;
 			P1.ignoreG = true;
 			P1.YVel += P1.C.yAccel;
+
 			// SE
 			if (P1.time == 1)SEStart(2);
 
@@ -1775,7 +1817,7 @@ void BouParam(void)
 			if ((P1.time >= 1) && (P1.MoveHit > 0)){
 
 				// [ダメージ]
-				Damage(60, 90);
+				Damage(50, 100);
 				if (P1.Var[13] > 0) {
 					Damage(90, 140);
 				}
@@ -1784,10 +1826,10 @@ void BouParam(void)
 				Power(170);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(10, 60, 62, 24);
+				HitTime(10, 60, 62, 20);
 
 				// [ノックバック]
-				HitVel(-1.8, 5.0, -2.4, 5.0);
+				HitVel(-2.0, 5.0, -2.4, 5.0);
 				P1.GuardF = 2;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -1795,15 +1837,19 @@ void BouParam(void)
 				P1.A.bound_xvel = -1.0;
 				P1.A.bound_yvel = -8.2;
 				
-				if (P1.Var[13] > 0) {
-					P1.A.bound_xvel = -0.8;
-					P1.A.bound_yvel = -12.0;
-				}
 				// バウンド
 				if (P2.D.boundCount > 0){
 					P1.A.boundLevel = 1;
-					P1.A.bound_yvel = -5.6;
+					P1.A.bound_yvel = -6.4;
 				}
+
+				// 強化中
+				if (P1.Var[13] > 0) {
+					P1.A.boundLevel = 3;
+					P1.A.bound_xvel = -0.8;
+					P1.A.bound_yvel = -12.0;
+				}
+
 				P1.HitAnim = 1030;
 				P1.HitSE = 12;
 
@@ -1857,7 +1903,7 @@ void BouParam(void)
 		case 421:
 			P1.SFlg = 0, P1.ctrl = 0;
 			P1.ignoreG = false;
-			P1.D.counter = 0;
+			P1.D.counter = 1;
 
 			// SEを鳴らす
 			if (P1.time == 1)SEStart(6);
@@ -1896,6 +1942,8 @@ void BouParam(void)
 			//********************
 		case 430:
 			P1.ctrl = 0, P1.SFlg = 2;
+			P1.D.counter = 2;
+			P1.D.fatal = true;
 
 			if (P1.time == 0){
 				P1.ignoreG = false;
@@ -1912,11 +1960,11 @@ void BouParam(void)
 
 			P1.YVel += GRAVITY;
 			if (P1.time == 0){
-				P1.YVel = -3.8;
+				P1.YVel = -4.2;
 				if (P1.XVel > P1.C.jumpF[0])P1.XVel = P1.C.jumpF[0];
 				else if (P1.XVel < P1.C.jumpB)P1.XVel = P1.C.jumpB;
 			}
-			if (P1.YVel > 8.4)P1.YVel = 8.4;
+			if (P1.YVel > 8.2)P1.YVel = 8.2;
 
 			// ヒット数セット
 			if (P1.time == 1)P1.MoveHit = 1;	// １回
@@ -1988,7 +2036,8 @@ void BouParam(void)
 			if (P1.time == 1)SEStart(2);
 			// ヒット数セット、
 			// ガード時は無効
-			if ((P1.time == 4) && (P2.stateno <= 999) && (P1.XPos - P2.XPos < 160 && P2.XPos - P1.XPos < 160))	// 喰らい・空中状態じゃない
+			if ((P1.time >= 5 && P1.time <= 7) && (P2.stateno <= 999) &&
+				(P1.XPos - P2.XPos < 120 && P2.XPos - P1.XPos < 120))	// 喰らい・空中状態じゃない
 			{
 				P1.MoveHit = 1;	// １回
 				// どっちも投げタイミングが同じなら、2P負ける
@@ -1997,7 +2046,7 @@ void BouParam(void)
 			}
 
 			// ダメージセット、持続 1フレ
-			if (P1.time == 4){
+			if (P1.time == 5){
 
 				// [ダメージ]
 				Damage(0, 0);
@@ -2276,9 +2325,9 @@ void BouParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(150, 10);
+				Damage(180, 0);
 				// [ゲージ] 
-				Power(270);
+				Power(300);
 
 				HitTime(6, 100, 100, 0);
 				// [ノックバック]
@@ -2337,7 +2386,7 @@ void BouParam(void)
 					EffStartB(16, P1.XPos, P1.YPos, -10, -(P1.ySize / 1.5),
 						0.25, 0.25, P1.muki);
 					// 時間設定
-					P1.Var[17] = 600;
+					P1.Var[17] = 360;
 				}
 				// アーマーがある
 				else {
@@ -2345,7 +2394,7 @@ void BouParam(void)
 					EffStartB(16, P1.XPos, P1.YPos, -10, -(P1.ySize / 1.5),
 						0.25, 0.25, P1.muki);
 					// 時間設定(復活)
-					P1.Var[17] = 600;
+					P1.Var[17] = 360;
 				}
 			}
 
@@ -2366,7 +2415,7 @@ void BouParam(void)
 			// ヒット数セット、
 			// ガード時は無効
 			if ((P1.time == 7 - 2) && (P2.stateno <= 999) 
-				&& ((P1.XPos - P2.XPos < 220) && (P2.XPos - P1.XPos < 220)))	// 喰らい・空中状態じゃない
+				&& ((P1.XPos - P2.XPos < 160) && (P2.XPos - P1.XPos < 160)))	// 喰らい・空中状態じゃない
 			{
 				P1.MoveHit = 1;	// １回
 				// どっちも投げタイミングが同じなら、2P負ける
@@ -2376,14 +2425,14 @@ void BouParam(void)
 
 			// 投げ無敵
 			if (P1.Var[15] != 1){
-				if ((P1.D.counter) || (P1.time == 0)){
+				if ((P1.D.counter > 0) || (P1.time == 0)){
 					P1.mutekiF = 2;
 					P1.Muteki = 1;
 				}
 			}
 			// 0.5に移行
 			if (P1.Var[15] == 1){
-				if ((P1.D.counter) || (P1.time == 0)){
+				if ((P1.D.counter > 0) || (P1.time == 0)){
 					P1.mutekiF = 1;
 					P1.Muteki = 1;
 				}
@@ -2504,6 +2553,10 @@ void BouParam(void)
 				P1.HitSE = 14;
 				HitEff(1, 1.0, 1.0);
 				P1.A.boundLevel = 1;
+
+				// 演出
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 			else{ DamReset(); }
 
@@ -2685,7 +2738,14 @@ void BouParam(void)
 				P1.fallF = 1;
 				P1.HitSE = 14;
 				HitEff(1, 1.0, 1.0);
+				// バウンド
+				P1.A.wallLevel = 2;
+				P1.A.wall_xvel = 0.2;
+				P1.A.wall_yvel = -6.0;
 				P1.A.boundLevel = 1;
+
+				P1.A.quakeTime = 2;
+				P1.A.quakeY = 2;
 			}
 			else { DamReset(); }
 
@@ -3209,15 +3269,19 @@ void SCancel()
 // 必殺技キャンセル
 void HCancel()
 {
-	// [ ハードパンチ ]
-	if ((P1.Senkou[1] > 0 && P1.Senkou[2] > 0 && P1.Senkou[3] > 0) && (P1.Power >= 1000 || P1.Var[13] > 0)){
-		P1.stateno = 800, P1.More = 1;
-		P1.time = 0;
-	}
-	// [ ３ゲージ ]
-	if ((P1.Senkou[4] > 0) && (P1.cmd[3]) && (P1.Power >= 3000) && (P1.SFlg != 2) && (P1.Var[13] <= 0)){
-		P1.stateno = 850, P1.More = 1;
-		P1.time = 0;
+	if (P1.scTime > 0) {
+
+		// [ ハードパンチ ]
+		if ((P1.Senkou[1] > 0 && P1.Senkou[2] > 0 && P1.Senkou[3] > 0) && (P1.Power >= 1000 || P1.Var[13] > 0)) {
+			P1.stateno = 800, P1.More = 1;
+			P1.time = 0;
+		}
+		// [ ３ゲージ ]
+		if ((P1.Senkou[4] > 0) && (P1.cmd[3]) && (P1.Power >= 3000) && (P1.SFlg != 2) && (P1.Var[13] <= 0)) {
+			P1.stateno = 850, P1.More = 1;
+			P1.time = 0;
+		}
+
 	}
 
 	//最後に判定を消す

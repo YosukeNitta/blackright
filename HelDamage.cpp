@@ -37,8 +37,11 @@ void HelperDamCheck()
 				if(Box_Touch(H1[i].XAtt[j], H1[i].YAtt[j], H1[i].WAtt[j], H1[i].HAtt[j],
 					P2.XHit[k], P2.YHit[k], P2.WHit[k], P2.HHit[k]) == true)
 				{
-					// アーマー、超必殺以外は受けない、地上
+					// アーマー、超必殺以外は受けない、
+					// ダメージ130以下
+					//地上
 					if ((H1[i].HMoveHit > 0) && (P2.D.armor > 0) && (H1[i].attF != 2)
+						&& (H1[i].A.damage + H1[i].A.hosyo < 130)
 						&& (P2.SFlg != 2)){
 
 						//---------------
@@ -79,7 +82,7 @@ void HelperDamCheck()
 								H1[i].heSizeX, H1[i].heSizeY, P2.muki);
 
 							// [ヒットストップ、のけぞり時間]
-							P2.StopTime = H1[i].HHitStop;
+							P2.StopTime = H1[i].HHitStop + 2;
 							H1[i].stopTime = H1[i].HSSelf;
 							if (P2.SFlg != 2){
 								P2.D.nokezori = H1[i].HG_HitTime;
@@ -191,7 +194,21 @@ void HelperDamCheck()
 
 							// 共通設定
 							// [1Pのヒット確認用]
-							H1[i].HMoveHit--, H2[l].HMoveHit--;
+							int dam[2];
+							dam[0] = H1[i].A.damage + H1[i].A.hosyo;
+							dam[1] = H2[l].A.damage + H2[l].A.hosyo;
+							// 1P
+							if ((dam[0] > dam[1]) && (dam[0] - dam[1] >= 100)) {
+								H2[l].HMoveHit--;
+							}
+							// 2P
+							else if ((dam[1] > dam[0]) && (dam[1] - dam[0] >= 100)) {
+								H1[i].HMoveHit--;
+							}
+							// 同じくらいのダメージ
+							else {
+								H1[i].HMoveHit--, H2[l].HMoveHit--;
+							}
 							// [ダメージ元に戻す]
 							//H1[i].A.damage = 0, 
 							//H2[l].A.damage = 0;
@@ -229,8 +246,8 @@ void GuardPoint(int i)
 	P2.Power += H1[i].HGivePow / 2;
 
 	// SE
-	if (P2.D.nokezori >= 18)SEStart(17);
-	else { SEStart(16); }
+	if (P2.D.nokezori >= 18)SEStart(19);
+	else { SEStart(19); }
 
 	// [ヒットエフェクト]
 	int posX, posY;
@@ -251,10 +268,12 @@ void GuardPoint(int i)
 	// エフェクト開始
 	{ posX = 20 + GetRand(10); }
 	{
-		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
-			0.2, 0.6, P2.muki);
+		EffStart(18, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.08, 0.2, P2.muki);
 	}
 
+	P2.D.nokezori = H1[i].HG_GuardTime;
+	P2.StopTime = H1[i].HHitStop;
 	// ヒットストップ、のけぞり時間
 	H1[i].stopTime = H1[i].HSSelf;
 
@@ -282,7 +301,25 @@ void GuardParam(int i)
 	P2.Power += H1[i].HGivePow / 2;
 
 	// [ダメージ計算]
-	P2.Life -= (H1[i].A.damage + H1[i].A.hosyo) / 10;
+	// 削り
+	int kezuri = 0;
+	if (H1[i].A.kezuri == 0) {
+		kezuri = (H1[i].A.damage + H1[i].A.hosyo) / 10;
+	}
+	// 削り専用ダメージ
+	else {
+		kezuri = H1[i].A.kezuri;
+	}
+
+	// ガークラ時はダメ増加
+	if (P2.aGauge <= 0)kezuri = (int)((float)kezuri * 1.1);
+
+	// 削りダメ決定
+	// 
+	if (!(P2.stateno >= 57 && P2.stateno <= 59)) {
+		P2.Life -= kezuri;
+	}
+
 	if ((P2.Life <= 0) && (P2.aGauge > 0))P2.Life = 1;	// 削り殺し防止
 
 	// [ガードゲージ減少]
@@ -291,8 +328,9 @@ void GuardParam(int i)
 	
 	boolean gotoCrash = false;
 	// [ガードゲージ減少]
-
-	if (P2.aGauge > 0 && P2.SFlg == 2) 
+	// ドットの時は地上でも減る
+	//if ((P2.aGauge > 0 && P2.SFlg == 2) || (P2.aGauge > 0 && P2.Life == 1))
+	if (P2.aGauge > 0)
 	{
 		int n = 0;
 		// 削り量決定
@@ -300,13 +338,13 @@ void GuardParam(int i)
 			n = H1[i].A.damage + H1[i].A.hosyo + 20;
 		}
 		else{
-			//n = (int)((float)(H1[i].A.damage + H1[i].A.hosyo) * 0.55);
+			n = (int)((float)(H1[i].A.damage + H1[i].A.hosyo) * 0.5);
 		}
 
 		// 初段
 		if (P1.A.guardCount == 0){
-			if (n > 250)n = 250;
-			else if (n < 50)n = 50;
+			if (n > 300)n = 300;
+			else if (n < 10)n = 10;
 		}
 		// ガード中
 		else{
@@ -319,9 +357,15 @@ void GuardParam(int i)
 				n = ((float)n * 0.85);  break;
 			}
 			// 最大値制限
-			if (n > 200)n = 200;
-			else if (n < 20)n = 20;
+			if (n > 250)n = 250;
+			else if (n < 10)n = 10;
 		}
+
+		// 削り量アップ
+		if (P2.stateno >= 57 && P2.stateno <= 59) {
+			n += 10 + kezuri;
+		}
+
 		// 数値変更
 		P2.aGauge -= n;
 		TestText(n, 1);
@@ -330,12 +374,12 @@ void GuardParam(int i)
 		if (P2.aGauge <= 0){
 			gotoCrash = true;
 			P1.A.guardCount = 0;
-			H1[i].H_GX = -2.0;
+			H1[i].H_GX = -1.8;
 			H1[i].H_AX = -1.1;
 			H1[i].H_GY = 0.0;
 			H1[i].H_AY = -5.0 / 2.0;
 			P2.D.yaccel = 0.14;
-			P2.Life -= 50;
+			P2.Life -= 20;
 			if (P2.Life <= 0)P2.Life = 1;	// 削り殺し防止
 		}
 
@@ -344,10 +388,19 @@ void GuardParam(int i)
 	// ガークラではない
 	if (!gotoCrash){
 		// [アニメ設定]
-		// 硬直に移行
-		if (P2.SFlg == 0)P2.stateno = 50;
-		if (P2.SFlg == 1 || (P2.keyAtt[2] > 0))P2.stateno = 51;
-		if (P2.SFlg == 2)P2.stateno = 52;
+		// EXガード
+		if (P2.stateno >= 57 && P2.stateno <= 59) {
+			if (P2.keyAtt[2] > 0)P2.stateno = 58;
+			else { P2.stateno = 57; }
+			if (P2.SFlg == 2)P2.stateno = 59;
+		}
+		// 通常ガード
+		else {
+			// 硬直に移行
+			if (P2.SFlg == 0)P2.stateno = 50;
+			if (P2.SFlg == 1 || (P2.keyAtt[2] > 0))P2.stateno = 51;
+			if (P2.SFlg == 2)P2.stateno = 52;
+		}
 
 		// [のけぞり時間]
 		P2.D.nokezori = H1[i].HG_GuardTime;
@@ -367,7 +420,13 @@ void GuardParam(int i)
 	H1[i].stopTime = H1[i].HSSelf;
 
 	// [サウンド]
-	SEStart(H1[i].HGuardSE);
+	// SE
+	if (P2.D.nokezori >= 18 || (P2.stateno >= 57 && P2.stateno <= 59)) {
+		SEStart(17);
+	}
+	else {
+		SEStart(H1[i].HGuardSE);
+	}
 	// [ヒットエフェクト]
 	int posX, posY;
 	int defPosY;	// 基準位置
@@ -381,9 +440,21 @@ void GuardParam(int i)
 	}
 	else{ posY = P2.ySize; }
 	{ posX = 20 + GetRand(10); }
-
-	EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
-		0.2, 0.6, P2.muki);
+	
+	if (!gotoCrash) {
+		EffStart(11, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.2, 0.6, P2.muki);
+		// ガークラ手前の点滅
+		if (P2.aGauge < GUARD_MAX * 0.25) {
+			// 中段エフェクト
+			P2.colorCTime = 4;
+			P2.colorC[0] = 255, P2.colorC[1] = 138, P2.colorC[2] = 138;
+		}
+	}
+	else {
+		EffStart(15, (int)P2.XPos, defPosY, posX, -(posY / 1.5),
+			0.4, 0.6, P2.muki);
+	}
 
 	// [1Pのヒット確認用]
 	H1[i].HMoveHit--;
@@ -412,6 +483,19 @@ void GuardParam(int i)
 			if (P2.XVel < -2)P2.XVel = -2;
 		}
 	}
+
+	// リフガ設定
+	if (P2.stateno >= 57 && P2.stateno <= 59) {
+		P2.XVel += (H1[i].H_GX * 0.5);
+		P2.D.nokezori += 2;
+		// リフガエフェクト
+		if (P2.aGauge >= GUARD_MAX * 0.25) {
+			// 中段エフェクト
+			P2.colorCTime = 4;
+			P2.colorC[0] = -1, P2.colorC[1] = -1, P2.colorC[2] = -1;
+		}
+	}
+
 	// [ガード数カウント]
 	if (!gotoCrash)
 		P1.A.guardCount += 1;	// カウント
@@ -461,7 +545,7 @@ void HitParam(int i)
 	if (P1.HitCount == 0){	// 1Hit
 		damage += H1[i].A.damage;
 		// カウンターヒット
-		if (P2.D.counter){
+		if (P2.D.counter > 0){
 			// フェイタル追加ダメ
 			if (P2.D.fatal)damage += 20;
 			damage += (int)H1[i].A.damage * 0.2;
@@ -469,9 +553,19 @@ void HitParam(int i)
 			if (H1[i].HHitStop > 0){
 				H1[i].HG_HitTime += 2;
 				H1[i].HA_HitTime += 2;
+				// フェイタル
+				if (P2.D.fatal) {
+					H1[i].HG_HitTime += 4;
+					H1[i].HA_HitTime += 4;
+				}
 			}
-			P2.colorCTime = 5;
+			P2.colorCTime = 6;
+			if (P2.D.fatal)P2.colorCTime = 8;
 			P2.colorC[0] = 255, P2.colorC[1] = 0, P2.colorC[2] = 0;
+
+			// システム表記
+			if (P1.PSide == 1)Display_Text(1, 1);
+			else if (P1.PSide == 2)Display_Text(1, 2);
 		}
 	}
 	else if (P1.HitCount >= 1){
@@ -683,10 +777,13 @@ boolean GuardCheck(int n)
 
 
 	if (
-		// 初回ガード(ジャンプ移行ではない、例外として着地硬直はガード可)　|| 空中ガード判定 || 連続ガード
-		((P2.ctrl || P2.stateno == 47) && ((P2.keyAtt[4] != 0) || ((P2.D.selfTime > 0) && (P2.keyAtt[6] != 0)))
-		&& (P2.SFlg != 2) && (P2.stateno != 40) ||
-		(P2.ctrl) && (airGuard) || (P2.stateno >= 50 && P2.stateno <= 59))
+		// 初回ガード(ジャンプ移行ではない、例外として着地硬直はガード可)　
+		// || 空中ガード判定 
+		// || 連続ガード
+		((P2.ctrl || P2.stateno == 47) && 
+		((P2.keyAtt[4] != 0) || ((P2.D.selfTime > 0) && (P2.keyAtt[6] != 0))) && 
+		(P2.SFlg != 2) && (P2.stateno != 40) ||
+		(P2.ctrl && airGuard) || (P2.stateno >= 50 && P2.stateno <= 59))
 		)
 	{
 		if (
@@ -696,21 +793,26 @@ boolean GuardCheck(int n)
 			((H1[n].HGuardF == 2)
 			&& (P2.SFlg == 0 || P2.SFlg == 2)) ||
 
-			(H1[n].HGuardF == 3)
-			&& (((P2.SFlg == 1) || (P2.keyAtt[2] > 0)) || (P2.SFlg == 2)) ||
+			((H1[n].HGuardF == 3)
+			&& ((P2.SFlg == 1 || P2.keyAtt[2] > 0) || P2.SFlg == 2)) ||
 
-			(H1[n].HGuardF == 4)
-			&& ((P2.SFlg == 0) || ((P2.SFlg == 1) || (P2.keyAtt[2] > 0)))
+			((H1[n].HGuardF == 4)
+			&& (P2.SFlg == 0 || P2.SFlg == 1))
 			)
 			gu = true;
 	}
 
 	// ガードポイント
 	if ((!gu) && (P2.Name == SYUICHI)) {
-		if ((P2.stateno == 600) &&
-			((gTime >= 1) && (gTime < 50))) {
-			if ((H1[n].HGuardF == 1) || (H1[n].HGuardF == 2))
+		// ダメージ100以下
+		if ((P2.stateno == 600) && (P2.Var[13] == 0) &&
+			((gTime >= 2) && (gTime < 50))) {
+			if (((H1[n].HGuardF == 1) || (H1[n].HGuardF == 2) || (H1[n].HGuardF == 4)) &&
+				((H1[n].A.damage + H1[n].A.hosyo) < 100) && (P2.Var[12] == 0))
+			{
 				gu = true;
+				P2.Var[12]++;
+			}
 		}
 	}
 

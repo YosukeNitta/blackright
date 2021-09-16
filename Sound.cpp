@@ -36,7 +36,7 @@ int BGMStart(int num)
 		// 非同期読み込み設定に変更
 		SetUseASyncLoadFlag(TRUE);
 
-		for (int i = 0; i < STAGE_MAX; i++){
+		for (int i = 0; i < getMaxStage(); i++){
 			bgm[i + 1] = LoadSoundMem("music/01.mp3");	// ステージ曲 
 			//if(i == 2)bgm[i + 1] = LoadSoundMem("music/03.mp3");	// ステージ曲 
 		}
@@ -351,6 +351,7 @@ void GetSoundData()
 	char inputc[NAME_MAX];	// inputとinputcに文字がはいる
 	boolean iflg = false;	// 名前入力フラグ
 	boolean next = false;
+	boolean checkText = false;	// 一定数のテキスト読み込み
 
 	// ファイルを開く //
 	fp = FileRead_open(fname);//ファイル読み込み
@@ -415,6 +416,7 @@ void GetSoundData()
 
 		// 最初に数字扱いにして、文字が入ってたら変更する
 		iflg = false;
+		checkText = false;
 
 		// 文字列セットに移行していない
 		if(!next)
@@ -431,18 +433,19 @@ void GetSoundData()
 			else if (inputc[0] == '9')iflg = true;
 		}
 
-		// 名前だったら
-		if (iflg) {
-			num = atoi(inputc);	// 番号をセット
-			next = true;	// 次の準備
-		}
-
 		// 文字列セット
-		if (next && (inputc[0] != '\0' || inputc[0] != NULL || inputc[0] != '\n')) {
+		if (next && (inputc[0] != '\0' && inputc[0] != NULL && inputc[0] != '\n')) {
 			//strcpy_s(buf, inputc);
 			setName = fn1 + inputc;
 			se[num] = LoadSoundMem(setName.c_str());
 			next = false;
+			checkText = true;
+		}
+
+		// 名前だったら
+		if (iflg && !checkText) {
+			num = atoi(inputc);	// 番号をセット
+			next = true;	// 次の準備
 		}
 
 		if (input[i] == EOF) {//ファイルの終わりなら

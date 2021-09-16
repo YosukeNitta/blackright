@@ -282,7 +282,7 @@ void EnterState()
 		// 二段ジャンプ、ジャンプ回数がある
 		// 地上より少し高くないとできない
 		if ((P[i].ctrl) && (P[i].SFlg == 2) && (P[i].button[108] == 1) &&
-			(P[i].YPos < GROUND - 10) && (P[i].AirJump > 0)){
+			(P[i].YPos < GROUND - 16) && (P[i].AirJump > 0)){	// 前制限10
 			P[i].stateno = 45;
 		}
 
@@ -290,8 +290,9 @@ void EnterState()
 		if (P[i].airDashTime > 0)P[i].airDashTime -= 1;
 		
 		// 空中ダッシュ
+		// 前制限20
 		if ((P[i].ctrl) && (P[i].SFlg == 2) && (P[i].DashFlg && P[i].K_Senkou[6] > 0) &&
-			((P[i].YVel >= 0 && (P[i].YPos + (P[i].YVel * 2) < GROUND - 20)) || (P[i].YVel < 0 && P[i].YPos < GROUND - 134)) &&
+			((P[i].YVel >= 0 && (P[i].YPos + (P[i].YVel * 2) < GROUND - 22)) || (P[i].YVel < 0 && P[i].YPos < GROUND - 134)) &&
 			(P[i].airDash > 0)){
 			P[i].stateno = 60;
 			P[i].AirJump--, P[i].airDash--;
@@ -300,7 +301,7 @@ void EnterState()
 			P[i].DashFlg = 0, m_DashFlg[i] = 0;	//　ダッシュ停止
 		}
 		else if ((P[i].ctrl) && (P[i].SFlg == 2) && (P[i].DashFlg && P[i].keyAtt[4] > 0) &&// keyatt or senkou
-			((P[i].YVel >= 0 && (P[i].YPos + (P[i].YVel * 2) < GROUND - 20)) || (P[i].YVel < 0 && P[i].YPos < GROUND - 134)) &&
+			((P[i].YVel >= 0 && (P[i].YPos + (P[i].YVel * 2) < GROUND - 22)) || (P[i].YVel < 0 && P[i].YPos < GROUND - 134)) &&
 			(P[i].airDash > 0)){
 			P[i].stateno = 65; 
 			P[i].AirJump--, P[i].airDash--;
@@ -315,6 +316,18 @@ void EnterState()
 			P[i].airDash = P[i].C.airDash;
 			P[i].hyJump = false;
 		}
+
+
+		//  [ プッシュガード ]
+		if ((P[i].button[4] > 0) &&  (P[i].ctrl) && (P[i].SFlg != 2)
+			&& (P[i].aGauge > 0) && (P[i].keyAtt[4] > 0)) {
+			//if(P[i].SFlg == 2)P[i].stateno = 59;
+			if (P[i].keyAtt[2] > 0)P[i].stateno = 58;
+			else { P[i].stateno = 57; }
+			P[i].ctrl = 0;
+			P[i].D.nokezori = 0;
+		}
+		
 	}
 	P1 = P[0], P2 = P[1];
 

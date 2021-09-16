@@ -15,3 +15,4 @@ public:
 	// ‰ð•ú
 	void Release();
 };
+

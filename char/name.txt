@@ -1,6 +1,6 @@
 [Characters]
 ein;
-cornel;
+cornell;
 bouncer;
 helios;
 dan;

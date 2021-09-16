@@ -1,14 +1,15 @@
 [Data]
+name = ein;
 gsize = 2.0;
 xsize = 54;
 ysize = 150;
 life = 980;
-walk.f = 1.8;
-walk.b = -1.85;
-run.f = 4.6, 0;
+walk.f = 1.75;
+walk.b = -1.80;
+run.f = 4.4, 0;
 run.b = -2.8, -4.0;
 jump.y = -10.4; -9.9
-jump.a = -8.2;
+jump.a = -8.4; -8.2
 jump.f = 2.2, 2.7;
 jump.b = -2.4;
 yaccel = 0.52;

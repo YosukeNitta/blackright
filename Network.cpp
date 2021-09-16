@@ -3,141 +3,67 @@
 #include "Network.h"
 #include "NetData.h"
 
+using namespace std;	// stringのstdを省略
+
 static NetData *netData;	// 他の場所でも使えるデータ
-static IPDATA Ip;
-static BYTE Data[2];	// *2なのは1P2P分
-static BYTE gData[2];	// ネットワーク上で取得したデータ
+
+// 接続確認用byteデータ
+// 0:なし 1:接続待ち 2:接続成功
+static BYTE Data[2];	
+static BYTE getData[2];
 static int connectTest;	// 通信が行われたか
 
-static int UDPNetHandle;        // ネットワークハンドル
-static int port[5];
-static int Port;
 static boolean nCheck;
-
-static const int ip_x = 4;
-static const int ip_y = 3;
-static int ip[ip_x][ip_y];	// IP([4]に数字,[3]が行)
-//============
-// TCP
-//static int NetHandle, LostHandle;    // ネットワークハンドル
-static int DataLength;            // 受信データ量保存用変数
-//============
 
 static const int HOST = 1;		// ホスト接続前
 static const int CLIENT = 2;	// クライアント接続前
-static const int IP_SET = 3;
-static const int PORT_SET = 4;
 
+// 項目最大数
+static const int SP_MAX = 2;
 static int sPoint;	// 画面の進み度合い
 // 0.項目選択
 static int yPoint;	// 項目の位置
-static int xPoint;	//
 static boolean load_f = false;
 
 
 static void Input();
+// net.txtのデータを取得する
+static void GetPortIp();
 
 // メイン関数
 int Network::Mode()
 {
 	Input();
 
-	//////////////////
-	// ディレイチェック
-	//if (Connect_CheckCn()){
+	// 接続
+	if (sPoint == HOST || sPoint == CLIENT) {
+		int ret = netData->connect_Test();
+		// 1が返された時
+		if (ret == 1) {
 
-	//}
-	// ホスト
-	if (sPoint == HOST){
-		// 0が接続待ち(テスト表示用)
-		//Data[0] = 1;
-		// UDPデータ受け取り待機
-		int cnwr_ret = CheckNetWorkRecvUDP(netData->UDPNetHandle);
-		// データを受信成功したら
-		if (cnwr_ret && cnwr_ret != -1){
+			// netDataをSocketに送る
+			ChangeNetOn(1);	// ネットワークをオン
+			Main_GetNetData(netData);
 
-			connectTest = 1;
-			// 先にデータ受け取り
-			NetWorkRecvUDP(netData->UDPNetHandle, &netData->Ip, NULL, Data, sizeof(Data), FALSE);	// IP取得する
+			Key_SetNetOn(1);
+			Key_SetPlayerSide(sPoint);
 
-			// 相手が待機中なら送り返す
-			Data[0] = 2;
-			NetWorkSendUDP(netData->UDPNetHandle, netData->Ip, netData->Port, Data, sizeof(Data));	// 返す
-
-			nCheck = true;
-
-			// 接続成功したら //
-			if (Data[0] == 2 && gData[1] == 2)
-			{
-				Get_Network(true);
-
-				Connect_GetSide(1);	// プレイヤーサイド
-				Connect_GetPort(netData->Port);	// ポート番号
-				Connect_GetNetHandle(netData->UDPNetHandle);	// ハンドル
-				Connect_GetIp(netData->Ip);	// Ip
-				Network_Setting(1, netData->Ip, netData->Port, netData->UDPNetHandle);
-
-				// モードを移行する
-				Select_ReturnCursor();
-				TraningSwitch(false);
-				AISwitch(false);
-				BattleMode(0);
-				MainSystem::Instance().SetNextMode("Select");
-			}
+			// 対戦モードに移行するための設定
+			Select_ReturnCursor();
+			TraningSwitch(false);
+			AISwitch(false);
+			Arcade_Switch(0);
+			BattleMode(0);
+			//DrawString(0, 260, "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||", Cr);
+			MainSystem::Instance().SetNextMode("Select");
 		}
-		else {
-			DrawFormatString(420, SCREEN_H - 260, Cr, "接続できてない");
-		}
-
 	}
-	// クライアント
-	else if (sPoint == CLIENT){
-		// 1が接続待ちのサイン
-		Data[1] = 1;
-		// 数字が送られてきたら2Pも進める
-		if (Data[0] > 0)Data[1] = 2;
-		// 文字列の送信
-		NetWorkSendUDP(netData->UDPNetHandle, netData->Ip, Port, Data, sizeof(Data));
 
-		// UDPを接続
-		int cnwr_ret = CheckNetWorkRecvUDP(netData->UDPNetHandle);
-		// 受信した上でエラーじゃない
-		if (cnwr_ret && cnwr_ret != -1){
-
-			// 通信できたことを確認
-			connectTest = 1;
-			// データを受信 IPアドレス、ポートは知ってるのでいらない
-			NetWorkRecvUDP(netData->UDPNetHandle, NULL, NULL, Data, sizeof(Data), FALSE);
-			nCheck = true;
-
-			// 接続成功したら //
-			if (Data[0] == 2 && Data[1] == 2)
-			{
-				Get_Network(true);
-
-				Connect_GetSide(2);
-				Connect_GetPort(netData->Port);	// ポート番号
-				Connect_GetNetHandle(netData->UDPNetHandle);	// ハンドル
-				Connect_GetIp(netData->Ip);	// Ip
-				Network_Setting(2, netData->Ip, netData->Port, netData->UDPNetHandle);
-
-				Select_ReturnCursor();
-				TraningSwitch(false);
-				AISwitch(false);
-				BattleMode(0);
-				MainSystem::Instance().SetNextMode("Select");
-			}
-		}
-		else {
-			DrawFormatString(420, SCREEN_H - 260, Cr, "接続できてない");
-		}
-
-	}
 	//////////////////
 	Draw();	// 描画
 
 	// 終了
-	if ((sPoint == 0) && (yPoint == 4) && (P1_BInput(1) == 1 || P1_BInput(2) == 1 || P1_BInput(3) == 1)){
+	if ((sPoint == 0) && (yPoint == SP_MAX) && (P1_BInput(1) == 1 || P1_BInput(2) == 1 || P1_BInput(3) == 1)){
 		SEStart(37);
 		MainSystem::Instance().SetNextMode("Menu");
 	}
@@ -159,57 +85,34 @@ void Input(){
 		}
 
 		// 最大最小幅
-		if (yPoint < 0)yPoint = 4;
-		else if (yPoint > 4)yPoint = 0;
+		if (yPoint < 0)yPoint = SP_MAX;
+		else if (yPoint > SP_MAX)yPoint = 0;
 
 		// ホストに
-		if (yPoint == 0 && (P1_BInput(1) == 2 || P1_BInput(3) == 2)){
-			// ポート作成
-			Ip.d1 = 0, Ip.d2 = 0, Ip.d3 = 0, Ip.d4 = 0;
-			// UDP
-			// Ip作成
-			Ip.d1 = (ip[0][0] * 100) + (ip[0][1] * 10) + ip[0][2];
-			Ip.d2 = (ip[1][0] * 100) + (ip[1][1] * 10) + ip[1][2];
-			Ip.d3 = (ip[2][0] * 100) + (ip[2][1] * 10) + ip[2][2];
-			Ip.d4 = (ip[3][0] * 100) + (ip[3][1] * 10) + ip[3][2];
-
-			int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-			Port = p;
-			//UDPNetHandle = MakeUDPSocket(Port);
-			netData->GetUDPNetHandle();
+		if (yPoint == 0 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)){
+			// ネットワークテスト
+			//netData->setPort(7500);
 			
+			netData->MakeUDPNetHandle();
+			netData->connect_Reset();
+			netData->setPlayerSide(1);
 			Data[0] = 1;
 			Data[1] = 0;
 		}
 		// クライアントに
-		else if (yPoint == 1 && (P1_BInput(1) == 2 || P1_BInput(3) == 2)){
-			// ポート作成
-			Ip.d1 = 0, Ip.d2 = 0, Ip.d3 = 0, Ip.d4 = 0;
-			// Ip作成
-			Ip.d1 = (ip[0][0] * 100) + (ip[0][1] * 10) + ip[0][2];
-			Ip.d2 = (ip[1][0] * 100) + (ip[1][1] * 10) + ip[1][2];
-			Ip.d3 = (ip[2][0] * 100) + (ip[2][1] * 10) + ip[2][2];
-			Ip.d4 = (ip[3][0] * 100) + (ip[3][1] * 10) + ip[3][2];
-
-			// ポート作成
-			int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-			Port = p;
-			//netData->GetUDPNetHandle(MakeUDPSocket(Port));
-			netData->GetUDPNetHandle();
+		else if (yPoint == 1 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)){
+			// ネットワークテスト
+			//netData->setPort(7600);
+			
+			netData->MakeUDPNetHandle();	// 指定したポートで作成
+			netData->connect_Reset();
+			netData->setPlayerSide(2);
 			Data[0] = 0;
 			Data[1] = 1;
 		}
-		// IPに
-		else if (yPoint == 2 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)){
-			xPoint = 0;
-		}
-		// ポートに
-		else if (yPoint == 3 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)){
-			xPoint = 0;
-		}
 
 		// 決定時の処理
-		if (yPoint < 4 && ((P1_BInput(1) == 1 || P1_BInput(3) == 1))) {
+		if (yPoint < 2 && ((P1_BInput(1) == 1 || P1_BInput(3) == 1))) {
 			sPoint = yPoint + 1;
 			yPoint = 0;
 			SEStart(35);
@@ -218,7 +121,7 @@ void Input(){
 		// 終了に
 		if (P1_BInput(2) == 2){
 			sPoint = 0;
-			yPoint = 4;
+			yPoint = SP_MAX;
 			SEStart(37);
 		}
 	}
@@ -228,11 +131,11 @@ void Input(){
 			sPoint = 0;
 			yPoint = 0;
 			// ＵＤＰソケットハンドルの削除
-			//DeleteUDPSocket(UDPNetHandle);
 			netData->DeleteUDPNetHandle();
+			netData->setPlayerSide(0);
 			for (int i = 0; i < 2; i++) {
 				Data[i] = 0;
-				gData[i] = 0;
+				getData[i] = 0;
 			}
 			SEStart(37);
 		}
@@ -244,107 +147,11 @@ void Input(){
 			yPoint = 1;
 			// ＵＤＰソケットハンドルの削除
 			netData->DeleteUDPNetHandle();
+			netData->setPlayerSide(0);
 			for (int i = 0; i < 2; i++) {
 				Data[i] = 0;
-				gData[i] = 0;
+				getData[i] = 0;
 			}
-			SEStart(37);
-		}
-	}
-	// IPセット画面 //
-	else if (sPoint == IP_SET){
-		if (P1_BInput(104) == 1){
-			xPoint--;
-			SEStart(36);
-		}
-		else if (P1_BInput(106) == 1){
-			xPoint++;
-			SEStart(36);
-		}
-
-		// xPointの位置
-		int po = 0, po2 = xPoint;
-		if (xPoint > 8)po = 3, po2 = xPoint - 9;
-		else if (xPoint > 5)po = 2, po2 = xPoint - 6;
-		else if (xPoint > 2)po = 1, po2 = xPoint - 3;
-
-		if (xPoint < 0)xPoint = 11;
-		else if (xPoint > 11)xPoint = 0;
-		if (P1_BInput(102) == 1){
-			ip[po][po2]--;
-			SEStart(36);
-		}
-		else if (P1_BInput(108) == 1){
-			ip[po][po2]++;
-			SEStart(36);
-		}
-		// 数値を0～9にする
-		for (int i = 0; i < 4; i++){
-			for (int j = 0; j < 3; j++){
-				if (j == 0){
-					if (ip[i][j] < 0)ip[i][j] = 2;
-					else if (ip[i][j] > 2)ip[i][j] = 0;
-				}
-				else {
-					if (ip[i][j] < 0)ip[i][j] = 9;
-					else if (ip[i][j] > 9)ip[i][j] = 0;
-				}
-			}
-		}
-
-		// 選択へ
-		if (P1_BInput(2) == 2){
-			sPoint = 0;
-			yPoint = 2;
-			int kekka = 0;
-			for (int i = 0; i < ip_x; i++){
-				kekka = (ip[i][0] * 100) + (ip[i][1] * 10) + ip[i][2];
-				if (kekka > 255)ip[i][0] = 2, ip[i][1] = 5, ip[i][2] = 5;
-			}
-
-			// Ip作成
-			Ip.d1 = (ip[0][0] * 100) + (ip[0][1] * 10) + ip[0][2];
-			Ip.d2 = (ip[1][0] * 100) + (ip[1][1] * 10) + ip[1][2];
-			Ip.d3 = (ip[2][0] * 100) + (ip[2][1] * 10) + ip[2][2];
-			Ip.d4 = (ip[3][0] * 100) + (ip[3][1] * 10) + ip[3][2];
-			netData->GetIp(Ip);
-
-			SEStart(37);
-		}
-	}
-	// ポート入力
-	else if (sPoint == PORT_SET){
-		if (P1_BInput(104) == 1){
-			xPoint--;
-			SEStart(36);
-		}
-		else if (P1_BInput(106) == 1){
-			xPoint++;
-			SEStart(36);
-		}
-		if (xPoint < 0)xPoint = 4;
-		else if (xPoint > 4)xPoint = 0;
-		if (P1_BInput(102) == 1){
-			port[xPoint]--;
-			SEStart(36);
-		}
-		else if (P1_BInput(108) == 1){
-			port[xPoint]++;
-			SEStart(36);
-		}
-		// 数値を0～9にする
-		for (int i = 0; i < 5; i++){
-			if (port[i] < 0)port[i] = 9;
-			else if (port[i] > 9)port[i] = 0;
-		}
-
-		// 選択へ
-		if (P1_BInput(2) == 2){
-			sPoint = 0;
-			yPoint = 3;
-			// ポート作成
-			int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-			netData->GetPort(p);
 			SEStart(37);
 		}
 	}
@@ -358,10 +165,11 @@ void Network::Draw(){
 	//DrawFormatString(420, 260, Cr, "X..%d", xPoint);
 	//DrawFormatString(420, 280, Cr, "Y..%d", yPoint);
 	//DrawFormatString(0, SCREEN_H - 40, Cr, "1P..%d, 2P..%d", Data[0], Data[1]);	// 接続確認
-	
+	//netData->DataDraw(240, 40);
+
 	// 1Pと2Pの状況表示
 	if (Data[0] == 2)
-	DrawString(0, SCREEN_H - 40, "1P..成功", Cr);
+		DrawString(0, SCREEN_H - 40, "1P..成功", Cr);
 	else if (Data[0] == 1)
 		DrawString(0, SCREEN_H - 40, "1P..接続待ち", Cr);
 	else if(Data[0] == 0){
@@ -379,11 +187,10 @@ void Network::Draw(){
 	// 通信が行われたか
 	DrawFormatString(320, SCREEN_H - 40, Cr, "通信..%d", connectTest);
 
-	//DrawFormatString(0, SCREEN_H - 20, Cr, "1P..%d, 2P..%d", Data[0], Data[1]);	// 接続確認
-
 	if (sPoint == 0){
 		DrawString(20, 20 * 0, "ホスト", Cr);
 		DrawString(20, 20 * 1, "クライアント", Cr);
+		/*
 		// IP数値
 		for (int i = 0; i < ip_x; i++){
 			for (int j = 0; j < ip_y; j++){
@@ -395,7 +202,8 @@ void Network::Draw(){
 		for (int i = 0; i < 5; i++){
 			DrawFormatString(20 + (i * 10), 20 * 3, Cr, "%d", port[i]);
 		}
-		DrawString(20, 20 * 4, "終了", Cr);
+		*/
+		DrawString(20, 20 * 2, "終了", Cr);
 
 		// 項目の説明
 		switch (yPoint){
@@ -405,63 +213,33 @@ void Network::Draw(){
 		case 1:
 			DrawString(80, 20 * 6, "自分が接続する", Cr);
 			break;
-		case 2:
-			DrawString(80, 20 * 6, "相手のグローバルIPアドレス", Cr);
-			DrawString(80, 20 * 7, "クライアント側のみ入力する", Cr);
-			break;
-		case 3:
-			DrawString(80, 20 * 6, "接続するUDPポート番号", Cr);
-			break;
-		case 4:
+		case SP_MAX:
 			DrawString(80, 20 * 6, "終了する", Cr);
 			break;
 		}
 	}
-	else if (sPoint == HOST){
+	else if (sPoint == HOST) {
 		DrawString(20, 20 * 0, "ホスト", Cr);
 		if (!nCheck)DrawString(20, 20 * 1, "待機中", Cr);
-		else{ DrawString(20, 20 * 1, "接続しました", Cr); }
-		DrawFormatString(20, 20 * 2, Cr, "%d", netData->Port);
-		DrawFormatString(20, 20 * 3, Cr, "クライアント %d.%d.%d.%d", 
-			netData->Ip.d1, netData->Ip.d2, netData->Ip.d3, netData->Ip.d4);
+		else { DrawString(20, 20 * 1, "接続しました", Cr); }
+		DrawFormatString(20, 20 * 2, Cr, "%d", netData->getPort());
+		DrawFormatString(20, 20 * 3, Cr, "クライアント %d.%d.%d.%d",
+			netData->ip.d1, netData->ip.d2, netData->ip.d3, netData->ip.d4);
 		//DrawFormatString(20, SCREEN_H - 40, Cr, "%d.%d", Data[0], Data[1]);
 	}
-	else if (sPoint == CLIENT){
+	else if (sPoint == CLIENT) {
 		DrawString(20, 20 * 0, "クライアント", Cr);
 		if (!nCheck)DrawString(20, 20 * 1, "待機中", Cr);
-		else{ DrawString(20, 20 * 1, "接続しました", Cr); }
+		else { DrawString(20, 20 * 1, "接続しました", Cr); }
 		// ポートも一緒に表示
-		DrawFormatString(20, 20 * 3, Cr, "%d.%d.%d.%d:%d", 
-			netData->Ip.d1, netData->Ip.d2, netData->Ip.d3, netData->Ip.d4, netData->Port);
+		DrawFormatString(20, 20 * 3, Cr, "%d.%d.%d.%d:%d",
+			netData->ip.d1, netData->ip.d2, netData->ip.d3, netData->ip.d4, netData->getPort());
 		//DrawFormatString(20, SCREEN_H - 40, Cr, "%d.%d", Data[0], Data[1]);
-	}
-	// IP入力
-	else if (sPoint == IP_SET){
-		// IP数値
-		for (int n = 0; n < ip_x; n++){
-			for (int i = 0; i < ip_y; i++){
-				if ((n * 3) + i == xPoint)DrawFormatString(20 + (i * 10) + (n * 40), 20 * 0, Oran, "%d", ip[n][i]);
-				else{ DrawFormatString(20 + (i * 10) + (n * 40), 20 * 0, Cr, "%d", ip[n][i]); }
-			}
-			if (n != 3)DrawString(20 + (n * 40) + 30, 20 * 0, ".", Cr);
-		}
-	}
-	// ポート入力
-	else if (sPoint == PORT_SET){
-		// ポート数値
-		for (int i = 0; i < 5; i++){
-			if (i == xPoint)DrawFormatString(20 + (i * 10), 20 * 0, Oran, "%d", port[i]);
-			else{ DrawFormatString(20 + (i * 10), 20 * 0, Cr, "%d", port[i]); }
-		}
 	}
 
 	// データ表示
-	netData->DataDraw(0,360);
+	netData->DataDraw(10,320);
 }
-
-
-
-
 
 
 int Network::End() {
@@ -470,55 +248,30 @@ int Network::End() {
 
 void Network::Load_Reload() {
 	if (!load_f) {
-		Ip.d1 = 0;
-		Ip.d2 = 0;
-		Ip.d3 = 0;
-		Ip.d4 = 0;
-
-		for (int i = 0; i < 5; i++) {
-			port[i] = 0;
-		}
-		for (int i = 0; i < ip_x; i++) {
-			for (int j = 0; j < ip_y; j++) {
-				ip[i][j] = 0;
-			}
-		}
-		port[1] = 7;
-		port[2] = 5;
-
+		// ここに入力
 		load_f = true;
 	}
 
-	// ポート作成
-	int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-	Port = p;
-	// UDP
-	UDPNetHandle = 0;
-	// TCP
-	DataLength = 0;
-
 	sPoint = 0;
 	yPoint = 0;
-	xPoint = 0;
 	nCheck = false;
 
 	// 取得データを初期化
 	for (int i = 0; i < sizeof(Data); i++) {
 		Data[i] = 0;
-		gData[i] = 0;
+		getData[i] = 0;
 	}
 
+	// ポート、IP取得
+	GetPortIp();
+
 	// ネットデータを初期化
-	netData->GetIp(Ip);
-	netData->GetPort(Port);
+	//netData->GetIp(Ip);
+	//netData->GetPort(Port);
 	//netData->GetUDPNetHandle(UDPNetHandle);
 
 	// 通信テスト
 	connectTest = 0;
-
-	//Main_GetNetwork(false);
-	Connect_GetCn(false);
-	NB_Reset();
 }
 
 // 一度読み込み
@@ -530,448 +283,146 @@ void Network::Release(void)
 {
 }
 
-
-
-/*
-
-#include "pch.h"
-
-static IPDATA Ip;	// グローバル?
-static BYTE Data[2];	// *2なのは1P2P分
-static int UDPNetHandle;        // ネットワークハンドル
-static int port[5];
-static int Port;
-static boolean nCheck;
-
-static const int ip_x = 4;
-static const int ip_y = 3;
-static int ip[ip_x][ip_y];	// IP([4]に数字,[3]が行)
-//============
-// TCP
-//static int NetHandle, LostHandle;    // ネットワークハンドル
-static int DataLength;            // 受信データ量保存用変数
-//============
-
-static const int HOST = 1;		// ホスト接続前
-static const int CLIENT = 2;	// クライアント接続前
-static const int IP_SET = 3;
-static const int PORT_SET = 4;
-
-static int sPoint;	// 画面の進み度合い
-// 0.項目選択
-static int yPoint;	// 項目の位置
-static int xPoint;	//
-static boolean load_f = false;
-
-
-static void Input();
-static void Draw();
-
-// メイン関数
-int Network()
+void GetPortIp()
 {
-	Input();
+	// 判定セッティング //
 
-	//////////////////
-	// ディレイチェック
-	//if (Connect_CheckCn()){
+	int i, fp;
 
-	//}
-	// ホスト
-	if (sPoint == HOST) {
+	char fname[8] = { "net.txt" };
 
-		int cnwr_ret = CheckNetWorkRecvUDP(UDPNetHandle);
-		// データを受信
-		if (cnwr_ret && cnwr_ret != -1) {
+	// 名前読み込み
+	char t_port[5] = "PORT";
+	char t_ip[3] = "IP";
+	char t_delay_max[10] = "DELAY_MAX";
+	IPDATA Ip = {0,0,0,0};	// 代入用
 
-			// 先にデータ受け取り
-			NetWorkRecvUDP(UDPNetHandle, &Ip, NULL, Data, sizeof(Data), FALSE);	// IP取得する
+	int input[NAME_MAX];
+	char inputc[NAME_MAX];	// inputとinputcに文字がはいる
+	boolean iflg = false;	// 名前入力フラグ
+	int flg = 0;	// 0:なし 1:PORT 2:IP
+	int ip_flg = 0;
 
-			// 送り返す
-			Data[0] = 2;
-			NetWorkSendUDP(UDPNetHandle, Ip, Port, Data, sizeof(Data));
+	// ファイルを開く //
+	fp = FileRead_open(fname);//ファイル読み込み
+	if (fp == NULL) {			// エラーが起こったら
+		printfDx("error name\n");// 文字を表示
+		return;
+	}
 
-			nCheck = true;
+	while (1) {
+		//=========================
+		// 基本ループ
+		// このループ終了後に下へ
+		//=========================
+		for (i = 0; i < NAME_MAX; i++)
+		{
+			inputc[i] = input[i] = FileRead_getc(fp);//1文字取得する
 
-			// 接続成功したら //
-			if (Data[0] == 2 && Data[1] == 2)
-			{
-				Get_Network(true);
-
-				Connect_GetSide(1);	// プレイヤーサイド
-				Connect_GetPort(Port);	// ポート番号
-				Connect_GetNetHandle(UDPNetHandle);	// ハンドル
-				Connect_GetIp(Ip);	// Ip
-				Network_Setting(1, Ip, Port, UDPNetHandle);
-
-				Select_ReturnCursor();
-				TraningSwitch(false);
-				AISwitch(false);
-				BattleMode(0);
-				ModeChange(SceneNum(SelectScene));
+			// スラッシュで改行
+			if (inputc[i] == '/') {					//スラッシュがあれば
+				while (FileRead_getc(fp) != '\n');	//改行までループ
+				i = -1;//カウンタを最初に戻して (戻ったときに0になる)
+				continue;
 			}
-		}
-		else {
-			//DrawFormatString(20, SCREEN_H - 60, Cr, "false");
-		}
 
-	}
-	// クライアント
-	else if (sPoint == CLIENT) {
-
-		Data[1] = 1;
-		if (Data[0] > 0)Data[1] = 2;
-		// 文字列の送信
-		NetWorkSendUDP(UDPNetHandle, Ip, Port, Data, sizeof(Data));
-		// 接続
-		int cnwr_ret = CheckNetWorkRecvUDP(UDPNetHandle);
-		if (cnwr_ret && cnwr_ret != -1) {
-
-			// データを受信
-			NetWorkRecvUDP(UDPNetHandle, NULL, NULL, Data, sizeof(Data), FALSE);
-			nCheck = true;
-
-			if (Data[0] == 2 && Data[1] == 2)
-			{
-				Get_Network(true);
-
-				Connect_GetSide(2);
-				Connect_GetPort(Port);	// ポート番号
-				Connect_GetNetHandle(UDPNetHandle);	// ハンドル
-				Connect_GetIp(Ip);	// Ip
-				Network_Setting(2, Ip, Port, UDPNetHandle);
-
-				Select_ReturnCursor();
-				TraningSwitch(false);
-				AISwitch(false);
-				BattleMode(0);
-				ModeChange(SceneNum(SelectScene));
-			}
-		}
-		else {
-			//DrawFormatString(20, SCREEN_H - 60, Cr, "false");
-		}
-
-	}
-	//////////////////
-	Draw();	// 描画
-
-	// 終了
-	if ((sPoint == 0) && (yPoint == 4) && (P1_BInput(1) == 1 || P1_BInput(2) == 1 || P1_BInput(3) == 1)) {
-		SEStart(37);
-		ModeChange(SceneNum(MenuScene));
-	}
-
-	return 0;
-}
-
-//  ネットワーク読み込み
-int Load_Network()
-{
-	if (!load_f) {
-		Ip.d1 = 0;
-		Ip.d2 = 0;
-		Ip.d3 = 0;
-		Ip.d4 = 0;
-
-		for (int i = 0; i < 5; i++) {
-			port[i] = 0;
-		}
-		for (int i = 0; i < ip_x; i++) {
-			for (int j = 0; j < ip_y; j++) {
-				ip[i][j] = 0;
-			}
-		}
-		port[1] = 7;
-		port[2] = 5;
-
-		load_f = true;
-	}
-
-	Port = 0;
-	// UDP
-	UDPNetHandle = 0;
-	// TCP
-	DataLength = 0;
-
-	sPoint = 0;
-	yPoint = 0;
-	xPoint = 0;
-	nCheck = false;
-
-
-	for (int i = 0; i < sizeof(Data); i++) {
-		Data[i] = 0;
-	}
-
-	//Main_GetNetwork(false);
-	Connect_GetCn(false);
-	NB_Reset();
-
-	return 0;
-}
-
-
-void Input() {
-	// 選択画面？
-	if (sPoint == 0) {
-		if (P1_BInput(102) == 1) {
-			yPoint++;
-			SEStart(36);
-		}
-		else if (P1_BInput(108) == 1) {
-			yPoint--;
-			SEStart(36);
-		}
-
-		if (yPoint < 0)yPoint = 4;
-		else if (yPoint > 4)yPoint = 0;
-
-		// ホストに
-		if (yPoint == 0 && (P1_BInput(1) == 2 || P1_BInput(3) == 2)) {
-			SEStart(35);
-			// ポート作成
-			Ip.d1 = 0, Ip.d2 = 0, Ip.d3 = 0, Ip.d4 = 0;
-			// UDP
-			// Ip作成
-			Ip.d1 = (ip[0][0] * 100) + (ip[0][1] * 10) + ip[0][2];
-			Ip.d2 = (ip[1][0] * 100) + (ip[1][1] * 10) + ip[1][2];
-			Ip.d3 = (ip[2][0] * 100) + (ip[2][1] * 10) + ip[2][2];
-			Ip.d4 = (ip[3][0] * 100) + (ip[3][1] * 10) + ip[3][2];
-
-			int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-			Port = p;
-			UDPNetHandle = MakeUDPSocket(Port);
-			sPoint = HOST;
-			Data[0] = 0;
-			Data[1] = 0;
-		}
-		// クライアントに
-		else if (yPoint == 1 && (P1_BInput(1) == 2 || P1_BInput(3) == 2)) {
-			SEStart(35);
-			// ポート作成
-			Ip.d1 = 0, Ip.d2 = 0, Ip.d3 = 0, Ip.d4 = 0;
-			// Ip作成
-			Ip.d1 = (ip[0][0] * 100) + (ip[0][1] * 10) + ip[0][2];
-			Ip.d2 = (ip[1][0] * 100) + (ip[1][1] * 10) + ip[1][2];
-			Ip.d3 = (ip[2][0] * 100) + (ip[2][1] * 10) + ip[2][2];
-			Ip.d4 = (ip[3][0] * 100) + (ip[3][1] * 10) + ip[3][2];
-
-			// ポート作成
-			int p = (port[0] * 10000) + (port[1] * 1000) + (port[2] * 100) + (port[3] * 10) + port[4];
-			Port = p;
-			UDPNetHandle = MakeUDPSocket(Port);
-			sPoint = CLIENT;
-			yPoint = 0;
-			Data[0] = 0;
-			Data[1] = 0;
-		}
-		// IPに
-		else if (yPoint == 2 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)) {
-			sPoint = IP_SET;
-			yPoint = 0;
-			xPoint = 0;
-			SEStart(35);
-		}
-		// ポートに
-		else if (yPoint == 3 && (P1_BInput(1) == 1 || P1_BInput(3) == 1)) {
-			sPoint = PORT_SET;
-			yPoint = 0;
-			xPoint = 0;
-			SEStart(35);
-		}
-
-		// 終了に
-		if (P1_BInput(2) == 2) {
-			sPoint = 0;
-			yPoint = 4;
-			SEStart(37);
-		}
-	}
-	else if (sPoint == HOST) {
-		// 選択へ
-		if (P1_BInput(2) == 2) {
-			sPoint = 0;
-			yPoint = 0;
-			// ＵＤＰソケットハンドルの削除
-			DeleteUDPSocket(UDPNetHandle);
-			SEStart(37);
-		}
-	}
-	else if (sPoint == CLIENT) {
-		// 選択へ
-		if (P1_BInput(2) == 2) {
-			sPoint = 0;
-			yPoint = 1;
-			// ＵＤＰソケットハンドルの削除
-			DeleteUDPSocket(UDPNetHandle);
-			SEStart(37);
-		}
-	}
-	// IPセット画面 //
-	else if (sPoint == IP_SET) {
-		if (P1_BInput(104) == 1) {
-			xPoint--;
-			SEStart(36);
-		}
-		else if (P1_BInput(106) == 1) {
-			xPoint++;
-			SEStart(36);
-		}
-
-		// xPointの位置
-		int po = 0, po2 = xPoint;
-		if (xPoint > 8)po = 3, po2 = xPoint - 9;
-		else if (xPoint > 5)po = 2, po2 = xPoint - 6;
-		else if (xPoint > 2)po = 1, po2 = xPoint - 3;
-
-		if (xPoint < 0)xPoint = 11;
-		else if (xPoint > 11)xPoint = 0;
-		if (P1_BInput(102) == 1) {
-			ip[po][po2]--;
-			SEStart(36);
-		}
-		else if (P1_BInput(108) == 1) {
-			ip[po][po2]++;
-			SEStart(36);
-		}
-		// 数値を0～9にする
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (j == 0) {
-					if (ip[i][j] < 0)ip[i][j] = 2;
-					else if (ip[i][j] > 2)ip[i][j] = 0;
+			// 改行で次の行に進む
+			if (input[i] == '\n') {
+				for (int j = 0; j < NAME_MAX; j++) {
+					//inputc[j] = input[j] = NULL;
+					inputc[i] = '\0';//そこまでを文字列とし（これを見つけると文字列として扱う）
 				}
-				else {
-					if (ip[i][j] < 0)ip[i][j] = 9;
-					else if (ip[i][j] > 9)ip[i][j] = 0;
+				i = -1;
+				break;
+			}
+
+			// 文字列にする
+			if (input[i] == '.' || input[i] == ' ' ||
+				input[i] == ';' || input[i] == '=') { //カンマか改行なら
+				inputc[i] = '\0';//そこまでを文字列とし（これを見つけると文字列として扱う）
+				break;	// iを1増やしてループ脱出（代入する）
+			}
+
+			// 読み込み終了
+			if (input[i] == EOF) {//ファイルの終わりなら
+				goto EXFILE;//終了
+			}
+		}	// 基本ループ終了
+
+		// 最初に数字扱いにして、文字が入ってたら変更する
+		iflg = false;
+
+		// 文字列セットに移行していｒ
+		if (flg > 0)
+		{
+			if (inputc[0] == '0')iflg = true;
+			else if (inputc[0] == '1')iflg = true;
+			else if (inputc[0] == '2')iflg = true;
+			else if (inputc[0] == '3')iflg = true;
+			else if (inputc[0] == '4')iflg = true;
+			else if (inputc[0] == '5')iflg = true;
+			else if (inputc[0] == '6')iflg = true;
+			else if (inputc[0] == '7')iflg = true;
+			else if (inputc[0] == '8')iflg = true;
+			else if (inputc[0] == '9')iflg = true;
+		}
+
+		// 名前だったら
+		if (iflg) {
+			// PORT
+			if (flg == 1) {
+				int port = atoi(inputc);
+				netData->setPort(port);
+				flg = 0;
+			}
+			// IP
+			if (flg == 2) {
+				// 先にセット
+				int atoiNum = atoi(inputc);
+				// 範囲
+				if (atoiNum < 0)atoiNum = 0;
+				else if (atoiNum > 255)atoiNum = 255;
+
+				if (ip_flg == 1)Ip.d1 = atoiNum;
+				if (ip_flg == 2)Ip.d2 = atoiNum;
+				if (ip_flg == 3)Ip.d3 = atoiNum;
+				if (ip_flg == 4)Ip.d4 = atoiNum;
+				ip_flg++;
+				// 全て終了
+				if (ip_flg > 4) {
+					netData->setIp(Ip);
+					flg = 0, ip_flg = 0;
 				}
 			}
-		}
-
-		// 選択へ
-		if (P1_BInput(2) == 2) {
-			sPoint = 0;
-			yPoint = 2;
-			int kekka = 0;
-			for (int i = 0; i < ip_x; i++) {
-				kekka = (ip[i][0] * 100) + (ip[i][1] * 10) + ip[i][2];
-				if (kekka > 255)ip[i][0] = 2, ip[i][1] = 5, ip[i][2] = 5;
+			// DELAY_MAX
+			if (flg == 3) {
+				int delayMax = atoi(inputc);
+				netData->setDelayMax(delayMax);
+				flg = 0;
 			}
-			SEStart(37);
-		}
-	}
-	else if (sPoint == PORT_SET) {
-		if (P1_BInput(104) == 1) {
-			xPoint--;
-			SEStart(36);
-		}
-		else if (P1_BInput(106) == 1) {
-			xPoint++;
-			SEStart(36);
-		}
-		if (xPoint < 0)xPoint = 4;
-		else if (xPoint > 4)xPoint = 0;
-		if (P1_BInput(102) == 1) {
-			port[xPoint]--;
-			SEStart(36);
-		}
-		else if (P1_BInput(108) == 1) {
-			port[xPoint]++;
-			SEStart(36);
-		}
-		// 数値を0～9にする
-		for (int i = 0; i < 5; i++) {
-			if (port[i] < 0)port[i] = 9;
-			else if (port[i] > 9)port[i] = 0;
 		}
 
-		// 選択へ
-		if (P1_BInput(2) == 2) {
-			sPoint = 0;
-			yPoint = 3;
-			SEStart(37);
+		// 数字ではない
+		if (!iflg) {
+			// "PORT"
+			if (strcmp(inputc, t_port) == 0) {
+				flg = 1;
+			}
+			// "IP"
+			if (strcmp(inputc, t_ip) == 0) {
+				flg = 2;
+				ip_flg = 1;
+			}
+			// "IP"
+			if (strcmp(inputc, t_delay_max) == 0) {
+				flg = 3;
+			}
 		}
 	}
+
+	// ファイルを閉じる
+EXFILE:
+	FileRead_close(fp);
+
 }
 
-void Draw() {
-	// ポインター
-	DrawBox(0, yPoint * 20, 20, (yPoint + 1) * 20, Cr, true);
-	// テスト用位置表示
-	//DrawFormatString(420, 240, Cr, "S..%d", sPoint);
-	//DrawFormatString(420, 260, Cr, "X..%d", xPoint);
-	//DrawFormatString(420, 280, Cr, "Y..%d", yPoint);
-	DrawFormatString(0, SCREEN_H - 20, Cr, "1P..%d, 2P..%d", Data[0], Data[1]);	// 接続確認
-
-	if (sPoint == 0) {
-		DrawString(20, 20 * 0, "ホスト", Cr);
-		DrawString(20, 20 * 1, "クライアント", Cr);
-		// IP数値
-		for (int i = 0; i < ip_x; i++) {
-			for (int j = 0; j < ip_y; j++) {
-				DrawFormatString(20 + (j * 10) + (i * 40), 20 * 2, Cr, "%d", ip[i][j]);
-			}
-			if (i != 3)DrawString(20 + (i * 40) + 30, 20 * 2, ".", Cr);
-		}
-		// ポート数値
-		for (int i = 0; i < 5; i++) {
-			DrawFormatString(20 + (i * 10), 20 * 3, Cr, "%d", port[i]);
-		}
-		DrawString(20, 20 * 4, "終了", Cr);
-
-		// 項目の説明
-		switch (yPoint) {
-		case 0:
-			DrawString(80, 20 * 6, "自分が接続を待つ", Cr);
-			break;
-		case 1:
-			DrawString(80, 20 * 6, "自分が接続する", Cr);
-			break;
-		case 2:
-			DrawString(80, 20 * 6, "相手のグローバルIPアドレス", Cr);
-			DrawString(80, 20 * 7, "クライアント側のみ入力する", Cr);
-			break;
-		case 3:
-			DrawString(80, 20 * 6, "接続するUDPポート番号", Cr);
-			break;
-		case 4:
-			DrawString(80, 20 * 6, "終了する", Cr);
-			break;
-		}
-	}
-	else if (sPoint == HOST) {
-		DrawString(20, 20 * 0, "ホスト", Cr);
-		if (!nCheck)DrawString(20, 20 * 1, "待機中", Cr);
-		else { DrawString(20, 20 * 1, "接続しました", Cr); }
-		DrawFormatString(20, 20 * 2, Cr, "%d", Port);
-		DrawFormatString(20, 20 * 3, Cr, "クライアント %d.%d.%d.%d", Ip.d1, Ip.d2, Ip.d3, Ip.d4);
-		//DrawFormatString(20, SCREEN_H - 40, Cr, "%d.%d", Data[0], Data[1]);
-	}
-	else if (sPoint == CLIENT) {
-		DrawString(20, 20 * 0, "クライアント", Cr);
-		if (!nCheck)DrawString(20, 20 * 1, "待機中", Cr);
-		else { DrawString(20, 20 * 1, "接続しました", Cr); }
-		// ポートも一緒に表示
-		DrawFormatString(20, 20 * 3, Cr, "%d.%d.%d.%d:%d", Ip.d1, Ip.d2, Ip.d3, Ip.d4, Port);
-		//DrawFormatString(20, SCREEN_H - 40, Cr, "%d.%d", Data[0], Data[1]);
-	}
-	else if (sPoint == IP_SET) {
-		// IP数値
-		for (int n = 0; n < ip_x; n++) {
-			for (int i = 0; i < ip_y; i++) {
-				if ((n * 3) + i == xPoint)DrawFormatString(20 + (i * 10) + (n * 40), 20 * 0, Oran, "%d", ip[n][i]);
-				else { DrawFormatString(20 + (i * 10) + (n * 40), 20 * 0, Cr, "%d", ip[n][i]); }
-			}
-			if (n != 3)DrawString(20 + (n * 40) + 30, 20 * 0, ".", Cr);
-		}
-	}
-	else if (sPoint == PORT_SET) {
-		// ポート数値
-		for (int i = 0; i < 5; i++) {
-			if (i == xPoint)DrawFormatString(20 + (i * 10), 20 * 0, Oran, "%d", port[i]);
-			else { DrawFormatString(20 + (i * 10), 20 * 0, Cr, "%d", port[i]); }
-		}
-	}
-}
-*/

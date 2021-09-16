@@ -37,6 +37,8 @@ int P_Input(int n);
 // ボタン入力チェック
 int P1_BCheck();
 int P2_BCheck();
+// P1P2のBCheckを実行
+void Key_Setup();
 void InputSend();		// 入力をStateに送る
 
 // ボタン入力判断
@@ -63,12 +65,29 @@ void GetPH_Key(Player GP);
 void GetP_Key(Player GP1, Player GP2);
 void GetS_Key(System_t GS);
 
-void Get_Network(boolean net);
-void Network_Setting(int side, IPDATA ip, int port, int handle);
-void NB_Reset();
+// network関連
+void Key_SetPlayerSide(int n);
+int Key_GetPlayerSide();
 
+void Key_SetNetOn(boolean flg);
+boolean Key_GetNetOn();
 
-void End_Network();
+void Key_SetupSendKey();
+// 操作を1フレーム分戻す
+void Key_Return1Frame();
+void Key_Return1VFrame();
+void set_stopVB(boolean flg);
+
+void Key_SetGKeyLog(BYTE gKeyLog[KEYLOG_MAX]);
+void Key_SetSendKey(BYTE myKeyLog[KEYLOG_MAX]);
+// ネット対戦キー設定準備
+int Key_NetButtonUpdate();
+// ネット対戦キー設定決定
+int Key_NetButtonEnter();
+
+// P1_Bの値セット
+void setP1_B(int num, int value);
+void setP2_B(int num, int value);
 
 // 0.なし 1.再生 2.録画
 int Replay_Mode(int num);
@@ -77,11 +96,17 @@ void Replay_Setting(int n1, int n2, int c1, int c2, int stageNum);
 int Replay_ReserveKey();
 void Replay_EnterSetting(int n1, int n2, int c1, int c2, int stageNum);
 void Key_GetString(std::string st);
+// リプレイの進行値を返す
+int GetRTimeCount();
 
 void InputDevice_Start();
 int InputDevice_Update();
 void InputDevice_Draw();
 
+// セットされているボタンを返す
+int Key_ReturnButton(int player, int button);
+// 入力した値を割り当てる
+void Key_SetButton(int player, int button, int input);
 /**********
 * Load
 **********/
@@ -113,43 +138,11 @@ static void SetFont();
 void SaveScreen();
 // 保存画面を表示
 void Draw_SaveScreen();
+// 乱数 (999までの数で確率を指定)
+boolean random(int num);
 // 判定重なってるかチェック
 bool Box_Touch(int x1, int y1, int w1, int h1,
 	int x2, int y2, int w2, int h2);
-
-//-------
-// Connect
-//-------
-// ネットワーク取得
-void Connect_GetCn(boolean net);
-// ネットワーク確認
-boolean Connect_CheckCn();
-// プレイヤーサイド確認
-void Connect_GetSide(int num);
-int Connect_CheckSide();
-// ポート確認
-void Connect_GetPort(int num);
-int Connect_CheckPort();
-// ハンドル取得
-void Connect_GetNetHandle(int num);
-int Connect_CheckNetHandle();
-// IP取得
-void Connect_GetIp(IPDATA num);
-IPDATA Connect_CheckIp();
-
-// ディレイ
-int Connect_CheckDelay();
-void Delay_Check();
-void Delay_Draw();
-boolean Delay_IfEnd();
-
-// 操作関連
-void Connect_Get_GetData(BYTE num, BYTE num1, BYTE num2);
-BYTE Connect_CheckGetData(int num1, int num2);
-
-void Connect_Load();
-void Connect_SetGameMode();
-boolean Connect_WaitGameMode();
 
 //-------------
 // Def

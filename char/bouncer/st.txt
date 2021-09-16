@@ -1,10 +1,11 @@
 [Data]
+name = bouncer;
 gsize = 2.0;
 xsize = 52;
 ysize = 160;
-life = 1050;
-walk.f = 1.9;
-walk.b = -2.0;
+life = 1100;
+walk.f = 1.8;
+walk.b = -1.85;
 run.f = 3.6, -3.8;
 run.b = -2.9, -4.0;
 jump.y = -9.2; -8.8

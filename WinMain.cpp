@@ -37,6 +37,7 @@ static boolean wait;	// 熱帯相手を待って、モードを動かさない
 void Screen_Setting();
 
 void Game_End();
+void File_Loading();
 void Replay_DrawData();
 
 
@@ -55,16 +56,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// これでkeyconfig読み込み
 	P1_BConfig();
 
-	// キャラクターファイル読み込み
-	{
-		// 非同期読み込み設定に変更z 
-		//SetUseASyncLoadFlag(TRUE);
-		// 重いファイルを読み込む
-		GetDef();
-		LoadAllFile();
-		// 同期読み込み設定に変更
-		//SetUseASyncLoadFlag(FALSE);
-	}
+	// ファイルをロード
+	File_Loading();
 
 	// 描画先を裏画面にセット
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -118,6 +111,10 @@ void Screen_Setting()
 	// 画面サイズを変更可能に
 	SetWindowSizeChangeEnableFlag(true);
 
+	// 多重起動
+	// ネットワークテスト
+	//SetDoubleStartValidFlag(TRUE);
+
 	//= 変数設定 ========
 	//wait = false;	// 対戦相手を待つ
 }
@@ -127,12 +124,25 @@ void Game_End()
 {
 	BGMStart(0);
 	// ネットワーク切断
-	if (Connect_CheckCn())End_Network();
+
 	// リプレイ終了
 	if (Replay_Mode(-1) > 0)Replay_End();
 	// トレモ設定保存
 	Tlist_Save();
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
+}
+
+// ファイルのロード
+void File_Loading() {
+	// キャラクターファイル読み込み
+
+	// 非同期読み込み設定に変更z 
+	//SetUseASyncLoadFlag(TRUE);
+	// 重いファイルを読み込む
+	GetDef();
+	LoadAllFile();
+	// 同期読み込み設定に変更
+	//SetUseASyncLoadFlag(FALSE);
 }
 
 void Replay_DrawData()

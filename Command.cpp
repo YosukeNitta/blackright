@@ -131,7 +131,7 @@ int EinCmd()
 
 
 	// Dアクション、Dを押していて操作可能
-	if ((P1.ctrl) && (P1.button[4] == 1)){
+	if ((P1.ctrl) && (P1.Senkou[4] > 0)){
 		// 地上にいて、ヘルパー[2]が存在しない
 		if ((!H1[2].var) && (P1.SFlg != 2)){
 			P1.stateno = 620;
@@ -219,7 +219,7 @@ int EinCmd()
 	
 	// [ 真空ブーメラン ]
 	if ((P1.ctrl) && (InCOM(3)) && (P1.Power >= 1000) 
-		&& (H1[2].var) && (H1[2].stateno == 2020)){
+		&& (H1[2].var) && (H1[2].stateno == 2020 || H1[2].stateno == 2025)){
 		if (P1.SFlg != 2){		// 地上
 			if (P1.button[4] > 0)P1.stateno = 820;
 		}
@@ -290,9 +290,10 @@ int Char2_Cmd()
 	/*******/
 
 	// [ウィップ]
-	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Senkou[1] > 0 || P1.Senkou[2] > 0 || P1.Senkou[3] > 0)){
+	if ((P1.ctrl) && (P1.cmd[1])){
 		if (P1.SFlg != 2){		// 地上
-			P1.stateno = 630;
+			if(P1.Senkou[1] > 0)P1.stateno = 630;
+			if (P1.Senkou[2] > 0 || P1.Senkou[3] > 0)P1.stateno = 631;
 		}
 	}
 	// [スピナー]
@@ -408,7 +409,8 @@ int Char3_Cmd()
 		}
 	}
 	//  J2C
-	if ((P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl)){
+	// 高度制限あり
+	if ((P1.keyAtt[2]) && (P1.Senkou[3] > 0) && (P1.ctrl) && (P1.YPos < GROUND - 30)){
 		if ((P1.SFlg == 2)){		// 地上
 			P1.stateno = 430;
 		}
@@ -647,9 +649,9 @@ int Char5_Cmd()
 		if (P1.Senkou[4] > 0 && (P1.Var[10] > 180)){
 			// 地上にいる
 			if ((P1.SFlg != 2)){
-				if ((P1.keyAtt[6]) && (!P1.keyAtt[2]) && (!P1.keyAtt[8]))P1.stateno = 601;	// 6D
-				else if (P1.keyAtt[2])P1.stateno = 603;	// 3D
-				//else if (P1.keyAtt[2])P1.stateno = 602;	// 2D
+				if (P1.keyAtt[2] && P1.keyAtt[6])P1.stateno = 603;	// 3D
+				else if (P1.keyAtt[2])P1.stateno = 602;	// 2D
+				else if (P1.keyAtt[6])P1.stateno = 601;	// 6D
 				else{ P1.stateno = 600; }	// 5D
 			}
 			// 空中キック
@@ -666,19 +668,40 @@ int Char5_Cmd()
 	/
 	/*******/
 
+	// [214]
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Senkou[1] > 0 || P1.Senkou[2] > 0 || P1.Senkou[3] > 0)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 610;
+			if ((P1.Senkou[2] > 0) || (P1.Senkou[3] > 0))P1.stateno = 611;
+		}
+	}
+
 	// [22D]
-	/*
-	if ((P1.ctrl) && (P1.cmd[3]) && (P1.SFlg != 2) && (P1.Var[10] <= 0)) {
+	if ((P1.ctrl) && (P1.cmd[3]) && (P1.SFlg != 2)) {
 		if (P1.Senkou[4] > 0) {		// 地上
 			P1.stateno = 630;
 		}
 	}
-	*/
+
+	// [214D]
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Senkou[4] > 0)
+		&& (P1.Power >= 500)) {
+		if (P1.SFlg != 2) {		// 地上
+			P1.stateno = 710;
+		}
+	}
 
 	// [ 凶弾 ]
 	if ((P1.ctrl) && (P1.cmd[1]) && (P1.Power >= 1000)) {
 		if (P1.SFlg != 2) {		// 地上
 			if (P1.Senkou[3] > 0)P1.stateno = 800;
+		}
+	}
+
+	// [連脚]
+	if ((P1.ctrl) && (P1.cmd[2]) && (P1.Power >= 1000)) {
+		if (P1.SFlg != 2) {		// 地上
+			if (P1.Senkou[3] > 0)P1.stateno = 810;
 		}
 	}
 
@@ -1087,8 +1110,11 @@ void Traning_P2Command(int command[20])
 
 static boolean checkThrow()
 {
+	// しゃがみ入力
+	//&& (P1.keyAtt[2] == 0)
+
 	// 投げ
-	if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) &&
+	if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0)  &&
 		(P1.ctrl || ((P1.stateno >= 200 && P1.stateno < 500) && P1.time <= 1 && P2.HFlg == 0 &&
 		(P2.stateno < 50 && P2.stateno > 52)))){
 		return true;

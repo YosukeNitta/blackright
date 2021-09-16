@@ -481,18 +481,18 @@ void SameParam()
 	// 状態を読み込み
 	if (P1.stateno >= 40 && P1.stateno <= 57)FirstState();
 
-	switch (P1.stateno){
-	
+	switch (P1.stateno) {
+
 		//********************
 		// 5 振り向き
 		//********************
 	case 5:
 		//P1.SFlg = 0, P1.ctrl = 1;
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			VelSet(0, 0);
 			//P1.Lock = 1;
 		}
-		if (P1.time >= ANIMELEM){
+		if (P1.time >= ANIMELEM) {
 			P1.Lock = 0;
 		}
 		break;
@@ -501,11 +501,11 @@ void SameParam()
 		//********************
 	case 6:
 		//P1.SFlg = 1, P1.ctrl = 1;
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			VelSet(0, 0);
 			P1.Lock = 1;
 		}
-		if (P1.time >= ANIMELEM){
+		if (P1.time >= ANIMELEM) {
 			P1.Lock = 0;
 			P1.More = 1, P1.time = 0, P1.stateno = 11;
 		}
@@ -518,7 +518,7 @@ void SameParam()
 		// 慣性
 		if ((P1.time == 0) && (P1.XVel > 0))VelSet(P1.XVel / 1.5, 0);
 		// しゃがみから立ちへ 
-		if (P1.button[102] == 0){
+		if (P1.button[102] == 0) {
 			P1.time = 0, P1.stateno = 12, P1.More = 1;
 		}
 
@@ -531,34 +531,34 @@ void SameParam()
 		P1.Muteki = 1, P1.mutekiF = 2;
 		//if (P1.XPos < P2.XPos)P1.muki = 0;
 		// タイム 0 の所で判断
-		if (P1.time == 0){
-			
+		if (P1.time == 0) {
+
 			// 左入力
 			P1.JumpVel = 0;
-			if (P1.muki == 0){
-				if (P1.button[104] > 0){
+			if (P1.muki == 0) {
+				if (P1.button[104] > 0) {
 					P1.JumpVel = -1;
 				}
 				// 右入力
-				else if (P1.button[106] > 0){
+				else if (P1.button[106] > 0) {
 
 					P1.JumpVel = 1;
 					// 手前で走ってたら
-					if (P1.OldState == 30){
+					if (P1.OldState == 30) {
 						P1.JumpVel = 2;
 					}
 				}
 			}
-			else if (P1.muki == 1){
-				if (P1.button[104] > 0){
+			else if (P1.muki == 1) {
+				if (P1.button[104] > 0) {
 					P1.JumpVel = 1;
 					// 手前で走ってたら
-					if (P1.OldState == 30){
+					if (P1.OldState == 30) {
 						P1.JumpVel = 2;
 					}
 				}
 				// 右入力
-				else if (P1.button[106] > 0){
+				else if (P1.button[106] > 0) {
 					P1.JumpVel = -1;
 				}
 			}
@@ -567,12 +567,12 @@ void SameParam()
 			P1.K_Senkou[8] = 0;
 		}
 		// ステート変更、3フレを超えた時ジャンプへ
-		if (P1.time >= P1.animElem[P1.stateno]){
+		if (P1.time >= P1.animElem[P1.stateno]) {
 			// ジャンプフラグをオン
 			P1.JumpFlg = 1;
 			// ワンモアで次のステートに
 			P1.More = 1, P1.time = 0;
-			switch (P1.JumpVel){
+			switch (P1.JumpVel) {
 			case 0:
 				P1.stateno = 41;
 				break;
@@ -587,15 +587,28 @@ void SameParam()
 				break;
 			}
 			P1.YVel = P1.C.jumpY;
+
 			// ハイジャンプ
-			if (P1.hyJump){
+			if (P1.hyJump) {
 				//エフェクト
 				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
 					0.24, 0.03, P1.muki);
 				P1.YVel = P1.C.jumpY * 1.25;
 				P1.AirJump--;
-				afterimageSetting(P1.PSide, 16, 128,128,250);
+				afterimageSetting(P1.PSide, 16, 128, 128, 250);
 			}
+
+			// ショートジャンプ
+			/*
+			if (P1.hyJump) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.24, 0.03, P1.muki);
+				P1.YVel = P1.C.jumpY * 0.75;
+				P1.AirJump--;
+				P1.airDash--;
+			}
+			*/
 		}
 
 		break;	// ジャンプ準備終了
@@ -604,16 +617,16 @@ void SameParam()
 		P1.Muteki = 0;
 		P1.XVel = 0;	// 垂直は左右に飛ばない
 		// タイムが 0 のとき、↑に飛ぶ
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			// 二段ジャンプ時、ジャンプ力を下げる
-			{ 
+			{
 				//P1.YPos -= 2;
 			}
 		}
 		// 落下
 		if (P1.YVel > 0)P1.stateno = 46, P1.time = 0;
 		// 地面にいて時間が 0 じゃない時
-		if ((P1.YPos > GROUND) && (P1.time != 0)){
+		if ((P1.YPos > GROUND) && (P1.time != 0)) {
 			P1.stateno = 47, P1.More = 1, P1.time = 0;
 		}
 		break;
@@ -623,51 +636,51 @@ void SameParam()
 		if (P1.JumpVel == 2)P1.XVel = P1.C.jumpF[1];//P1.XVel += (P1.XVel / 4) + 0.2;	// ダッシュ時
 		if (P1.hyJump)P1.XVel = P1.C.jumpF[1];//*1.3; //速度を足す;
 		// タイムが 0 のとき、↑に飛ぶ
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			// 二段ジャンプ時、ジャンプ力を下げる
-			{ 
+			{
 				//P1.YPos -= 2;
 			}
 		}
 		// 落下
 		if (P1.YVel > 0)P1.stateno = 46, P1.time = 0;
 		// 地面にいて時間が 0 じゃない時
-		if ((P1.YPos > GROUND) && (P1.time != 0)){
+		if ((P1.YPos > GROUND) && (P1.time != 0)) {
 			P1.stateno = 47, P1.More = 1, P1.time = 0;
 		}
 		break;
 	case 43:	// 後ろジャンプ
 		P1.Muteki = 0;
 		P1.XVel = P1.C.jumpB; //速度を足す;
-		if (P1.hyJump)P1.XVel = P1.C.jumpB*1.2; //速度を足す;
+		if (P1.hyJump)P1.XVel = P1.C.jumpB * 1.2; //速度を足す;
 		// タイムが 0 のとき、↑に飛ぶ
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			// 二段ジャンプ時、ジャンプ力を下げる
-			{ 
+			{
 				//P1.YPos -= 2;
 			}
 		}
 		// 落下
 		if (P1.YVel > 0)P1.stateno = 46, P1.time = 0;
 		// 地面にいて時間が 0 じゃない時
-		if ((P1.YPos > GROUND) && (P1.time != 0)){
+		if ((P1.YPos > GROUND) && (P1.time != 0)) {
 			P1.stateno = 47, P1.More = 1, P1.time = 0;
 		}
 		break;
 	case 45:	// 空中ジャンプ
 		P1.XVel = 0, P1.YVel = -0.2;
-		
-		if (P1.time == 0){
+
+		if (P1.time == 0) {
 			// 左入力
-			if (P1.keyAtt[4]){
+			if (P1.keyAtt[4]) {
 				P1.JumpVel = -1;
 			}
 			// 右入力
-			else if (P1.keyAtt[6]){
+			else if (P1.keyAtt[6]) {
 				if (P1.JumpVel == 2)P1.JumpVel = 2;
-				else{ P1.JumpVel = 1; }
+				else { P1.JumpVel = 1; }
 			}
-			else{ P1.JumpVel = 0; }
+			else { P1.JumpVel = 0; }
 
 			P1.AirJump--, P1.airDash--;
 			P1.hyJump = false;
@@ -677,19 +690,19 @@ void SameParam()
 		}
 
 		// 振り向き
-		if (P1.time == 0){
-			if (P1.XPos < P2.XPos && P1.muki == 1){
+		if (P1.time == 0) {
+			if (P1.XPos < P2.XPos && P1.muki == 1) {
 				P1.muki = 0;
 				P1.JumpVel = -P1.JumpVel;
 			}
-			else if (P2.XPos < P1.XPos && P1.muki == 0){
+			else if (P2.XPos < P1.XPos && P1.muki == 0) {
 				P1.muki = 1;
 				P1.JumpVel = -P1.JumpVel;
 			}
 		}
 
 		// ステート変更、2フレを超えた時ジャンプへ
-		if (P1.time > 1){
+		if (P1.time > 1) {
 			//エフェクト
 			EffStartB(16, P1.XPos, P1.YPos - 20, 0, 0,
 				0.24, 0.03, P1.muki);
@@ -697,7 +710,7 @@ void SameParam()
 			P1.JumpFlg = 1;
 			// ワンモアで次のステートに
 			P1.More = 1, P1.time = 0;
-			switch (P1.JumpVel){
+			switch (P1.JumpVel) {
 			case 0:
 				P1.stateno = 41;
 				break;
@@ -721,7 +734,7 @@ void SameParam()
 		if (P1.time >= P1.animElem[P1.stateno])P1.time = 0;
 
 		// 地面にいる時
-		if (P1.YPos + P1.YVel * 2 == GROUND){
+		if (P1.YPos + P1.YVel * 2 == GROUND) {
 			P1.stateno = 47, P1.More = 1, P1.time = 0;
 		}
 
@@ -734,10 +747,10 @@ void SameParam()
 		// SEを鳴らす
 		if (P1.time == 1)SEStart(6);
 		// 最初にロック！
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			//エフェクト
-			//EffStartB(16, P1.XPos, P1.YPos, 0, 0,
-				//0.20, 0.02, P1.muki);
+			EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+				0.16, 0.02, P1.muki);
 			P1.Lock = 1;
 		}
 		// 着地 の 全体フレーム
@@ -771,24 +784,25 @@ void SameParam()
 		P1.YVel = 0;
 		P1.Muteki = 1, P1.mutekiF = 2;
 		// 最初にロック！
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			P1.Lock = 1;
 			P1.advancing = false;
 		}
 
 		// 下入れでしゃがみガードへ
-		if (P1.keyAtt[2] > 0){
+		if (P1.keyAtt[2] > 0) {
 			P1.More = 1, P1.stateno = 53, P1.Lock = 1;
 			P1.NoChangeTime = 1;
 			P1.ctrl = 0;
 		}
 
-		// アドガ
 		/*
+		// アドガ
 		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
-			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)){
+			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)) {
 			if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
-				P2.D.addVelX += -7.0;
+				//P2.D.addVelX += 7.0;
+				P2.D.addVelX -= 7.0;
 			EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
 				0.04, 0.25, P1.muki);
 			P1.colorCTime = 3;
@@ -796,43 +810,297 @@ void SameParam()
 			SEStart(19);
 			P1.advancing = true;
 			P1.aGauge -= (GUARD_MAX / 5);
-			P1.D.nokezori += 4;
+			//P1.D.nokezori += 4;
+			P1.D.nokezori += 8;
 			P1.Senkou[1] = 0, P1.Senkou[2] = 0;
 		}
 		*/
+		// リフガ移行
+		if (P1.button[4] > 0 && P1.keyAtt[4]) {
+			P1.stateno = 57, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
 
 		// ガード続行
-		if (P1.time >= P1.D.nokezori){
+		if (P1.time >= P1.D.nokezori) {
 			P1.stateno = 0, P1.Lock = 1;
 			P1.time = 0, P1.More = 1;
 			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
 			P1.ctrl = 1;
 			P1.NoChangeTime = 0;
 		}
-		
+
 		break;
 	case 51:	// しゃがみ 硬直
 		//P1.SFlg = 1;	// 追加
 		P1.YVel = 0;
 		P1.Muteki = 1, P1.mutekiF = 2;
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			P1.Lock = 1;
 			P1.advancing = false;
 		}
 
 		// 下入れてないと立ちガ
-		if (P1.keyAtt[2] == 0){
+		if (P1.keyAtt[2] == 0) {
 			P1.More = 1, P1.stateno = 54, P1.Lock = 1;
 			P1.NoChangeTime = 1;
 			P1.ctrl = 0;
 		}
-		
+
+		/*
+		// アドガ
+		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
+			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)) {
+			if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
+				//P2.D.addVelX += 7.0;
+				P2.D.addVelX -= 7.0;
+			EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
+				0.04, 0.25, P1.muki);
+			P1.colorCTime = 3;
+			P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+			SEStart(19);
+			P1.advancing = true;
+			P1.aGauge -= (GUARD_MAX / 5);
+			P1.D.nokezori += 8;
+			P1.Senkou[1] = 0, P1.Senkou[2] = 0;
+		}
+		*/
+		// リフガ移行
+		if (P1.button[4] > 0 && P1.keyAtt[4]) {
+			P1.stateno = 58, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		// 終了へ移行
+		if (P1.time >= P1.D.nokezori) {
+			P1.stateno = 11, P1.Lock = 1;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			P1.ctrl = 1;
+			P1.NoChangeTime = 0;
+		}
+
+		break;
+	case 52:	// 空中 硬直
+		P1.SFlg = 2; //追加
+		P1.Muteki = 1, P1.mutekiF = 2;
+		if (P1.time == 0) {
+			P1.Lock = 1;
+			P1.advancing = false;
+		}
+		// 振り向き
+		if (P1.time == 0) {
+			if ((P1.XPos < P2.XPos) && (P1.muki == 1))P1.muki = 0;
+			else if ((P1.XPos > P2.XPos) && (P1.muki == 0))P1.muki = 1;
+		}
+		/*
+		// 着地したら移行
+		if (P1.YPos + P1.YVel * 2 >= GROUND){
+			P1.More = 1, P1.stateno = 51, P1.Lock = 1;
+			if (P1.keyAtt[2] > 0)P1.stateno = 54;
+		}
+		*/
+
 		// アドガ
 		/*
 		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
+			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)) {
+			if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
+				//P2.D.addVelX += -8.2;
+				P2.D.addVelX += 7.0;
+			P1.A.hbVelY -= 1.8;
+			EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
+				0.04, 0.25, P1.muki);
+			P1.colorCTime = 3;
+			P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+			SEStart(19);
+			P1.advancing = true;
+			P1.aGauge -= (GUARD_MAX / 5);
+			P1.D.nokezori += 8;
+			P1.Senkou[1] = 0, P1.Senkou[2] = 0;
+		}
+		*/
+		/*
+		// リフガ移行
+		if (P1.button[4] > 0 && P1.keyAtt[4]) {
+			P1.stateno = 59, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+		*/
+
+		// 前ジャンプ の 全体フレーム
+		if (P1.time >= P1.D.nokezori) {
+			P1.stateno = 46, P1.Lock = 0;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+		}
+		break;
+
+	case 53:	// 立ちガード(2入力)
+		P1.SFlg = 1;
+		P1.YVel = 0;
+		P1.Muteki = 1, P1.mutekiF = 2;
+		// 最初にロック！
+		if (P1.time == 0) {
+			P1.Lock = 1;
+			P1.advancing = false;
+		}
+
+		// 下入れでしゃがみガードへ
+		if (P1.keyAtt[2] == 0) {
+			P1.More = 1, P1.stateno = 50, P1.Lock = 1;
+			P1.NoChangeTime = 1;
+			P1.ctrl = 0;
+		}
+
+		// リフガ移行
+		if (P1.button[4] > 0 && P1.keyAtt[4]) {
+			P1.stateno = 57, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		// ガード続行
+		if (P1.time >= P1.D.nokezori) {
+			P1.stateno = 0, P1.Lock = 1;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			P1.ctrl = 1;
+			P1.NoChangeTime = 0;
+		}
+
+		break;
+	case 54:	// しゃがみガード(2入力なし)
+		P1.SFlg = 0;
+		P1.YVel = 0;
+		P1.Muteki = 1, P1.mutekiF = 2;
+		if (P1.time == 0) {
+			P1.Lock = 1;
+			P1.advancing = false;
+		}
+
+		// 下入れで小さく
+		if (P1.keyAtt[2] > 0) {
+			P1.More = 1, P1.stateno = 51, P1.Lock = 1;
+			P1.NoChangeTime = 1;
+			P1.ctrl = 0;
+		}
+
+		// アドガ
+		/*
+		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
+		&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)){
+		if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
+		P2.D.addVelX += -7.0;
+		EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
+		0.04, 0.25, P1.muki);
+		P1.colorCTime = 3;
+		P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+		SEStart(19);
+		P1.advancing = true;
+		P1.aGauge -= (GUARD_MAX / 5);
+		P1.D.nokezori += 4;
+		P1.Senkou[1] = 0, P1.Senkou[2] = 0;
+		}
+		*/
+
+		// リフガ移行
+		if (P1.button[4] > 0 && P1.keyAtt[4]) {
+			P1.stateno = 58, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		// 終了へ移行
+		if (P1.time >= P1.D.nokezori) {
+			P1.stateno = 11, P1.Lock = 1;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			P1.ctrl = 1;
+			P1.NoChangeTime = 0;
+		}
+
+		break;
+	case 55:	// 投げ抜け
+		P1.YVel = 0;
+		P1.Muteki = 1, P1.mutekiF = 0;
+		// 最初にロック！
+		if (P1.time == 0)P1.Lock = 1;
+
+		// ガード続行
+		if (P1.time >= 26) {
+			P1.stateno = 0, P1.Lock = 0;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = 0, P1.mutekiF = 0;
+			P1.ctrl = 1;
+			P1.NoChangeTime = 0;
+		}
+
+		break;
+
+	case 56:	// 空中投げ抜け
+		P1.Muteki = 1, P1.mutekiF = 0;
+		// 最初にロック！
+		if (P1.time == 0)P1.Lock = 1;
+		// 振り向き
+		if (P1.time == 0) {
+			if ((P1.XPos < P2.XPos) && (P1.muki == 1))P1.muki = 0;
+			else if ((P1.XPos > P2.XPos) && (P1.muki == 0))P1.muki = 1;
+		}
+		/*
+		// 前ジャンプ の 全体フレーム
+		if (P1.time >= P1.D.nokezori){
+			P1.stateno = 46, P1.Lock = 0;
+			P1.time = 0, P1.More = 1;
+			P1.Muteki = 0, P1.mutekiF = 0;
+		}
+		*/
+		break;
+
+	case 57:	// 立ちガード 硬直
+	//P1.SFlg = 0;
+		P1.YVel = 0;
+
+		// 投げ無敵
+		if (P1.D.nokezori > 0) {
+			P1.Muteki = 1, P1.mutekiF = 2;
+		}
+		// 最初にロック！
+		if (P1.time == 0) {
+			P1.Lock = 1;
+			P1.advancing = false;
+		}
+
+
+		//エフェクト
+		/*
+		if (P1.time == 0) {
+			P1.colorCTime = 4;
+			P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+		}
+		*/
+		EasyEffDraw(18, 0, P1.XPos, P1.YPos - (P1.GraphH * P1.GSize) / 2,
+			50, 0,
+			0.1, 0.25, P1.muki);
+
+		// 下入れでしゃがみガードへ
+		/*
+		if (P1.keyAtt[2] > 0) {
+			P1.More = 1, P1.stateno = 58, P1.Lock = 1;
+			P1.NoChangeTime = 1;
+			P1.ctrl = 0;
+		}
+		*/
+
+		/*
+		// アドガ
+		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
 			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)){
 			if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
-				P2.D.addVelX += -7.0;
+				P2.D.addVelX += 7.0;
 			EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
 				0.04, 0.25, P1.muki);
 			P1.colorCTime = 3;
@@ -845,28 +1113,131 @@ void SameParam()
 		}
 		*/
 
-		// 終了へ移行
-		if (P1.time >= P1.D.nokezori){
-			P1.stateno = 11, P1.Lock = 1;
+		// リフガ方向変更
+		if ((P1.button[4] > 0) && P1.keyAtt[2] && P1.keyAtt[4] && (P1.D.nokezori == 0)) {
+			P1.stateno = 58, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		// リフガ解除
+		if (!(P1.button[4] > 0 && P1.keyAtt[4])) {
+			P1.stateno = 50, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		
+
+		// ガード終了条件
+		if (((P1.D.nokezori > 0) && (P1.time >= P1.D.nokezori)) ||
+			((P1.D.nokezori <= 0) && (P1.keyAtt[4] == 0 || P1.button[4] == 0))
+			) {
+			P1.stateno = 0, P1.Lock = 1;
 			P1.time = 0, P1.More = 1;
-			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			//P1.Muteki = ThrowMuteki_Guard, 
+			//P1.mutekiF = 2;
 			P1.ctrl = 1;
 			P1.NoChangeTime = 0;
 		}
-		
+
 		break;
-	case 52:	// 空中 硬直
+	case 58:	// しゃがみ 硬直
+		//P1.SFlg = 1;	// 追加
+		P1.YVel = 0;
+
+		// 投げ無敵
+		if (P1.D.nokezori > 0) {
+			P1.Muteki = 1, P1.mutekiF = 2;
+		}
+		if (P1.time == 0) {
+			P1.Lock = 1;
+			P1.advancing = false;
+		}
+		//エフェクト
+		/*
+		if (P1.time == 0) {
+			P1.colorCTime = 4;
+			P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+		}
+		*/
+		EasyEffDraw(18, 0, P1.XPos, P1.YPos - (P1.GraphH * P1.GSize) / 2,
+			50, 0,
+			0.1, 0.25, P1.muki);
+
+		// 下入れてないと立ちガ
+		/*
+		if (P1.keyAtt[2] == 0) {
+			P1.More = 1, P1.stateno = 57, P1.Lock = 1;
+			P1.NoChangeTime = 1;
+			P1.ctrl = 0;
+		}
+		*/
+
+		/*
+		// アドガ
+		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
+			&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)){
+			if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
+				P2.D.addVelX += 7.0;
+			EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
+				0.04, 0.25, P1.muki);
+			P1.colorCTime = 3;
+			P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
+			SEStart(19);
+			P1.advancing = true;
+			P1.aGauge -= (GUARD_MAX / 5);
+			P1.D.nokezori += 4;
+			P1.Senkou[1] = 0, P1.Senkou[2] = 0;
+		}
+		*/
+
+		// リフガ方向変更
+		if ((P1.button[4] > 0) && (P1.keyAtt[2] == 0) && P1.keyAtt[4] && (P1.D.nokezori == 0)) {
+			P1.stateno = 57, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		// リフガ解除
+		if (!(P1.button[4] > 0 && P1.keyAtt[4])) {
+			P1.stateno = 51, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
+
+		
+
+		// 終了へ移行
+		if (((P1.D.nokezori > 0) && (P1.time >= P1.D.nokezori)) ||
+			((P1.D.nokezori <= 0) && (P1.keyAtt[4] == 0 || P1.button[4] == 0))
+			) {
+			P1.stateno = 11, P1.Lock = 1;
+			P1.time = 0, P1.More = 1;
+			//P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			P1.ctrl = 1;
+			P1.NoChangeTime = 0;
+		}
+
+		break;
+	case 59:	// 空中 硬直
 		P1.SFlg = 2; //追加
 		P1.Muteki = 1, P1.mutekiF = 2;
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			P1.Lock = 1;
 			P1.advancing = false;
 		}
 		// 振り向き
-		if (P1.time == 0){
+		if (P1.time == 0) {
 			if ((P1.XPos < P2.XPos) && (P1.muki == 1))P1.muki = 0;
 			else if ((P1.XPos > P2.XPos) && (P1.muki == 0))P1.muki = 1;
 		}
+
+		//エフェクト
+		EasyEffDraw(18, 0, P1.XPos, P1.YPos - (P1.GraphH * P1.GSize) / 2,
+			50, 0,
+			0.1, 0.25, P1.muki);
+
 		/*
 		// 着地したら移行
 		if (P1.YPos + P1.YVel * 2 >= GROUND){
@@ -893,126 +1264,29 @@ void SameParam()
 			P1.Senkou[1] = 0, P1.Senkou[2] = 0;
 		}
 		*/
+		// リフガ解除
+		if (!(P1.button[4] > 0 && P1.keyAtt[4])) {
+			P1.stateno = 52, P1.Lock = 1;
+			P1.More = 1;
+			P1.NoChangeTime = 1;
+		}
 
 		// 前ジャンプ の 全体フレーム
-		if (P1.time >= P1.D.nokezori){
+		if (((P1.D.nokezori > 0) && (P1.time >= P1.D.nokezori)) ||
+			((P1.D.nokezori <= 0) && (P1.keyAtt[4] == 0 || P1.button[4] == 0))
+			) {
 			P1.stateno = 46, P1.Lock = 0;
 			P1.time = 0, P1.More = 1;
-			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
+			//P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
 		}
-		break;
-
-	case 53:	// 立ちガード(2入力)
-		P1.SFlg = 1;
-		P1.YVel = 0;
-		P1.Muteki = 1, P1.mutekiF = 2;
-		// 最初にロック！
-		if (P1.time == 0){
-			P1.Lock = 1;
-			P1.advancing = false;
-		}
-
-		// 下入れでしゃがみガードへ
-		if (P1.keyAtt[2] == 0){
-			P1.More = 1, P1.stateno = 50, P1.Lock = 1;
-			P1.NoChangeTime = 1;
-			P1.ctrl = 0;
-		}
-
-		// ガード続行
-		if (P1.time >= P1.D.nokezori){
-			P1.stateno = 0, P1.Lock = 1;
-			P1.time = 0, P1.More = 1;
-			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
-			P1.ctrl = 1;
-			P1.NoChangeTime = 0;
-		}
-
-		break;
-	case 54:	// しゃがみガード(2入力なし)
-		P1.SFlg = 0;
-		P1.YVel = 0;
-		P1.Muteki = 1, P1.mutekiF = 2;
-		if (P1.time == 0){
-			P1.Lock = 1;
-			P1.advancing = false;
-		}
-
-		// 下入れで小さく
-		if (P1.keyAtt[2] > 0){
-			P1.More = 1, P1.stateno = 51, P1.Lock = 1;
-			P1.NoChangeTime = 1;
-			P1.ctrl = 0;
-		}
-
-		// アドガ
-		/*
-		if ((P1.Senkou[1] > 0) && (P1.Senkou[2] > 0) && (P1.keyAtt[4]) && (P1.advancing == false)
-		&& (P1.StopTime == 0) && (P1.aGauge > (GUARD_MAX / 5)) && (P1.time + 2 < P1.D.nokezori)){
-		if ((P2.XPos - P1.XPos < (SCREEN_W / 2)) && (P1.XPos - P2.XPos < (SCREEN_W / 2)))
-		P2.D.addVelX += -7.0;
-		EffStart(16, P1.XPos, P1.YPos, 10, -(P1.ySize / 1.5),
-		0.04, 0.25, P1.muki);
-		P1.colorCTime = 3;
-		P1.colorC[0] = -1, P1.colorC[1] = -1, P1.colorC[2] = -1;
-		SEStart(19);
-		P1.advancing = true;
-		P1.aGauge -= (GUARD_MAX / 5);
-		P1.D.nokezori += 4;
-		P1.Senkou[1] = 0, P1.Senkou[2] = 0;
-		}
-		*/
-
-		// 終了へ移行
-		if (P1.time >= P1.D.nokezori){
-			P1.stateno = 11, P1.Lock = 1;
-			P1.time = 0, P1.More = 1;
-			P1.Muteki = ThrowMuteki_Guard, P1.mutekiF = 2;
-			P1.ctrl = 1;
-			P1.NoChangeTime = 0;
-		}
-
-		break;
-	case 55:	// 投げ抜け
-		P1.YVel = 0;
-		P1.Muteki = 1, P1.mutekiF = 0;
-		// 最初にロック！
-		if (P1.time == 0)P1.Lock = 1;
-
-		// ガード続行
-		if (P1.time >= 26){
-			P1.stateno = 0, P1.Lock = 0;
-			P1.time = 0, P1.More = 1;
-			P1.Muteki = 0, P1.mutekiF = 0;
-			P1.ctrl = 1;
-			P1.NoChangeTime = 0;
-		}
-
-		break;
-
-	case 56:	// 空中投げ抜け
-		P1.Muteki = 1, P1.mutekiF = 0;
-		// 最初にロック！
-		if (P1.time == 0)P1.Lock = 1;
-		// 振り向き
-		if (P1.time == 0){
-			if ((P1.XPos < P2.XPos) && (P1.muki == 1))P1.muki = 0;
-			else if ((P1.XPos > P2.XPos) && (P1.muki == 0))P1.muki = 1;
-		}
-		/*
-		// 前ジャンプ の 全体フレーム
-		if (P1.time >= P1.D.nokezori){
-			P1.stateno = 46, P1.Lock = 0;
-			P1.time = 0, P1.More = 1;
-			P1.Muteki = 0, P1.mutekiF = 0;
-		}
-		*/
 		break;
 
 	case 60:	// 空中ダッシュ
 		P1.SFlg = 2, P1.Lock = 0;
 		P1.XVel = 0.4 + (P1.C.runF[0] * 0.70); //速度を足す
+
 		P1.YVel = 0;
+
 		P1.ignoreG = true;
 
 		if (P1.time == 0){
@@ -1094,19 +1368,29 @@ void SameParam()
 				SEStart(30);
 
 				//P1.aGauge -= (GUARD_MAX / 2);
+				
 				P1.Power -= 1000;
 				VelSet(0, 0);
 
-				S.StopTime = 10;
-				S.Anten = 10;
+				S.StopTime = 8;
+				S.Anten = 8;
 				P2.CFlg = 0;
 
+				// 中段エフェクト
 				P1.colorCTime = 10;
 				P1.colorC[0] = 100, P1.colorC[1] = 100, P1.colorC[2] = 255;
 			}
 		}
 
 		if ((P1.time == 1) && (P1.StopTime == 0))PVOStart(P1.PSide, 20, 0);
+
+		/*
+		// ガードゲージ回復
+		if (P1.time >= 1 && P1.time <= 8) {
+			// ガードゲージ回復
+			if (P1.aGauge > 0)P1.aGauge += 16;
+		}
+		*/
 
 		// 攻撃出るまで無敵
 		if (P1.D.counter == 1){
@@ -1441,7 +1725,7 @@ void DamParam()
 				S.quakeX = -2;
 			}
 			else { S.quakeX = 2; }
-			S.quakeTime = 2;
+			S.quakeTime = 3;
 		}
 
 		// 着地
@@ -1509,7 +1793,7 @@ void DamParam()
 				S.quakeX = -2;
 			}
 			else { S.quakeX = 2; }
-			S.quakeTime = 2;
+			S.quakeTime = 3;
 		}
 
 		// 着地
@@ -1573,7 +1857,15 @@ void DamParam()
 		P1.D.boundCount = 2;
 		P1.Muteki = 1, P1.mutekiF = 0;
 
+		// 色変更
+		P1.colorC[0] = 128, P1.colorC[1] = 128, P1.colorC[2] = 128;
+		P1.colorCTime = 1;
+
 		if (P1.time == 0){
+			// 地面バウンド
+			S.quakeTime = 2;
+			S.quakeY = 1;
+
 			P1.XVel = P1.D.bound_xvel;
 			P1.YVel = P1.D.bound_yvel;
 			P1.YPos = D_GROUND - 2;
@@ -1609,6 +1901,10 @@ void DamParam()
 		P1.Muteki = 0, P1.mutekiF = 0;
 
 		if (P1.time == 0){
+			// 地面バウンド
+			S.quakeTime = 2;
+			S.quakeY = 2;
+
 			P1.XVel = P1.D.bound_xvel;
 			P1.YVel = P1.D.bound_yvel;
 			P1.YPos = D_GROUND - 2;
@@ -1654,7 +1950,7 @@ void DamParam()
 			P1.D.yaccel = 0.3;
 			SEStart(8);
 			P1.D.wall++;	// もう壁バンしない
-			EffStartB(16, P1.XPos, P1.YPos, 0, - (P1.ySize / 1.5), 
+			EffStartB(16, P1.XPos, P1.YPos, -20, - (P1.ySize / 1.5), 
 				0.04, 0.25, P1.muki);
 		}
 
@@ -1737,7 +2033,7 @@ void DamParam()
 
 		
 		break;
-	case 1060:	// ロック技喰らい
+	case 1060:	// ロック技喰らい(地上)
 		P1.ctrl = 0, P1.SFlg = 0;
 		P1.ignoreG = true;
 
@@ -1888,10 +2184,10 @@ void DamParam()
 		if (P1.time == 0){
 			// 受け身方向を選ぶ
 			if (P1.keyAtt[4]) {
-				P1.XVel = -2.2;
+				P1.XVel = -2.6;
 			}
 			else if (P1.keyAtt[6]) {
-				P1.XVel = 2.2;
+				P1.XVel = 2.6;
 			}
 			else { P1.XVel = 0; }
 
@@ -1934,16 +2230,16 @@ void DamParam()
 		if (P1.time == 0){
 			// 受け身方向を選ぶ
 			if (P1.keyAtt[4]){
-				P1.XVel = -2.2;
+				P1.XVel = -3.2;
 			}
 			else if (P1.keyAtt[6]){
-				P1.XVel = 2.2;
+				P1.XVel = 3.2;
 			}
 			else { P1.XVel = 0; }
 		}
 
 		// 音を鳴らす
-		if (P1.time == 1)SEStart(5), P1.YVel = -4.8;
+		if (P1.time == 1)SEStart(5), P1.YVel = -5.0;
 		if (P1.time >= 16){
 			// ジャンプ状態
 			P1.stateno = 46, P1.Muteki = 0,

@@ -7,6 +7,10 @@ type = lock;
 trigger1 = time = 0;
 value = 1;
 
+type = lock;
+trigger1 = time = 10;
+value = 0;
+
 //‚µ‚á‚ª‚İU‚èŒü‚«
 [State 6]
 sflg	= 1;

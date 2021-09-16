@@ -22,9 +22,8 @@ static int ScX, ScY;	// 代入するスクロール量
 static float m_PGraphX[2], m_PGraphY[2];	//画像の表示位置
 static int m_HGraphX, m_HGraphY;	// ヘルパー表示位置
 static float plusX[2], plusY[2];
-static int m_Stage[STAGE_MAX];
-static int Stage, sNum;		//ステージ画像
-static int stageBack[STAGE_MAX];	// ステージ背景
+
+static int sNum;		//ステージ番号
 
 static int Load1, P1_Load;
 static int LifeBar[2];		// ライフバー
@@ -123,7 +122,6 @@ void MainDraw()
 		//LoadDivGraph("ob/AddGauge.png", 37, 37, 1, 1, 25, AddGauge);	//アドゲの画像
 		LoadDivGraph("ob/addGauge.png", 70, 70, 1, 1, 13, AddGauge2);	//アドゲの画像
 
-		
 		//LoadDivGraph("ob/LifePoint.png", 230, 230, 1, 1, 18, LifePoint);	//raifuの画像
 		lpGauge = LoadGraph("ob/LifePoint.png");	//
 
@@ -132,11 +130,6 @@ void MainDraw()
 		
 		LoadDivGraph("ob/PPort.png", 2, 1, 2, 62, 62, PPort);
 		LoadDivGraph("ob/number.png", 10, 5, 2, 25, 30, number);
-
-		if (STAGE_MAX >= 1)stageBack[0] = LoadGraph("back/st1_2.png");
-		if (STAGE_MAX >= 2)stageBack[1] = LoadGraph("back/st2_2.png");
-		if (STAGE_MAX >= 3)stageBack[2] = LoadGraph("back/st3_2.png");
-		if (STAGE_MAX >= 4)stageBack[3] = LoadGraph("back/st4_2.png");
 
 		//GetGraphSize(AddGauge, &ag_sizeX, 0);
 		ag_sizeX = 38;
@@ -153,17 +146,46 @@ void MainDraw()
 		ScX = (int)S.ScroolX;
 		ScY = (int)S.ScroolY;
 
+		
 		// ステ背景
+		/*
 		if (stageBack[sNum] != 0){
-			DrawGraph(0 - (int)((float)ScX * 0.25) + S.quakeX, 0 - (int)((float)ScY * 0.25) + S.quakeY,
-				stageBack[sNum], false);
-			
+			//DrawGraph(0 - (int)((float)ScX * 0.25) + S.quakeX, 0 - (int)((float)ScY * 0.25) + S.quakeY,
+				//getStageGraph(sNum, 2), false);
+			//DrawRotaGraph((128 * 3)- (ScX * 0.30) + S.quakeX + (SCREEN_W) / 2,
+				//(((STAGE_HEIGHT - SCREEN_H) * 0.30) / 2) - (ScY * 0.30) + S.quakeY + (SCREEN_H) / 2,
+				//0.7, 0, stageBack[sNum], true);	
 		}
+		*/
+		// ステージサイズを追加した
+		drawStageGraph(sNum + 1, 2,
+			0 - (int)((float)ScX * 0.25) + S.quakeX + (800 / 2),
+			0 - (int)((float)ScY * 0.25) + S.quakeY + (600 / 2), 1.0);
+
+		// ステージ前景2
+		/*
+		if (sNum == 1) {
+			DrawRotaGraph(((SCREEN_W * 0.75) / 2) - (ScX * 0.75) + S.quakeX + (SCREEN_W) / 2,
+				(((STAGE_HEIGHT - SCREEN_H) * 0.75) / 2) - (ScY * 0.75) + S.quakeY + (SCREEN_H) / 2 + 30,
+				1.0, 0, getStageGraph(sNum, 1), true);
+		}
+		*/
+		drawStageGraph(sNum + 1, 1,
+			((SCREEN_W * 0.75) / 2) - (ScX * 0.75) + S.quakeX + (SCREEN_W) / 2, 
+			(((STAGE_HEIGHT - SCREEN_H) * 0.75) / 2) - (ScY * 0.75) + S.quakeY + (SCREEN_H) / 2 + 30,
+			1.0);
+
 		// ステージ描画
 		//DrawGraph(0 - ScX, 0 - ScY + S.quakeY, Stage, true);
+		/*
 		DrawRotaGraph((SCREEN_W / 2) - ScX + S.quakeX + (SCREEN_W) / 2,
 		((STAGE_HEIGHT - SCREEN_H) / 2) - ScY + S.quakeY + (SCREEN_H) / 2,
-			1.0, 0, Stage, true);
+			1.0, 0, getStageGraph(sNum, 0), true);
+		*/
+		drawStageGraph(sNum + 1, 0,
+			(SCREEN_W / 2) - ScX + S.quakeX + (SCREEN_W) / 2,
+			((STAGE_HEIGHT - SCREEN_H) / 2) - ScY + S.quakeY + (SCREEN_H) / 2,
+			1.0);
 
 		//DrawRotaGraph((SCREEN_W / 2) - ScX + (SCREEN_W + S.camSize) / 2, 
 			//((STAGE_HEIGHT - SCREEN_H) / 2) - ScY + S.quakeY + (SCREEN_H + S.camSize) / 2,
@@ -258,22 +280,22 @@ void MainDraw()
 		//DrawFormatString(310, 18, Cr, "%d", S.roundTime / 60);
 		if ((S.roundState == 1) || (S.roundState == 3) || (S.roundState == 2)){
 			if (S.roundTime >= 0){
-				DrawGraph(320 - 25 + 3, 14, number[(S.roundTime / 10) / 60], true);
+				DrawGraph((SCREEN_W / 2) - 25 + 3, 14, number[(S.roundTime / 10) / 60], true);
 				int time = (S.roundTime / 60);
 				while (time > 9){
 					time -= 10;
 				}
-				DrawGraph(320 - 3, 14, number[time], true);
+				DrawGraph((SCREEN_W / 2) - 3, 14, number[time], true);
 			}
 			else if (S.roundTime < 0)
 			{
-				DrawGraph(320 - 25 + 3, 14, number[0], true);
-				DrawGraph(320 - 3, 14, number[0], true);
+				DrawGraph((SCREEN_W / 2) - 25 + 3, 14, number[0], true);
+				DrawGraph((SCREEN_W / 2) - 3, 14, number[0], true);
 			}
 		}
 		else if (S.roundState == 0){
-			DrawGraph(320 - 25 + 3, 14, number[9], true);
-			DrawGraph(320 - 3, 14, number[9], true);
+			DrawGraph((SCREEN_W / 2) - 25 + 3, 14, number[9], true);
+			DrawGraph((SCREEN_W / 2) - 3, 14, number[9], true);
 		}
 
 		//DrawRotaGraph3F(319 - (float)ag_sizeX * ((float)P1.aGauge / 100.0), 6 + (float)drawLPos, 
@@ -320,13 +342,8 @@ void GetStageNum(int num, int stage)
 {
 	//背景の画像ロード
 	{
-		if (STAGE_MAX >= 1)m_Stage[0] = LoadGraph("back/st1.png");
-		if (STAGE_MAX >= 2)m_Stage[1] = LoadGraph("back/st2.png");
-		if (STAGE_MAX >= 3)m_Stage[2] = LoadGraph("back/st3.png");
-		if (STAGE_MAX >= 4)m_Stage[3] = LoadGraph("back/st4.png");
 	}
 
-	Stage = m_Stage[num];
 	//Stage = stage;
 	sNum = num;
 }
@@ -687,7 +704,7 @@ void LifeGraph()
 					if (SLife[i] > P[i].Life){ SLife[i] -= 6; }
 					else if (SLife[i] <= P[i].Life)SLife[i] = P[i].Life;
 				}
-				if (P[i].HFlg){
+				if (P[i].HFlg || (P[i].stateno >= 50 && P[i].stateno < 60)){
 					// 喰らう前のライフと現在のライフを比較
 					allDamage[i] = SLife[i] - P[i].Life;
 				}
@@ -834,14 +851,17 @@ void LifeGraph()
 		//==
 		if (P1.aGauge > 0){
 			SetDrawBright(100, 100, 255);
+			// ガークラ寸前
+			if (P1.aGauge < (int)((float)GUARD_MAX * 0.25))
+				SetDrawBright(255, 255, 100);
 			for (int i = 0; i < (int)(0.70 * (P1.aGauge / 10)); i++){
-				DrawRotaGraph((SCREEN_W / 2) - 38 - i - 1, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
+				DrawRotaGraph((SCREEN_W / 2) - 38 - i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
 			}
 		}
 		else{
 			SetDrawBright(200, 30, 30);
 			for (int i = 0; i < (int)(0.70 * (P1.GRecovery / 10)); i++){
-				DrawRotaGraph((SCREEN_W / 2) - 38 - i - 1, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
+				DrawRotaGraph((SCREEN_W / 2) - 38 - i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
 			}
 			// ×マーク
 			SetDrawBright(255, 255, 255);
@@ -853,14 +873,17 @@ void LifeGraph()
 
 		if (P2.aGauge > 0){
 			SetDrawBright(100, 100, 255);
+			// ガークラ寸前
+			if (P2.aGauge < (int)((float)GUARD_MAX * 0.25))
+				SetDrawBright(255, 255, 100);
 			for (int i = 0; i < (int)(0.70 * (P2.aGauge / 10)); i++){
-				DrawRotaGraph((SCREEN_W / 2) + 38 + i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
+				DrawRotaGraph((SCREEN_W / 2) + 39 + i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
 			}
 		}
 		else{
 			SetDrawBright(200, 30, 30);
 			for (int i = 0; i < (int)(0.70 * (P2.GRecovery / 10)); i++){
-				DrawRotaGraph((SCREEN_W / 2) + 38 + i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
+				DrawRotaGraph((SCREEN_W / 2) + 39 + i, drawLPos + 39 + 3, 1, 0, AddGauge2[69 - i], true);
 			}
 			// ×マーク
 			SetDrawBright(255, 255, 255);

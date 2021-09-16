@@ -47,16 +47,9 @@ void SyuParam(void)
 	//=============
 	// キャラ別事前設定
 	//=============
-
-	if (P1.Var[13] > 0) {
-		// カラー変更
-		if (P1.colorCTime <= 0) {
-			P1.colorC[0] = 255, P1.colorC[1] = 124, P1.colorC[2] = 124;
-			P1.colorCTime = 1;
-		}
-		P1.Var[13]--;
-		P1.Power = 0;
-		P1.A.gaugeHosei = 1;
+	// ガーポ
+	if (P1.stateno != 600) {
+		P1.Var[12] = 0;
 	}
 	// 1P
 	if (P1.StopTime == 0 || P1.time == 0) {
@@ -103,7 +96,15 @@ void SyuParam(void)
 		// チェーン初期化、コマ投げ0.5フラグ
 		if (P1.ctrl) {
 			P1.Var[2] = 0;
+			P1.Var[5] = 0;
+			P1.Var[13] = 0;
 		}
+		// 空ガフラグ
+		else {
+			P1.Var[5]++;
+			if (P1.Var[5] > 600)P1.Var[3] = 600;
+		}
+
 		// 連打スイッチ
 		//if (P1.ctrl)P1.Var[20] = 0;
 
@@ -211,11 +212,14 @@ void SyuParam(void)
 			//速度を足す
 			if (P1.time == 0) {
 				VelSet(P1.C.runF[0], P1.C.runF[1]);
+				EffStart(16, P1.XPos, P1.YPos, -11, -(P1.ySize / 1.1),
+					0.04, 0.25, P1.muki);
 			}
 
 
 			// 終了
 			if ((P1.YPos + P1.YVel * 2 >= GROUND) && (P1.YVel > 0)) {
+				/*
 				P1.stateno = 0;
 				P1.time = 0;
 				P1.More = 1;
@@ -224,6 +228,11 @@ void SyuParam(void)
 				P1.ignoreG = false, VelSet(0, 0);
 				P1.YPos = GROUND;
 				SEStart(6);
+				*/
+				P1.stateno = 31;
+				P1.time = 0;
+				P1.SFlg = 0;
+				P1.ctrl = 0;
 			}
 
 			break;
@@ -231,9 +240,16 @@ void SyuParam(void)
 			P1.SFlg = 0, P1.ctrl = 0;
 
 			// SEを鳴らす
-			if (P1.time == 0)SEStart(6);
+			if (P1.time == 1)SEStart(6);
 			VelSet(0, 0);
 			P1.YPos = GROUND;
+
+			// 着地エフェクト
+			if (P1.time == 1) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+			}
 
 			// 終了
 			if (P1.time >= ANIMELEM) {
@@ -281,6 +297,13 @@ void SyuParam(void)
 			if (P1.time == 1)SEStart(6);
 			VelSet(0, 0);
 			P1.YPos = GROUND;
+
+			// 着地エフェクト
+			if (P1.time == 1) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+			}
 
 			// 終了
 			if (P1.time >= ANIMELEM + 1) {
@@ -409,7 +432,7 @@ void SyuParam(void)
 					P1.stateno = 43;
 					break;
 				}
-				P1.YVel = P1.C.jumpA + 0.8;
+				P1.YVel = P1.C.jumpA;
 			}
 			break;	// ジャンプ準備終了
 
@@ -417,8 +440,8 @@ void SyuParam(void)
 		case 90:	// 開幕
 			P1.SFlg = 0, P1.ctrl = 0;
 
-			if (P1.time == 15 - 1)SEStart(9);
-
+			if (P1.time == 9-2)SEStart(21);
+			if (P1.time == 35-2)SEStart(21);
 			// 全体フレームを超えたら立ちへ
 			if (P1.time >= P1.animElem[P1.stateno]) {
 				P1.time = 0;
@@ -493,6 +516,8 @@ void SyuParam(void)
 				P1.GuardF = 1;
 				// [ヒット時のアニメ]
 				P1.HitAnim = 1010;
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				// [ヒットサウンド]
 				SESet(10, 16);
 
@@ -503,9 +528,9 @@ void SyuParam(void)
 				DamReset();
 			}
 			// ヒット時チェーン
-			if ((P1.CFlg) && (P1.time >= 1)) {
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 				// [ジャンプキャンセル]
-				if (P1.keyAtt[8]) {		// 先行入力効かせてみる
+				if (P1.K_Senkou[8]) {		// 先行入力効かせてみる
 					P1.stateno = 40, P1.More = 1,
 						P1.time = 0, P1.A.damage = 0;
 				}
@@ -546,7 +571,7 @@ void SyuParam(void)
 					}
 				}
 				// 先行入力
-				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 5)) {
+				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 5) && (P1.A.ncTime > NC_TIME - 16)) {
 					if (key(2)) {
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
@@ -607,7 +632,10 @@ void SyuParam(void)
 
 				// [ノックバック]
 				HitVel(-3.6, 0, -1.4, -5);
-				P1.GuardF = 1;
+				// [ガード属性]
+				if (P1.Var[5] >= 13)P1.GuardF = 1;	// 空ガ可
+				else { P1.GuardF = 4; }	// 空ガ不可
+
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1000;	// 上段喰らい
@@ -619,7 +647,7 @@ void SyuParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 1)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 					// [ジャンプキャンセル]
 					if (P1.K_Senkou[8]) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -684,14 +712,15 @@ void SyuParam(void)
 			if ((P1.time >= 1) && (P1.MoveHit > 0)) {
 
 				// [ダメージ]
-				Damage(90, 0);
+				Damage(85, 0);
 
 				// [ゲージ] 
-				Power(108);
+				Power(100);
 				HitTime(8, 18, 22, 16);
 
 				// [ノックバック]
-				HitVel(-2.6, 0, -1.7, -4.4);
+				HitVel(-3.2, 0, -2.0, -4.4);
+				GuardVel(-3.0, -2.0);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -704,7 +733,7 @@ void SyuParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 1)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 4)) {
 					// [ジャンプキャンセル]
 					if ((P1.K_Senkou[8]) && (P2.HFlg == 1)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -773,23 +802,23 @@ void SyuParam(void)
 			//else{ P1.MoveHit = 0; }
 
 			if (P1.time >= 5) {
-				VelAdd(0, 0.38);
+				VelAdd(0, 0.36);
 			}
 
 			//速度を足す
 			if (P1.time == 5) {
-				VelSet(1.2, -5.0);
+				VelSet(1.2, -5.2);
 			}
 
 			// ダメージセット
 			if (P1.time >= 1) {
 
 				// [ダメージ]
-				Damage(90, 20);
+				Damage(90, 10);
 				// [ゲージ] 
-				Power(155);
+				Power(140);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 19, 22, 16);
+				HitTime(8, 19, 22, 15);
 				// [ノックバック]
 				HitVel(-3.8, 0, -2.8, -4);
 				// [ガード属性]
@@ -825,8 +854,14 @@ void SyuParam(void)
 		case 216:	// 着地硬直
 			P1.SFlg = 0, P1.ctrl = 0;
 
+			// 着地エフェクト
+			if (P1.time == 2) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+			}
 			// SEを鳴らす
-			if (P1.time == 1)SEStart(6);
+			if (P1.time == 2)SEStart(6);
 			VelSet(0, 0);
 			P1.YPos = GROUND;
 
@@ -880,15 +915,15 @@ void SyuParam(void)
 			if (P1.time >= 1) {
 
 				// [ダメージ]
-				Damage(110, 10);
+				Damage(110, 0);
 				// [ゲージ] 
-				Power(150);
+				Power(140);
 				// [ヒットストップ・のけぞり時間]
 				HitTime(10, 24, 25, 22);
 				//HitTime(8, 22, 24, 18);
 				// [ノックバック]
 				HitVel(-4.2, 0, -2.8, -2.8);
-				GuardVel(-6.2, -4.0);
+				GuardVel(-4.4, -3.0);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -908,7 +943,7 @@ void SyuParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 1)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 					// [必殺技・ゲージ技]
 					SCancel();
 				}
@@ -961,14 +996,14 @@ void SyuParam(void)
 			if (P1.time >= 1) {
 
 				// [ダメージ]
-				Damage(110, 10);
+				Damage(110, 0);
 				// [ゲージ] 
-				Power(150);
+				Power(140);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(10, 22, 22, 20);
+				HitTime(10, 22, 22, 16);
 				// [ノックバック]
 				HitVel(-4.2, 0, -2.8, -2.8);
-				GuardVel(-2.8, -1.2);
+				GuardVel(-3.8, -1.6);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -988,7 +1023,7 @@ void SyuParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 1)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 					// [必殺技・ゲージ技]
 					HCancel();
 				}
@@ -1057,6 +1092,8 @@ void SyuParam(void)
 				P1.GuardF = 1;
 
 				P1.HitAnim = 1010;	// 下段喰らい
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				P1.HitSE = 10;
 			}
 			else {
@@ -1065,7 +1102,7 @@ void SyuParam(void)
 
 
 			// キャンセル
-			if ((P1.CFlg) && (P1.time >= 1)) {
+			if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 
 				if (P1.Senkou[3] > 0) {
 					// 足払い
@@ -1102,7 +1139,7 @@ void SyuParam(void)
 							P1.time = 0, P1.A.damage = 0;
 					}
 				}
-				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 5)) {		// 先行入力効かせてみる
+				else if ((P1.Senkou[1] > 0) && (P1.Var[2] < 5) && (P1.A.ncTime > NC_TIME - 16)) {		// 先行入力効かせてみる
 					if (key(2)) {
 						P1.stateno = 300, P1.More = 1,
 							P1.time = 0, P1.A.damage = 0;
@@ -1166,8 +1203,9 @@ void SyuParam(void)
 				// [ゲージ] 
 				Power(95);
 
-				HitTime(8, 18, 20, 14);
-
+				// 8, 18 20 14
+				//HitTime(8, 16, 18, 12);
+				HitTime(8, 16, 18, 12);
 				// [ノックバック]
 				HitVel(-4.0, 0, -1.8, -4.6);
 				P1.GuardF = 3;	// 下段
@@ -1182,7 +1220,7 @@ void SyuParam(void)
 			// キャンセル
 			// 応急処置
 			if (P1.StopTime == 0) {
-				if ((P1.CFlg) && (P1.time >= 5)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > NC_TIME - 9)) {	// 前は4だった
 					// [通常技]
 					if (P1.Senkou[3] > 0) {		// 先行入力効かせてみる
 						// 足払い
@@ -1262,7 +1300,7 @@ void SyuParam(void)
 			// 応急処置
 			if (P1.StopTime == 0) {
 				// キャンセル
-				if ((P1.CFlg) && (P1.time >= 10)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 					// [必殺技・ゲージ技]
 					SCancel();
 				}
@@ -1300,13 +1338,15 @@ void SyuParam(void)
 				// [ダメージ]
 				Damage(110, 0);
 				// [ゲージ] 
-				Power(132);
+				Power(140);
 				HitTime(8, 30, 30, 18);
 				// [ノックバック]
 				HitVel(-1.2, -6.5, -1.5, -4.6);
 				GuardVel(-3.8, -1.5);
 
-				P1.GuardF = 1;
+				// [ガード属性]
+				if (P1.Var[5] >= 20)P1.GuardF = 1;	// 空ガ可
+				else { P1.GuardF = 4; }	// 空ガ不可
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitAnim = 1030;	// 空中喰らい(確定ダウン)
@@ -1316,7 +1356,7 @@ void SyuParam(void)
 			// 応急処置
 			if (P1.StopTime == 0) {
 				// キャンセル
-				if ((P1.CFlg) && (P1.time >= 10)) {
+				if ((P1.CFlg) && (P1.time >= 1) && (P1.A.ncTime > 0)) {
 					// [ジャンプキャンセル]
 					if ((P1.K_Senkou[8]) && (P2.stateno >= 1000)) {		// 先行入力効かせてみる
 						P1.stateno = 40, P1.More = 1,
@@ -1366,6 +1406,8 @@ void SyuParam(void)
 				if (P1.YVel >= 0.0)P1.GuardF = 2;
 				else { P1.GuardF = 1; }
 				P1.HitAnim = 1000;
+				// [エフェクト]
+				HitEff(1, 0.4, 0.4);
 				P1.HitSE = 10;
 			}
 			else {
@@ -1486,11 +1528,14 @@ void SyuParam(void)
 		case 420:
 			P1.ctrl = 0, P1.SFlg = 2;
 			P1.ignoreG = true;
+			P1.D.counter = 2;
+			P1.D.fatal = true;
+
 			// SE
 			if (P1.time == 1)SEStart(3);
 
-			if (P1.time == 0)VelSet(0, -0.2);
-			if (P1.time == 11)VelSet(0, 7.6);
+			if (P1.time == 0)VelSet(0, -0.3);
+			if (P1.time == 11)VelSet(0, 7.4);
 
 			// ヒット数セット
 			if (P1.time == 1)P1.MoveHit = 1;	// １回
@@ -1506,7 +1551,7 @@ void SyuParam(void)
 				HitTime(8, 68, 60, 14);
 
 				// [ノックバック]
-				HitVel(-1.0, -1.8, -1.2, 6.2);
+				HitVel(-1.0, -1.8, -1.2, 6.0);
 				P1.GuardF = 1;
 				// [喰らい中の浮き]
 				P1.fallF = 1;
@@ -1535,8 +1580,15 @@ void SyuParam(void)
 		case 421:
 			P1.SFlg = 0, P1.ctrl = 0;
 			P1.ignoreG = false;
-			P1.D.counter = 0;
+			P1.D.counter = 1;
+			P1.D.fatal = true;
 
+			// 着地エフェクト
+			if (P1.time == 1) {
+				//エフェクト
+				EffStartB(16, P1.XPos, P1.YPos, 0, 0,
+					0.16, 0.02, P1.muki);
+			}
 			// SEを鳴らす
 			if (P1.time == 1)SEStart(6);
 
@@ -1678,7 +1730,8 @@ void SyuParam(void)
 			if (P1.time == 1)SEStart(2);
 			// ヒット数セット、
 			// ガード時は無効
-			if ((P1.time == 4) && (P2.stateno <= 999) && (P1.XPos - P2.XPos < 160 && P2.XPos - P1.XPos < 160))	// 喰らい・空中状態じゃない
+			if ((P1.time >= 5 && P1.time <= 7) && (P2.stateno <= 999) &&
+				(P1.XPos - P2.XPos < 120 && P2.XPos - P1.XPos < 120))	// 喰らい・空中状態じゃない
 			{
 				P1.MoveHit = 1;	// １回
 				// どっちも投げタイミングが同じなら、2P負ける
@@ -1687,7 +1740,7 @@ void SyuParam(void)
 			}
 
 			// ダメージセット、持続 1フレ
-			if (P1.time == 4) {
+			if (P1.time == 5) {
 
 				// [ダメージ]
 				Damage(0, 0);
@@ -1800,6 +1853,7 @@ void SyuParam(void)
 				// [喰らい中の浮き]
 				P1.fallF = 0;
 				P1.HitSE = 12;
+				P1.A.kill = 0;
 			}
 			// ダメージセット、持続 1フレ
 			else if (P1.time >= 43) {
@@ -1819,6 +1873,7 @@ void SyuParam(void)
 				// [喰らい中の浮き]
 				P1.fallF = 1;
 				P1.HitSE = 12;
+				P1.A.kill = 1;
 			}
 			else { DamReset(); }
 
@@ -1898,6 +1953,7 @@ void SyuParam(void)
 				P1.time = 0, P2.time = 0;
 				P1.More = 1;
 				P1.A.damage = 0;
+
 				// 投げの向きを変更
 				if (P1.A.throwTurn) {
 					if (P1.muki == 0) {
@@ -1908,6 +1964,7 @@ void SyuParam(void)
 					}
 				}
 			}
+
 			break;
 
 			//********************
@@ -1986,9 +2043,9 @@ void SyuParam(void)
 				ExAtt(P1.PSide, 0, 100, 90, 20, -100);
 
 				// [ダメージ]
-				Damage(150, 10);
+				Damage(180, 0);
 				// [ゲージ] 
-				Power(270);
+				Power(300);
 
 				HitTime(6, 100, 100, 0);
 				// [ノックバック]
@@ -2027,6 +2084,15 @@ void SyuParam(void)
 			P1.ctrl = 0, P1.SFlg = 0;
 			// SEを鳴らす、移動
 			if (P1.time == 0) {
+				/*
+				if (P1.Var[13] > 0) {
+					SEStart(31);
+					P1.Power -= 500;
+					P1.A.gaugeHosei = 1;
+				}
+				else { SEStart(3); }
+				*/
+
 				SEStart(3);
 				P1.XVel = 0;
 			}
@@ -2037,28 +2103,50 @@ void SyuParam(void)
 				P1.Var[11] = 0;
 			}
 
-			// ガーポの色
-			if ((P1.time >= 1) && (P1.time < 50)) {
-				P1.colorCTime = 2;
-				P1.colorC[0] = 160, P1.colorC[1] = 160, P1.colorC[2] = 255;
+			// 火力アップ
+			if (P1.time >= 15) {
+				// ガー不になるまで威力アップ
+				if (P1.Var[11] < 50 && P1.time < 50) {
+					P1.Var[11]++;
+					EasyEffDraw(15, 0, P1.XPos, P1.YPos - P1.GraphH / 2,
+						0, 0,
+						0.6 - (P1.Var[11] * 0.015), 0.6 - (P1.Var[11] * 0.015), P1.muki);
+				}
+				
 			}
 
+			// EX版
+			/*			
+			if ((P1.Var[13] > 0) && (P1.time == 0)) {
+				P1.colorCTime = 14;
+				P1.colorC[0] = 255, P1.colorC[1] = 255, P1.colorC[2] = 0;
+			}
+			*/
+
+			// ガーポの色
+			if ((P1.time >= 1) && (P1.time < 50) && (P1.Var[12] == 0) && (P1.Var[13] == 0)) {
+				P1.colorCTime = 2;
+				P1.colorC[0] = 160, P1.colorC[1] = 160, P1.colorC[2] = 255;
+				
+			}
+
+			// 最大タメ
 			if(P1.time == 50){
 				SEStart(31);
 				// 中段エフェクト
 				EffStartB(17, P1.XPos, P1.YPos - (P1.GraphH / 2) * P1.GSize, 0, 0, 0.25, 0.25, P1.PSide);
-				P1.Var[11] = 1;	// タメ
+				P1.Var[11] = 50;	// タメ
 			}
 
 			//
-			if ((P1.K_Senkou[6] == 1) && (P1.time >= 10) && (P1.time < 50)) {
+			if ((P1.K_Senkou[6] > 0) && (P1.time >= 13) && (P1.time < 50)) {
 				P1.stateno = 30;
 				P1.time = 0;
 				P1.SFlg = 0;
 				P1.More = 1;
 			}
 			// バクステ
-			if ((P1.K_Senkou[4] == 1) && (P1.time >= 10) && (P1.time < 50)) {
+			if ((P1.K_Senkou[4] > 0) && (P1.time >= 13) && (P1.time < 50)) {
 				P1.stateno = 35;
 				P1.time = 0;
 				P1.SFlg = 0;
@@ -2092,13 +2180,14 @@ void SyuParam(void)
 
 			// ダメージセット
 			if (P1.time >= 1) {
-
+				int plus = P1.Var[11];
 				// [ダメージ]
-				Damage(110, 0);
+				Damage(110 + (plus / 2), 0);
 				// [ゲージ] 
-				Power(135);
+				Power(135 + plus);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(8, 22, 24, 18);
+				
+				HitTime(8 + (plus / 10), 22, 24, 18);
 				// [ノックバック]
 				HitVel(-2.4, -3.4, -2.6, -2.6);
 				P1.HitAnim = 1030;	// 空中喰らい
@@ -2114,18 +2203,22 @@ void SyuParam(void)
 				P1.A.boundLevel = 0;
 
 				// 最大タメ
-				if (P1.Var[11] == 1) {
+				if (P1.Var[11] == 50) {
 					Damage(170, 100);
 					P1.A.hosei_K = 0.6;
 					Power(380);
-					HitTime(14, 38, 38, 18);
+					HitTime(18, 32, 32, 18);
 					HitVel(-1.4, -4.0, -1.6, -3.2);
 					// エフェクト
-					HitEff(3, 0.8, 0.8);
+					HitEff(3, 1.6, 1.0);
 					P1.HitSE = 14;
 					P1.GuardF = 0;	// ガー不
 					P1.fallF = 1;
 					P1.A.wallLevel = 0;
+
+					// 振動
+					P1.A.quakeTime = 4;
+					P1.A.quakeY = 4;
 				}
 			}
 			else {
@@ -2151,6 +2244,7 @@ void SyuParam(void)
 			//********************
 		case 610:
 			P1.ctrl = 0, P1.SFlg = 0;
+			P1.D.counter = 2;
 
 			if (P1.time == 0)VelSet(0, 0);
 
@@ -2166,11 +2260,14 @@ void SyuParam(void)
 			//********************
 		case 611:
 			P1.ctrl = 0, P1.SFlg = 0;
+			P1.D.counter = 2;
 
 			if (P1.time == 0)VelSet(0, 0);
 
 			// SE
 			if (P1.time == 1)SEStart(2);
+
+
 
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
@@ -2190,19 +2287,20 @@ void SyuParam(void)
 			}
 
 			// ヒット数セット
-			if (P1.time == 1 || P1.time == 20) {
+			if ((P1.time == 1) || (P1.time == 26)) {
 				P1.MoveHit = 1;	// １回
 			}
 
-			if (P1.time == 0) {
-				DamReset();
+			// 振り回す音
+			if (P1.time == 11) {
+				SEStart(27);
 			}
 
 			// ダメージセット
 			if (P1.time == 1) {
 
 				// [ダメージ]
-				Damage(80, 0);
+				Damage(0, 80);
 				// [ゲージ] 
 				Power(110);
 				// [ヒットストップ・のけぞり時間]
@@ -2218,8 +2316,9 @@ void SyuParam(void)
 				HitEff(3, 0.6, 0.6);
 				P1.HitSE = 13;
 			}
+
 			// ダメージセット
-			else if (P1.time == 20) {
+			if (P1.time == 26) {
 
 				// [ダメージ]
 				Damage(0, 110);
@@ -2242,15 +2341,18 @@ void SyuParam(void)
 				HitEff(3, 0.8, 0.8);
 			}
 
+			if(P1.time == 0){
+				DamReset();
+			}
+
 			// 当たったら変更
 			if ((P1.CFlg) && (P1.time < 5) && (P2.stateno == 1060) && (P2.SFlg == 0)) {
 				P2.YPos = GROUND;
 
 				P2.XVel = 0;
 
-
-				if (P1.XPos <= GAMENHAJI)P1.XPos = GAMENHAJI + 100;
-				if (P1.XPos >= STAGE_WIDTH - GAMENHAJI)P1.XPos = STAGE_WIDTH - GAMENHAJI - 100;
+				if (P1.XPos <= GAMENHAJI)P1.XPos = GAMENHAJI + 2;
+				if (P1.XPos >= STAGE_WIDTH - GAMENHAJI)P1.XPos = STAGE_WIDTH - GAMENHAJI - 2;
 				if (P1.muki == 0) {
 					P2.XPos = P1.XPos + 100;
 				}
@@ -2258,19 +2360,20 @@ void SyuParam(void)
 					P2.XPos = P1.XPos - 100;
 				}
 			}
-
+			
 			// キャンセル
 			if (P1.StopTime == 0) {
 				// ヒット時キャンセル
-				if ((P1.CFlg) && (P1.time >= 20) && (P1.scTime > 0)) {
+				if ((P1.CFlg) && (P1.time >= 29) && (P1.scTime > 0)) {
 					// [ゲージ技]
 					HCancel();
 				}
 			}
+			
 
 			// 全体フレームを超えたらリセット
 			if (P1.time >= ANIMELEM)P1.time = 0, P1.stateno = 0, P1.ctrl = 1;
-
+			
 			break;
 
 			//********************
@@ -2304,10 +2407,10 @@ void SyuParam(void)
 				// [ゲージ] 
 				Power(150);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(10, 27, 27, 23);
+				HitTime(10, 26, 26, 19);
 				// [ノックバック]
 				HitVel(-4.0, 0, -2.0, 3.0);
-				GuardVel(-6.2, -4.0);
+				//GuardVel(-6.2, -4.0);
 				// [ガード属性]
 				P1.GuardF = 1;
 
@@ -2367,14 +2470,14 @@ void SyuParam(void)
 			if (P1.time >= 1) {
 
 				// [ダメージ]
-				Damage(110, 10);
+				Damage(120, 10);
 				// [ゲージ] 
-				Power(150);
+				Power(165);
 				// [ヒットストップ・のけぞり時間]
-				HitTime(10, 27, 27, 23);
+				HitTime(10, 26, 26, 20);
 				// [ノックバック]
 				HitVel(-4.0, 0, -2.0, 3.1);
-				GuardVel(-6.2, -4.0);
+				//GuardVel(-6.2, -4.0);
 				// [ガード属性]
 				P1.GuardF = 2;
 
@@ -2498,7 +2601,7 @@ void SyuParam(void)
 		case 800:
 			P1.ctrl = 0, P1.SFlg = 0;
 			P1.A.gaugeHosei = true;
-			P1.D.counter = true;
+			P1.D.counter = 2;
 			P1.D.fatal = true;
 
 			// ゲージ消費
@@ -2515,13 +2618,13 @@ void SyuParam(void)
 			if (P1.time <= 9)P1.Muteki = 1, P1.mutekiF = 0;
 			else { P1.Muteki = 0; }
 
-			if (AnimElem(20)) {
+			if (AnimElem(18)) {
 				SEStart(22);
 			}
 
 			// 3456 9
 			// 前進
-			if (AnimElem(27)) {
+			if (AnimElem(25)) {
 				P1.XVel = 10.0;
 			}
 
@@ -2539,13 +2642,15 @@ void SyuParam(void)
 			if ((P1.time >= 1) && (P1.time < 24)) {
 
 				// [ダメージ]
-				Damage(60, 4);
+				Damage(70, 5);
 				// [ゲージ] 
-				Power(0, 70);
+				Power(0, 80);
 				HitTime(0, 60, 60, 22);
 				// [ノックバック]
 				HitVel(-3.2, 0, -1.4, -2.0);
 				GuardVel(-0.1, -0.1);
+				P1.A.yaccel = 0.10;
+
 				// 一発目
 				if (P1.time < 14) {
 					if (P2.SFlg != 2) {
@@ -2573,12 +2678,13 @@ void SyuParam(void)
 				// [ダメージ]
 				Damage(35, 40);
 				// [ゲージ] 
-				Power(0, 100);
+				Power(0, 130);
 
 				HitTime(10, 100, 100, 2);
 				// [ノックバック]
 				HitVel(-5.0, -3.6, -4.8, -3.2);
 				GuardVel(-0.1, -0.1);
+				P1.A.yaccel = GRAVITY;
 
 				P1.HitAnim = 1030;	// 空中喰らい
 				// [喰らい中の浮き]
@@ -2623,6 +2729,8 @@ void SyuParam(void)
 			//********************
 		case 810:
 			P1.ctrl = 0, P1.SFlg = 0;
+			P1.D.counter = 2;
+			P1.D.fatal = true;
 
 			if (P1.time == 0) {
 				VelSet(0, 0);
@@ -2646,8 +2754,8 @@ void SyuParam(void)
 
 			// ゲージ消費
 			if (P1.time == 0) {
-				S.StopTime = 10;
-				S.Anten = 25;
+				S.StopTime = 15;
+				S.Anten = 20;
 				SEStart(25);
 				// 中段エフェクト
 				EffStartB(17, P1.XPos, P1.YPos - (P1.GraphH / 2) * P1.GSize, 0, 0, 0.25, 0.25, P1.PSide);
@@ -2686,7 +2794,7 @@ void SyuParam(void)
 				// [ゲージ] 
 				Power(0, 420);
 
-				HitTime(16, 100, 100, 10);
+				HitTime(20, 100, 100, 10);
 				// [ノックバック]
 				HitVel(0.0, -5.6, 0.0, -5.2);
 
@@ -2765,6 +2873,8 @@ void SyuParam(void)
 				// [ガード属性]
 				P1.GuardF = 1;
 				P1.HitSE = 13;
+
+				HitEff(3, 0.6, 0.6);
 
 				P1.A.kill = 0;
 			}
@@ -2939,7 +3049,7 @@ void SyuParam(void)
 				Power(0, 80);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(5, 68, 60, 14);
+				HitTime(6, 68, 60, 14);
 
 				// [ノックバック]
 				HitVel(0.0, -1.8, 0.0, 6.2);
@@ -2952,7 +3062,7 @@ void SyuParam(void)
 				P1.HitAnim = 1030;
 				// エフェクト
 				HitEff(1, 0.6, 0.6);
-				P1.HitSE = 12;
+				P1.HitSE = 14;
 				P1.A.kill = 0;
 				// 地震エフェクト
 				P1.A.quakeTime = 2;
@@ -2966,7 +3076,7 @@ void SyuParam(void)
 				Power(0, 120);
 
 				// [ヒットストップ・のけぞり時間]
-				HitTime(12, 68, 60, 14);
+				HitTime(14, 68, 60, 14);
 
 				// [ノックバック]
 				HitVel(-1.0, -1.8, -1.2, 6.2);
@@ -2982,7 +3092,7 @@ void SyuParam(void)
 				P1.A.kill = 1;
 				// 地震エフェクト
 				P1.A.quakeTime = 2;
-				P1.A.quakeY = 2;
+				P1.A.quakeY = 4;
 			}
 			else {
 				DamReset();
@@ -3126,10 +3236,11 @@ void SCancel()
 {
 	// Ｄ派生技
 	if ((P1.Senkou[4] > 0) && (P1.stateno != 600) && (P1.Var[14] == 0)
-		&& (P1.SFlg != 2)) { //&& (P1.D.armor == 0 || (P1.stateno == 225 || P1.stateno == 320))){		// 先行入力効かせてみる
+		&& (P1.SFlg != 2)) { 	// 先行入力効かせてみる
 		{
 			P1.stateno = 600, P1.More = 1,
 				P1.time = 0, P1.A.damage = 0;
+			P1.Var[13]++;	// キャンセル
 		}
 	}
 	// 236 + AorB
@@ -3163,6 +3274,8 @@ void SCancel()
 // 必殺技キャンセル
 void HCancel()
 {
+	int nowState = P1.stateno;
+
 	//  236+C		[二段切り]
 	if ((P1.Senkou[3] > 0) && (P1.cmd[1])
 		&& (P1.Power >= 1000)) {
@@ -3189,8 +3302,11 @@ void HCancel()
 			P1.time = 0, P1.A.damage = 0;
 	}
 
-	//最後に判定を消す
-	DamReset();
+	// ステートが変更されたら
+	if (nowState != P1.stateno) {
+		//最後に判定を消す
+		DamReset();
+	}
 
 }
 

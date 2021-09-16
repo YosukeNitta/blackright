@@ -2,7 +2,6 @@
 
 #include "SData.h"
 
-
 // public で前のクラスのものも使える
 class Select : public MData {
 

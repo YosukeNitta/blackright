@@ -46,9 +46,6 @@
     <Filter Include="プリコンパイル済みヘッダ">
       <UniqueIdentifier>{e7e9af40-51f5-4c4b-a933-313ffab97357}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\ネットワーク関連">
-      <UniqueIdentifier>{f0968cf9-662a-4de3-84e6-5919050eb143}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\システム関連\キャラクター別">
       <UniqueIdentifier>{c848d35e-0208-4b8c-8526-24063b02291a}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,12 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\モード設定">
       <UniqueIdentifier>{214c7c3f-ad57-4060-8edb-b0a1534dd12a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ネットワーク関連">
+      <UniqueIdentifier>{e57e6506-a0cf-44ff-a937-8cad17e3f4c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ネットワーク関連">
+      <UniqueIdentifier>{f0968cf9-662a-4de3-84e6-5919050eb143}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,9 +183,6 @@
     <ClCompile Include="Replay.cpp">
       <Filter>ソース ファイル\モード選択</Filter>
     </ClCompile>
-    <ClCompile Include="Connect.cpp">
-      <Filter>ソース ファイル\システム関連</Filter>
-    </ClCompile>
     <ClCompile Include="Arcade.cpp">
       <Filter>ソース ファイル\モード選択</Filter>
     </ClCompile>
@@ -209,6 +209,15 @@
     </ClCompile>
     <ClCompile Include="Result.cpp">
       <Filter>ソース ファイル\モード選択</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>ソース ファイル\ネットワーク関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>ソース ファイル\ネットワーク関連</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>ソース ファイル\描画関連</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +260,6 @@
     <ClInclude Include="pch.h">
       <Filter>プリコンパイル済みヘッダ</Filter>
     </ClInclude>
-    <ClInclude Include="NetData.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="WindowInfo.h">
       <Filter>ヘッダー ファイル\システム設定</Filter>
     </ClInclude>
@@ -289,6 +295,15 @@
     </ClInclude>
     <ClInclude Include="Network.h">
       <Filter>ヘッダー ファイル\モード設定</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>ヘッダー ファイル\モード設定</Filter>
+    </ClInclude>
+    <ClInclude Include="NetData.h">
+      <Filter>ヘッダー ファイル\ネットワーク関連</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>ヘッダー ファイル\ネットワーク関連</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -289,6 +289,7 @@ void HelperReset(int i)
 
 	H1[i].A.damage = 0;
 	H1[i].A.hosyo = 0;
+	H1[i].A.kezuri = 0;
 	H1[i].HGetPow = 0, H1[i].HGivePow = 0;
 	H1[i].HGuardF = 1;
 	H1[i].HMoveHit = 0;
@@ -314,6 +315,7 @@ void DamReset()
 	
 	Damage(0, 0);
 	Power(0, 0);
+	P1.A.kezuri = 0;
 	P1.attF = 1;
 	P1.fallF = 1;
 	P1.MoveHit = 0;
@@ -344,9 +346,23 @@ void DamReset()
 
 // “Š‚°”²‚¯
 void ThrowReject(){
+	// “¯‰Ÿ‚µ‚Ì’l‚ª‹ß‚¢‚©
+	boolean nearButton = false;
+	int testNum1, testNum2;
+	testNum1 = P2.Senkou[2] - P2.Senkou[1];
+	testNum2 = P2.Senkou[1] - P2.Senkou[2];
+
+	// “¯‰Ÿ‚µ‚ª1ˆÈ‰º-1ˆÈã
+	if ((testNum1 <= 1) && (testNum1 >= -1)) {
+		if ((testNum2 <= 1) && (testNum2 >= -1)) {
+			nearButton = true;
+		}
+	}
+
+	// ’nã
 	if (P1.SFlg != 2){
 		if ((P2.Senkou[1] > 0 && P2.Senkou[2] > 0 && P2.Senkou[3] == 0)
-			&& (P1.time < TR_TIME) && (P2.rejectF)){
+			&& (P2.AnimTime < TR_TIME) && (P2.rejectF) && nearButton){
 			P1.stateno = 55, P2.stateno = 55;
 			P1.time = 0, P2.time = 0;
 			P1.StopTime = 0, P2.StopTime = 0;
@@ -369,10 +385,11 @@ void ThrowReject(){
 				0.4, 0.4, false);
 		}
 	}
+	// ‹ó’†
 	else if (P1.SFlg == 2){
 		// “Š‚°”²‚¯
 		if ((P2.Senkou[1] > 0 && P2.Senkou[2] > 0 && P2.Senkou[3] == 0)
-			&& (P1.time < TR_TIME) && (P2.rejectF)){
+			&& (P2.AnimTime < TR_TIME) && (P2.rejectF) && nearButton){
 			P1.stateno = 56, P2.stateno = 56;
 			P1.time = 0, P2.time = 0;
 
@@ -413,6 +430,7 @@ void DelayThrow(int num)
 
 	bool te = false;
 
+	// A
 	if (num == 1) {
 		if (((P1.button[1] == 2) && (P1.button[2] == 1)) 
 			//&& (P2.HFlg == 0)
@@ -420,6 +438,7 @@ void DelayThrow(int num)
 			te = true;
 		}
 	}
+	// B
 	else if (num == 2) {
 		if (((P1.button[1] == 1) && (P1.button[2] == 2)) 
 			) {
@@ -427,15 +446,21 @@ void DelayThrow(int num)
 		}
 	}
 
-	// “Š‚°
+	// “Š‚°¬—§
 	if (te == true) {
 		// ‹ó’†‹Z
 		if ((P1.stateno >= 400) && (P1.stateno < 500)) {
 			P1.stateno = 510;
+			P1.More = 1,
+			P1.time = 1, P1.A.damage = 0;
 		}
-		else { P1.stateno = 500; }
-		P1.More = 1,
-		P1.time = 1, P1.A.damage = 0;
+		// ’nã‚Åã“ü—Í‚È‚¢‚Æ‚«
+		else if (P1.keyAtt[8] == 0) {
+			P1.stateno = 500; 
+			P1.More = 1,
+			P1.time = 1, P1.A.damage = 0;
+		}
+		
 	}
 }
 

@@ -23,6 +23,7 @@ bool Fps::Update() {
 
 void Fps::Draw(int drawX, int drawY) {
 	DrawFormatString(drawX, drawY, GetColor(255, 255, 255), "FPS %.1f", mFps);
+	
 }
 
 void Fps::Wait() {

@@ -19,6 +19,7 @@ ModeManager& ModeManager::Instance() {
 	return *instance;
 }
 
+// ƒ‚[ƒh‚ğ’Ç‰Á
 void ModeManager::AddMode(std::string modeName, ModeData* scene)
 {
 	if (_modes.count(modeName))

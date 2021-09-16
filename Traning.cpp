@@ -7,7 +7,6 @@
 //インクルード部--------------------------------------------
 #include "pch.h"
 #include "MainSystem.h"
-
 //デファイン部----------------------------------------------
 
 // #include "Define.h" にて、関数をセット
@@ -128,6 +127,17 @@ void SetTraning()
 			P1.D.counter = 1;
 		}
 	}
+	// ランダム
+	else if (S.T_Counter == 2) {
+		if (random(500)) {
+			if (P1.HitCount == 0 && P2.stateno < 1000) {
+				P2.D.counter = 1;
+			}
+			if (P2.HitCount == 0 && P1.stateno < 1000) {
+				P1.D.counter = 1;
+			}
+		}
+	}
 
 	//================================================
 	// 状態	（立屈空・プレイヤー・AI）
@@ -187,6 +197,22 @@ void SetTraning()
 				else { P2_Auto(106); }
 			}
 		}
+		// ランダム
+		else if (S.TSwitch[3] == 3) {
+			if ((P2.stateno >= 1030) && (P2.stateno < 1080)) {
+				P2_Auto(1);
+				// 1/3で前
+				if (random(333)) {
+					if (P2.muki == 0)P2_Auto(106);
+					else { P2_Auto(104); }
+				}
+				else if(random(333)){
+					if (P2.muki == 0)P2_Auto(104);
+					else { P2_Auto(106); }
+				}
+				
+			}
+		}
 	
 	//[ ガード ]
 	// 1.する
@@ -236,12 +262,19 @@ void SetTraning()
 		//[ 投げ抜け ]
 		// 1.する
 		if (S.T_ThrowReject == 1){
-
-			if ((P1.stateno == 505 || P1.stateno == 515) && P1.time <= 1){
-				P2_Auto(1), 
+			if ((P1.stateno == 505 && P1.time <= 1) || (P1.stateno == 510 && P2.stateno == 1065)){
+				P2_Auto(1);
 				P2_Auto(2);
 			}
-
+		}
+		// 2.ランダム
+		else if (S.T_ThrowReject == 2) {
+			if (random(180)) {
+				if ((P1.stateno == 505 && P1.time <= 1) || (P1.stateno == 510 && P2.stateno == 1065)){
+					P2_Auto(1);
+					P2_Auto(2);
+				}
+			}
 		}
 	//================================================
 	//[ レコーディング ]

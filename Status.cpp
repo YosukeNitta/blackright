@@ -75,6 +75,9 @@ void load_status(Player gp)
 	////
 	// 元はここで文字の関数宣言
 	//tlist.push_back("Common");
+	// 名前のみ数字ではない
+	tlist.push_back("name");
+
 	tlist.push_back("gsize");
 	tlist.push_back("xsize");
 	tlist.push_back("ysize");
@@ -178,69 +181,75 @@ void load_status(Player gp)
 		if (iflg){
 			// 代入する
 			switch (flg){
-				case 0:	// gsize
+				case 1:	// gsize
 					gp.GSize = atof(inputc);
 					break;
-				case 1:	// xsize
+				case 2:	// xsize
 					gp.xSize = atoi(inputc);
 					break;
-				case 2:	// ysize
+				case 3:	// ysize
 					gp.ySize = atoi(inputc);
 					break;
-				case 3:	// life
+				case 4:	// life
 					gp.C.lifeMax = atoi(inputc);
 					break;
-				case 4:	// walk.f
+				case 5:	// walk.f
 					gp.C.walkF = atof(inputc);
 					break;
-				case 5:	// walk.b
+				case 6:	// walk.b
 					gp.C.walkB = atof(inputc);
 					break;
-				case 6:	// run.f
+				case 7:	// run.f
 					gp.C.runF[num] = atof(inputc);
 					break;
-				case 7:	// run.b
+				case 8:	// run.b
 					gp.C.runB[num] = atof(inputc);
 					break;
-				case 8:	// jump.y
+				case 9:	// jump.y
 					gp.C.jumpY = atof(inputc);
 					break;
-				case 9:	// jump.a
+				case 10:	// jump.a
 					gp.C.jumpA = atof(inputc);
 					break;
-				case 10:	// jump.f
+				case 11:	// jump.f
 					gp.C.jumpF[num] = atof(inputc);
 					break;
-				case 11:	// jump.b
+				case 12:	// jump.b
 					gp.C.jumpB = atof(inputc);
 					break;
-				case 12:	// yaccel
+				case 13:	// yaccel
 					gp.C.yAccel = atof(inputc);
 					break;
-				case 13:	// airjump
+				case 14:	// airjump
 					gp.C.airJump = atoi(inputc);
 					break;
-				case 14:	// airdash
+				case 15:	// airdash
 					gp.C.airDash = atoi(inputc);
 					break;
-				case 15:	// combolate
+				case 16:	// combolate
 					gp.A.comboLate = atof(inputc);
 					break;
-				case 16:	// clmax
+				case 17:	// clmax
 					gp.A.cl_max = atof(inputc);
 					break;
-				case 17:	// clmin
+				case 18:	// clmin
 					gp.A.cl_min = atof(inputc);
 					break;
 				default: break;
 			}
 			num++;	// numを進める
 		}
+		// 名前＆次の行に移行
+		else if ((flg == 0) && (i == -1)) {
+			// コピー
+			strcpy_s(gp.C.name, inputc);
+		}
 		
 		// 数字ではない
 		if (!iflg){
 			// 文字があってるか判断
 			for (int h = 0; h < (int)tlist.size(); h++){
+				// フラグを変更する
 				if (strcmp(inputc, tlist[h].c_str()) == 0){
 					flg = h;
 					num = 0;

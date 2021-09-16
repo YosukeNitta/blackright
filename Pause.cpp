@@ -147,7 +147,6 @@ int Pause()
 			}
 			else{ inputDOWN = 0; }
 
-			
 		}
 
 		// 決定してたらカウント加算
@@ -193,30 +192,35 @@ int Pause()
 				// 位置初期化
 				if ((kettei == 1) && (SPoint == selectMax))
 				{
+					SEStart(35);	// 決定音
 					kettei = 0;
 					return 1;
 				}
 				// コマンド表
 				else if ((kettei == 1) && (SPoint == selectMax + 1))
 				{
+					SEStart(35);	// 決定音
 					kettei = 0;
 					ComList = 1;
 				}
 				// 対戦画面に戻る
 				else if (((kettei == 1) && (SPoint == selectMax + 2)) || (P1_BInput(2) == 1) || (P1_BInput(7) == 1))
 				{
+					SEStart(37);	// キャンセル音
 					kettei = 0;
 					return 4;
 				}
 				// キャラセレに戻る
 				else if ((kettei == 1) && (SPoint == selectMax + 3))
 				{
+					SEStart(35);	// 決定音
 					kettei = 0;
 					return 2;
 				}
 				// メニューに戻る
 				else if ((kettei == 1) && (SPoint == selectMax + 4))
 				{
+					SEStart(35);	// 決定音
 					kettei = 0;
 					Load_1 = 0;
 					return 3;
@@ -269,7 +273,8 @@ int Pause()
 
 	}//トレモメニュー終了、
 	// 通常メニュー
-	else{
+	// リプレイが再生以外なら
+	else if(Replay_Mode(-1) != 1){
 
 		if (ComList == 0){
 			/**************
@@ -293,24 +298,27 @@ int Pause()
 			// 画面に戻る
 			if (((kettei == 1) && (SPoint == 0)) || (P_BInput(2) == 1) || (P_BInput(7) == 1))
 			{
+				SEStart(37);	// キャンセル音
 				kettei = 0;
 				return 4;
 			}
 			// コマンド表
 			else if ((kettei == 1) && (SPoint == 1))
 			{			
+				SEStart(35);	// 決定音
 				kettei = 0;
 				ComList = 1;
 			}
 			// メニューに戻る
 			else if ((kettei == 1) && (SPoint == 2))
 			{
+				SEStart(35);	// 決定音
 				kettei = 0;
 				Load_1 = 0;
 				return 3;
 			}
 
-			// メニューに戻る
+			// リプレイ中ならメニューに戻る
 			if (Replay_Mode(-1) == 1)
 			{
 				kettei = 0;
@@ -343,6 +351,26 @@ int Pause()
 			CommandList();
 		}
 	}// 対戦メニュー終了
+	else if (Replay_Mode(-1) == 1) {
+		// 右orスタート入力で戻る
+		if ((P1_BInput(106) == 1) || (P1_BInput(7) == 1))
+		{
+			kettei = 0;
+			if (P1_BInput(106) == 1) {
+				setReplay1Move(1);	// リプレイを1コマ進めるモード
+			}
+			return 4;
+		}
+
+		// B入力で終了
+		if ((P1_BInput(2) == 1))
+		{
+			kettei = 0;
+			Load_1 = 0;
+			Replay_End();
+			return SceneNum(ReplayScene);
+		}
+	}
 
 	return 0;
 }
@@ -472,8 +500,8 @@ void TraningSet()
 					S.TSwitch[3] -= 1;
 
 				if (S.TSwitch[3] < 0)
-					S.TSwitch[3] = 3;
-				if (S.TSwitch[3] > 3)
+					S.TSwitch[3] = 4;
+				if (S.TSwitch[3] > 4)
 					S.TSwitch[3] = 0;
 			}
 			nx++;
@@ -498,8 +526,8 @@ void TraningSet()
 					S.T_Counter -= 1;
 
 				if (S.T_Counter < 0)
-					S.T_Counter = 1;
-				if (S.T_Counter > 1)
+					S.T_Counter = 2;
+				if (S.T_Counter > 2)
 					S.T_Counter = 0;
 			}
 			nx++;
@@ -511,8 +539,8 @@ void TraningSet()
 					S.T_ThrowReject -= 1;
 
 				if (S.T_ThrowReject < 0)
-					S.T_ThrowReject = 1;
-				if (S.T_ThrowReject > 1)
+					S.T_ThrowReject = 2;
+				if (S.T_ThrowReject > 2)
 					S.T_ThrowReject = 0;
 			}
 			nx++;
@@ -622,7 +650,8 @@ void TrainingList()
 		if (S.TSwitch[3] == 0)DrawString(160, TxtDist * nx, "ニュートラル", Oran);
 		else if (S.TSwitch[3] == 1) { DrawString(160, TxtDist * nx, "前方", Cr); }
 		else if (S.TSwitch[3] == 2) { DrawString(160, TxtDist * nx, "後方", Cr); }
-		else if (S.TSwitch[3] == 3) { DrawString(160, TxtDist * nx, "なし", Cr); }
+		else if (S.TSwitch[3] == 3) { DrawString(160, TxtDist * nx, "ランダム", Cr); }
+		else if (S.TSwitch[3] == 4) { DrawString(160, TxtDist * nx, "なし", Cr); }
 
 		nx++;
 
@@ -635,20 +664,21 @@ void TrainingList()
 
 		DrawString(30, TxtDist * nx, "カウンター", Cr);
 		if (S.T_Counter == 0)DrawString(160, TxtDist * nx, "通常", Oran);
-		else if (S.T_Counter == 1) { DrawString(160, TxtDist * nx, "する", Cr); }
-
+		else if (S.T_Counter == 1) { DrawString(160, TxtDist * nx, "強制", Cr); }
+		else if (S.T_Counter == 2) { DrawString(160, TxtDist * nx, "ランダム", Cr); }
 		nx++;
 
 		DrawString(30, TxtDist * nx, "投げ抜け", Cr);
 		if (S.T_ThrowReject == 0)DrawString(160, TxtDist * nx, "しない", Oran);
 		else if (S.T_ThrowReject == 1) { DrawString(160, TxtDist * nx, "する", Cr); }
+		else if (S.T_ThrowReject == 2) { DrawString(160, TxtDist * nx, "ランダム", Cr); }
 
 		nx++;
 
 		DrawString(30, TxtDist * nx, "設定表示", Cr);
 		if (S.TSwitch[5] == 0)DrawString(160, TxtDist * nx, "全て", Oran);
 		else if (S.TSwitch[5] == 1) { DrawString(160, TxtDist * nx, "数値", Cr); }
-		else if (S.TSwitch[5] == 2) { DrawString(160, TxtDist * nx, "キー", Cr); }
+		else if (S.TSwitch[5] == 2) { DrawString(160, TxtDist * nx, "キー入力", Cr); }
 		else if (S.TSwitch[5] == 3) { DrawString(160, TxtDist * nx, "しない", Cr); }
 
 		nx++;
@@ -747,9 +777,12 @@ void CommandList()
 		}
 		else if (P[i].Name == HYDE){
 			DrawString(tx, TxtDist * 1, "Ｄ（空中可）", Cr);
-			DrawString(tx - 19, TxtDist * 2, "ゲージ技", Cr);
-			DrawString(tx, TxtDist * 3, "↓＼→ +Ｃ（ 1 ）", Cr);
-			DrawString(tx, TxtDist * 4, "Ａ+Ｂ+Ｃ（ 3 ）", Cr);
+			DrawString(tx, TxtDist * 2, "↓／← +ＡorＢorＤ", Cr);
+			DrawString(tx, TxtDist * 3, "↓↓ +Ｄ", Cr);
+			DrawString(tx - 19, TxtDist * 4, "ゲージ技", Cr);
+			DrawString(tx, TxtDist * 5, "↓＼→ +Ｃ（ 1 ）", Cr);
+			DrawString(tx, TxtDist * 6, "↓／← +Ｃ（ 1 ）", Cr);
+			DrawString(tx, TxtDist * 7, "Ａ+Ｂ+Ｃ（ 3 ）", Cr);
 		}
 		else if (P[i].Name == SYUICHI) {
 			DrawString(tx, TxtDist * 1, "→ +Ａ", Cr);

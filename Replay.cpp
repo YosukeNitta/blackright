@@ -24,6 +24,12 @@ int Replay_Delete();
 static int yPos = 0, xPos = 0;
 static int fileCount = 0;
 static int deleteSwitch = 0;
+
+// 暗転セット
+static int _timeStop;
+static boolean _enter;
+static int _nextScene;
+
 static vector<string> repName;	// これに全てのキャラの判定
 static vector<int> r_port;	// これに全てのキャラの判定
 static vector<int> r_cn1;	// これに全てのキャラの判定
@@ -68,7 +74,8 @@ int Replay::Mode()
 {
 	if (P_BInput(2) == 1){
 		SEStart(37);
-		MainSystem::Instance().SetNextMode("Menu");
+		//MainSystem::Instance().SetNextMode("Menu");
+		_nextScene = SceneNum(MenuScene);
 	}
 	// キャラ、カラー、ステージ　を読み込む
 	else if (((P_BInput(1) == 1) || (P_BInput(3) == 1)) && (repName.size() > 0)){
@@ -78,7 +85,7 @@ int Replay::Mode()
 		Get_Color(r_color[1], 2);		// カラー決定
 
 		int stage = r_stage;
-		if (r_stage == 0)stage = GetRand(STAGE_MAX - 1) + 1;
+		if (r_stage == 0)stage = GetRand(getMaxStage() - 1) + 1;
 
 		//GetStageNum(r_stage, r_stage);	// ステージ受け取り
 		//Versus_bgmNum(r_stage + 1);
@@ -96,8 +103,25 @@ int Replay::Mode()
 		Key_GetString(repName[yPos + (xPos * 7)]);
 		Replay_Mode(1);
 		
-		MainSystem::Instance().SetNextMode("Versus");
+		//MainSystem::Instance().SetNextMode("Versus");
+		_nextScene = SceneNum(VersusScene);
 	}
+	// シーン以降
+	if ((_nextScene != 0) && (_timeStop >= 11)) {
+		switch (_nextScene) {
+		case SceneNum(MenuScene):
+			MainSystem::Instance().SetNextMode("Menu");
+			break;
+		case SceneNum(VersusScene):
+			MainSystem::Instance().SetNextMode("Versus");
+			break;
+		}
+	}
+	// 時間カウント
+	if (_nextScene != 0) {
+		_timeStop++;
+	}
+
 	// キャラ、カラー、ステージ　を読み込む
 	// リプレイデータ削除
 	else if ((P_BInput(4) == 1) && (repName.size() > 0)){
@@ -138,8 +162,8 @@ int Replay::Mode()
 			SEStart(36);
 		}
 
-		if ((xPos * 7) < 0){
-			xPos = repName.size() / 7;
+		if (xPos < 0){
+			xPos = repName.size() / 7 - 1;
 		}
 		if ((xPos * 7) >(repName.size() - 1)){
 			xPos = 0;
@@ -166,13 +190,30 @@ void Replay::Draw()
 
 	DrawString(0,0,"リプレイ", Cr);
 	DrawString(10, SCREEN_H - 20, "D..ファイル削除  S..再生終了", Cr);
-	DrawFormatString(100, 0, Cr, "%d / %d", yPos + (xPos * 7) + 1, repName.size());
+	// 1個でもある
+	if (repName.size() > 0) {
+		DrawFormatString(100, 0, Cr, "%d / %d", yPos + (xPos * 7) + 1, repName.size());
+	}
+	else {
+		DrawString(100, 0, "0 / 0", Cr);
+		DrawString(20, 40, "再生できるリプレイがありません", Cr);
+	}
 	for (int i = 0; i < 7; i++){
 		if ((i + (xPos * 7)) < repName.size()){
 			DrawFormatString(20, 20 + (60 * i), Cr, "%s", repName[i + (xPos * 7)].c_str());
 			DrawGraph(320, 20 + (60 * i), r_port[r_cn1[i + (xPos * 7)]], true);
 			DrawGraph(380, 20 + (60 * i), r_port[r_cn2[i + (xPos * 7)]], true);
+			//DrawTurnGraph(390, 20 + (60 * i), r_port[r_cn2[i + (xPos * 7)]], true);
 		}
+	}
+	
+	// 次シーン移行の暗転
+	if ((_nextScene != 0) && (_timeStop > 0)) {
+		int num = _timeStop * 25;
+		if (num > 255) num = 255;
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, num);
+		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	//DrawFormatString(420, 20, Cr, "%s", repName[yPos].c_str());
 	//DrawFormatString(0, SCREEN_H - 20, Cr, "ファイル数%d", repName.size());
@@ -193,6 +234,10 @@ void Replay::Load_Reload()
 	// BGM読み込み
 	BGMStart(11);
 
+	// 暗転
+	_timeStop = 0;
+	_enter = false;
+	_nextScene = 0;
 }
 
 void Replay::Load_1second()
@@ -223,6 +268,7 @@ void Replay::Load_1second()
 	SetTransColor(0, 0, 0);
 	// 使い終わったら解放
 	DeleteSoftImage(handle);
+
 }
 
 void Replay::Release(void)

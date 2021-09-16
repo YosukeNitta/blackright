@@ -1,14 +1,15 @@
 [Data]
+name = dan;
 gsize = 2.0;
 xsize = 48;
 ysize = 150;
 life = 950;
-walk.f = 1.8;
-walk.b = -1.9;
+walk.f = 1.75;
+walk.b = -1.80;
 run.f = 4.0, 0;
 run.b = -2.2, -5.0;
 jump.y = -10.0;
-jump.a = -8.2;
+jump.a = -8.2; -8.2
 jump.f = 2.3, 2.8;
 jump.b = -2.4;
 yaccel = 0.50;

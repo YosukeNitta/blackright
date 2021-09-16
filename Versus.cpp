@@ -10,6 +10,9 @@ static int bgmNum = 1;
 
 static int gameTime;	// 1～60でループ
 static boolean turboMode;
+static int _anten;	// 暗転(最初)
+static int _timeStop;	// 暗転
+static int _moveScene;	// シーン移動
 
 /**************
 * 対戦画面
@@ -49,6 +52,7 @@ int Versus::Mode()
 			if (ModePause == 0) {
 				StopCmd(false);	// コマンド受け付け
 				Num = CharMove();	// 座標とかを計算する、これが Versus のメイン
+				/*
 				// ターボモード
 				if (turboMode) {
 					if (gameTime == 12 || gameTime == 24 || gameTime == 36 ||
@@ -59,6 +63,7 @@ int Versus::Mode()
 						CharMove();
 					}
 				}
+				*/
 
 				// 1が返ってきたら終了
 				if (Num == 1) {
@@ -100,29 +105,39 @@ int Versus::Mode()
 				// ポーズ画面
 				// 返ってきた値でモード変更
 				PauseNum = Pause();
+				// ポーズが終了された
+				if (PauseNum != 0) {
+					// グラフィックをメモリ上から削除する
+					DeleteGraph(GHandle);
+				}
 			}
+			// ポーズ返り値で変更
 			if (PauseNum != 0) {
 				switch (PauseNum) {
 				case 1:
 					ModePause = 0, PauseNum = 0;
-					MainSystem::Instance().SetNextMode("Versus");
+					_moveScene = 1;
+					//MainSystem::Instance().SetNextMode("Versus");
 					// ステータス戻す
 					break;
 				case 2:
 					ModePause = 0, PauseNum = 0;
-					MainSystem::Instance().SetNextMode("Select");
+					_moveScene = 2;
+					//MainSystem::Instance().SetNextMode("Select");
 					break;
 				case 3:
 					ModePause = 0, PauseNum = 0;
-					MainSystem::Instance().SetNextMode("Menu");
+					_moveScene = 3;
+					//MainSystem::Instance().SetNextMode("Menu");
 					break;
-				case 4:
+				case 4:	// 対戦画面に戻る
 					ModePause = 0, PauseNum = 0;
 					// 続行
 					break;
 				case SceneNum(ReplayScene):	// リプレイ
 					ModePause = 0, PauseNum = 0;
-					MainSystem::Instance().SetNextMode("Replay");
+					_moveScene = SceneNum(ReplayScene);
+					//MainSystem::Instance().SetNextMode("Replay");
 					// 続行
 					break;
 				}
@@ -131,6 +146,53 @@ int Versus::Mode()
 		else {
 			DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);	// 真っ黒
 		}
+
+		// シーン変更
+		if (_moveScene) {
+			// 暗転を進める
+			_timeStop++;
+
+			// 終了時の暗転
+			if (_timeStop > 0) {
+				int num = _timeStop * 25;
+				if (num > 255) num = 255;
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, num);
+				DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
+
+			// 移動する
+			if (_timeStop > 11) {
+				switch (_moveScene) {
+				case 1:
+					MainSystem::Instance().SetNextMode("Versus");
+					break;
+				case 2:
+					MainSystem::Instance().SetNextMode("Select");
+					break;
+				case 3:
+					MainSystem::Instance().SetNextMode("Menu");
+					break;
+				case SceneNum(ReplayScene):	// リプレイ
+					MainSystem::Instance().SetNextMode("Replay");
+					// 続行
+					break;
+				}
+			}
+		}
+		// 開始時の暗転
+		else if(_anten > 0){
+			// 終了時の暗転
+			if (_anten > 0) {
+				int num = _anten * 25;
+				if (num > 255) num = 255;
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, num);
+				DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			}
+			_anten--;
+		}
+		
 	}// メインループ終了
 
 
@@ -146,6 +208,9 @@ void Versus::Draw()
 void Versus::Load_Reload() 
 {
 	Load_1 = false;
+	_anten = 11;
+	_moveScene = 0;	// 移行シーン
+	_timeStop = 0;	// 終了時の暗転
 }
 
 

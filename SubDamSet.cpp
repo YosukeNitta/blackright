@@ -65,15 +65,22 @@ void DamSetting()
 	for (int n = 0; n < 2; n++){
 		// [ カウンターヒット ]
 		if (P[n].stateno >= 200 && P[n].stateno <= 999){
-			if (P[n].time == 0)P[n].D.counter = 1;
+			// 強制カウンター以外はカウンター判定発生
+			if ((P[n].time == 0) && (P[n].D.counter != 2))
+				P[n].D.counter = 1;
+
+			// 強制カウンターなら終了
+			if (P[n].D.counter == 2)break;
+
 			// 攻撃判定が出たらカウンター終了
 			for (int i = 0; i < ATT_MAX; i++){
-				if ((P[n].WAtt[i] > 0) && (P[n].HAtt[i] > 0)){
+				if ((P[n].WAtt[i] > 0) && (P[n].HAtt[i] > 0)){					
 					P[n].D.counter = 0;
 					P[n].D.fatal = 0;
 				}
 			}
 		}
+		// 技じゃないならカウンターしない
 		else{ 
 			P[n].D.counter = 0; 
 			P[n].D.fatal = 0;

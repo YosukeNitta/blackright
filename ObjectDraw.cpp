@@ -6,12 +6,16 @@
 using namespace std;
 
 #pragma region 変数
+// 定数
+static const int powerPos = 398;
 // アナウンス
 static double m_size;	// 画像の拡大
 
 static int PowerBar[2];		// ライフバー
 static int PowerPoint;	// 画面に表示する体力
 static int PowerNum[10];// 画像 [パワーゲージ 0～9]
+static int _drawPowerLamp;	// 点滅
+static boolean _drawPowerLampIsPlus = true;	// 点滅
 
 static int Hit;			// 画像「HIT」
 static int HitNum[10];	// 画像「ヒット数 0～9」
@@ -25,6 +29,7 @@ static int hHitCount[2];	// 直前のヒット数
 static int Win1, Win2;	// プレイヤーWIN の表示
 static int battle[5];	// 画像　FIGHT
 static int EX;
+static int COUNTER;	// counter
 
 static int Load1;
 static int TText[5];
@@ -52,6 +57,9 @@ static int _drawHassei = 0;
 static int _oldState = 0;
 //
 static float m_cPos;
+
+//
+static int m_ReplayTime;	// リプレイ経過時間
 
 // キーログ表示
 static int mKey[9];
@@ -91,6 +99,9 @@ static int m_Button[4];
 // デバッグ用
 static bool debugDraw;
 static int debug_sw;
+
+// 表示時間
+static int display_time[2];
 
 // 画面の明るさ
 static int blackOut;
@@ -145,6 +156,7 @@ void ObjectDraw()
 		test3[0] = LoadGraph("char/dan/gauge.bmp");
 		test3[1] = LoadGraph("char/dan//gauge2.bmp");
 		EX = LoadGraph("ob/EX.png");
+		COUNTER = LoadGraph("ob/counter.png");
 
 		LoadDivGraph("ob/battle.png", 5, 1, 5, 280, 70, battle);
 
@@ -179,7 +191,7 @@ void ObjectDraw()
 		**************/
 		Player P[2];
 		int hDrawPos[2];
-		hDrawPos[0] = 5;
+		hDrawPos[0] = 20;
 		hDrawPos[1] = (SCREEN_W - 640) + 320 + 122;
 		hitCount[0] = 0, hitCount[1] = 0;
 		P[0] = P1, P[1] = P2;
@@ -192,7 +204,7 @@ void ObjectDraw()
 			}
 
 			// ヒット数
-			if (P[0].HitCount > 1) {
+			if (P[0].HitCount > 0) {
 				HitGraph = HitNum[P[0].HitCount % 10];
 				HitGraph2 = HitNum[P[0].HitCount / 10];
 				hitCount[0] = P[0].HitCount;
@@ -221,10 +233,12 @@ void ObjectDraw()
 						DrawGraph(hDrawPos[i] + 80, 90 + 5, Hit, true);
 
 						//青ビの場合
-						if (!beat[i]) {
-							SetDrawBright(255, 30, 30);
+						if (beat[i]) {
+							// 青色
+							SetDrawBright(30, 30, 255);
 						}
-						else { SetDrawBright(30, 30, 255); }
+						// 赤色
+						else { SetDrawBright(255, 30, 30); }
 						
 						DrawGraph(hDrawPos[i] + 39, 90, HitGraph, true);
 						
@@ -237,7 +251,7 @@ void ObjectDraw()
 					}
 					// 99ヒットでカンスト
 					else if (hitCount[0] >= 100) {
-						DrawGraph(hDrawPos[i], 90 + 5, Hit, true);
+						DrawGraph(hDrawPos[i] + 80, 90 + 5, Hit, true);
 						DrawGraph(hDrawPos[i] + 39, 90, HitNum[9], true);
 						DrawGraph(hDrawPos[i] + 8, 90, HitNum[9], true);
 					}
@@ -245,6 +259,39 @@ void ObjectDraw()
 			}
 		}
 
+		/**************
+		* システム表示
+		**************/
+		{
+
+			// 設定
+			for (int i = 0; i < 2; i++) {
+				// 表示位置
+				int drawXpos, drawYpos;
+				drawYpos = 150;
+				if (i == 0) {
+					drawXpos = 60;
+				}
+				else { drawXpos = SCREEN_W - 75 - 60; }
+				
+				// カウンター
+				if (display_time[i] > 0) {
+
+					if (display_time[i] < 10) {
+						// 位置を動かす
+						drawYpos += -10 + (display_time[i] + 1);
+						SetAlpha(0 + ((display_time[i] + 1) * 20));
+					}
+					DrawGraph(drawXpos, drawYpos, COUNTER, true);
+
+					if (display_time[i] < 10) {
+						NoBlend();
+					}
+				}
+
+				display_time[i]--;	// 時間減少
+			}
+		}
 
 		/**************
 		* 特殊ゲージ
@@ -313,7 +360,7 @@ void ObjectDraw()
 				// ヘリオス
 				if (P[i].Name == HELIOS) {
 					
-					yp = (SCREEN_H - 480) + 430;
+					yp = powerPos + 30;
 					int color;
 					if (i == 0)xp = 80;
 					else { xp = SCREEN_W - 80 - 10; }	// 10はテキスト分
@@ -332,7 +379,7 @@ void ObjectDraw()
 					DrawFormatString(xp, yp, color, "%d", P[i].Var[11] / 1000);
 					
 
-					yp = (SCREEN_H - 480) + 435;
+					yp = powerPos + 35;
 					if (i == 0) {
 						xp = 100;
 						xp2 = xp + (P[i].Var[11] * 0.05);
@@ -362,7 +409,7 @@ void ObjectDraw()
 				// ダン
 				if (P[i].Name == HYDE) {
 
-					yp = (SCREEN_H - 480) + 432;
+					yp = powerPos + 32;
 					int color;
 					/*
 					if (P[i].Var[11] > 0)color = GetColor(255, 215, 0);
@@ -467,6 +514,15 @@ void ObjectDraw()
 			int bar_x, bar_y;
 			GetGraphSize(PowerBar[0], &bar_x, &bar_y);
 			
+			// 点滅時間の変更
+			if(_drawPowerLampIsPlus)
+				_drawPowerLamp++;
+			else {
+				_drawPowerLamp--;
+			}
+			if (_drawPowerLamp >= 60)_drawPowerLampIsPlus = false;
+			if (_drawPowerLamp <= 0)_drawPowerLampIsPlus = true;
+
 			//--------------
 			// 半透明ゲージ
 			//--------------
@@ -474,8 +530,8 @@ void ObjectDraw()
 			SetAlpha(158);
 			
 			// パワーバー下　透明表示
-			DrawGraph(20, 435 + (SCREEN_H - 480), PowerBar[1], true);
-			DrawTurnGraph(SCREEN_W - 20 - bar_x, 435 + (SCREEN_H - 480), PowerBar[1], true);
+			DrawGraph(20, 35 + powerPos, PowerBar[1], true);
+			DrawTurnGraph(SCREEN_W - 20 - bar_x, 35 + powerPos, PowerBar[1], true);
 
 			// 半透明解除
 			NoBlend();
@@ -486,11 +542,11 @@ void ObjectDraw()
 				//DrawGraph(20, 435, PowerBar[1], true);
 
 				if (P1.Power >= 1000 && P1.Power < 3000){
-					DrawRotaGraph3F(320 - (1000 / 5) - 62, 454 + (SCREEN_H - 480),
+					DrawRotaGraph3F(320 - (1000 / 5) - 62, 54 + powerPos,
 						0, 0, (1000 / 5), 1, 0, PowerPoint, true, false);
 				}
 				if (P2.Power >= 1000 && P2.Power < 3000){
-					DrawRotaGraph3F(SCREEN_W - 320 + 62, 454 + (SCREEN_H - 480),
+					DrawRotaGraph3F(SCREEN_W - 320 + 62, 54 + powerPos,
 						0, 0, (1000 / 5), 1, 0, PowerPoint, true, false);
 				}
 
@@ -503,43 +559,59 @@ void ObjectDraw()
 				//DrawGraph((SCREEN_W / 2) - 62 - (i / 5), 454, PowerPoint, true);
 			//}
 			
+			//==========
+			// 色彩設定
+			//==========
+			float r, g, b;
+			r = g = b = 0;
+			r = _drawPowerLamp * 1 + 210;
+			g = _drawPowerLamp * 0.75 + 142.5;
+			if (r > 255.0)r = 255.0;
+			if (g > 180.0)g = 180.0;
+
+			// ゲージ所持時
+			SetDrawBright(250, 170, 0);
 			// ゲージMAX時
-			SetDrawBright(255, 180, 0);
+			if (P1.Power == POWER_MAX)SetDrawBright((int)r, (int)g, (int)b);
 
 			if (P1.Power == POWER_MAX){
-				DrawRotaGraph3F(320 - (1000 / 5) - 62, 454 + (SCREEN_H - 480),
+				DrawRotaGraph3F(320 - (1000 / 5) - 62, 54 + powerPos,
 					0, 0, (1000 / 5), 1, 0, PowerPoint, true, false);
 			}
 			else{
-				DrawRotaGraph3F((float)(320 - ((P1.Power % 1000) / 5) - 62), 454 + (SCREEN_H - 480),
+				DrawRotaGraph3F((float)(320 - ((P1.Power % 1000) / 5) - 62), 54 + powerPos,
 					0, 0, ((P1.Power % 1000) / 5), 1, 0, PowerPoint, true, false);
 			}
 			SetDrawBright(255, 255, 255);
 
-			// ゲージ本数
-			DrawGraph(25 + 1, 440 + (SCREEN_H - 480) - 1, PowerNum[P1.Power / 1000], true);
+			// ゲージ本数を数字で表示
+			DrawGraph(25 + 1, 40 + powerPos - 1, PowerNum[P1.Power / 1000], true);
 
 			//パワー量　2P
 			// ゲージMAX時
-			SetDrawBright(255, 180, 0);
+			//SetDrawBright(255, 180, 0);
+			SetDrawBright(250, 170, 0);
+			
+			// ゲージMAX時
+			if (P2.Power == POWER_MAX)SetDrawBright((int)r, (int)g, (int)b);
 
 			if (P2.Power == POWER_MAX){
-				DrawRotaGraph3F((SCREEN_W - 640) + 320 + 62, 454 + (SCREEN_H - 480),
+				DrawRotaGraph3F((SCREEN_W - 640) + 320 + 62, 54 + powerPos,
 					0, 0, (1000 / 5), 1, 0, PowerPoint, true, false);
 			}
 			else{
-				DrawRotaGraph3F((SCREEN_W - 640) + 320 + 62, 454 + (SCREEN_H - 480),
+				DrawRotaGraph3F((SCREEN_W - 640) + 320 + 62, 54 + powerPos,
 					0, 0, ((P2.Power % 1000) / 5), 1, 0, PowerPoint, true, false);
 			}
 			SetDrawBright(255, 255, 255);
 
 			// ゲージ本数
-			DrawGraph(SCREEN_W - 50, 440 + (SCREEN_H - 480) - 1, PowerNum[P2.Power / 1000], true);
+			DrawGraph(SCREEN_W - 50, 40 + powerPos - 1, PowerNum[P2.Power / 1000], true);
 
 			///////////////////
 			// パワーバー表示
-			DrawGraph(20, 435 + (SCREEN_H - 480), PowerBar[0], true);
-			DrawTurnGraph(SCREEN_W - 20 - bar_x, 435 + (SCREEN_H - 480), PowerBar[0], true);
+			DrawGraph(20, 35 + powerPos, PowerBar[0], true);
+			DrawTurnGraph(SCREEN_W - 20 - bar_x, 35 + powerPos, PowerBar[0], true);
 
 		}
 		
@@ -565,8 +637,12 @@ void ObjectDraw()
 		}
 
 		// リプレイキー表示
-		if (Replay_Mode(-1) == 1)
+		if (Replay_Mode(-1) == 1) {
 			ObjectDraw_KeyDisplay();
+		}
+		else {
+			m_ReplayTime = 0;
+		}
 
 		/**************
 		* アナウンス
@@ -601,8 +677,11 @@ void ObjectDraw()
 
 				if (S.roundTime >= 50 && S.roundTime < 70)SetAlpha(255 - (S.roundTime - 50) * 12.8);
 				if (S.roundTime >= 1 && S.roundTime < 70){
+					/*
 					DrawRotaGraph(260, 240, m_size, 0, battle[1], true);
 					DrawRotaGraph(400, 240, m_size, 0, battle[0], true);
+					*/
+					DrawRotaGraph(340, 240, m_size, 0, battle[0], true);
 				}
 
 
@@ -715,6 +794,106 @@ void BoxCheck()
 	}
 	else if (S.TSwitch[7] == 3)DrawFormatString(SCREEN_W / 2 - 30, 100, Cr, "再生中 %d", TText[0]);
 
+	//=================
+	// デバッグ //
+	//=================
+	if (CheckHitKey(KEY_INPUT_F4) != 0)debug_sw++;
+	else { debug_sw = 0; }
+
+	if (debug_sw == 1) {
+		if (debugDraw)debugDraw = 0;
+		else { debugDraw = 1; }
+	}
+
+	//==================
+	// デバッグ描画
+	//==================
+	if (debugDraw) {
+		// 薄い四角
+		SetAlpha(128);
+		DrawBox(498, 160, 620, 240, GetColor(0, 0, 0), true);
+		NoBlend();
+
+		DrawFormatString(500, 160, Cr, "SFLG:%d :%d", P1.SFlg, P2.SFlg);
+		DrawFormatString(500, 180, Cr, "ctrl:%d :%d", P1.ctrl, P2.ctrl);
+		DrawFormatString(500, 200, Cr, "lock:%d :%d", P1.Lock, P2.Lock);
+		DrawFormatString(500, 260, Cr, "st:%d :%d", P1.stateno, P2.stateno);
+		//=====================
+		// コンボ補正値
+		//=====================
+		float comboHosei = 1.0;
+		// 強制補正サイン
+		int hoseiColor = GetColor(255,255,255);
+
+		//comboHosei = 1.0 - (P1.HitCount * P1.A.comboLate);
+		
+		if (P1.HitCount == 2)comboHosei = P1.A.cl_max;
+		// 3ヒット以降
+		else if (P1.HitCount > 2) {
+			comboHosei = P1.A.cl_max - ((P1.HitCount - 2) * P1.A.comboLate);
+		}
+
+		// 強制補正
+		if (P1.A.hosei_K != 1.0) {
+			comboHosei *= P1.A.hosei_K;
+			hoseiColor = GetColor(255, 128, 128);
+		}
+
+		if (comboHosei <= P1.A.cl_min) {
+			comboHosei = P1.A.cl_min;
+			hoseiColor = GetColor(128, 128, 255);
+		}
+		DrawFormatString(500, 220, hoseiColor, "補正:%.2f", comboHosei);
+		DrawFormatString(500, 240, Cr, "hit %d:%d", P1.MoveHit, P2.MoveHit);
+		//DrawFormatString(500, 240, Cr, "st %d:%d", P1.stateno, P2.stateno);
+
+		//
+		//====================
+		
+		// 距離
+		boolean isLeftP1 = true;
+		boolean isUpP1 = true;
+		float xdist, ydist;
+		xdist = P1.XPos - P2.XPos;
+		ydist = P1.YPos - P2.YPos;
+
+		// -なら逆にする
+		if (xdist < 0.0) {
+			xdist = -xdist;
+			isLeftP1 = false;
+		}
+		if (ydist < 0.0) {
+			ydist = -ydist;
+			isUpP1 = false;
+		}
+		//DrawFormatString(500, 220, Cr, "xdist:%.1f", xdist);
+		//DrawFormatString(500, 240, Cr, "ydist:%.1f", ydist);
+
+		//DrawFormatString(500, 260, Cr, "p1:%s", P1.C.name);
+		//DrawFormatString(500, 280, Cr, "p2:%s", P2.C.name);
+
+		DrawLine(P1.XPos - S.ScroolX, P1.YPos - S.ScroolY,
+			P2.XPos - S.ScroolX, P2.YPos - S.ScroolY, Cr);
+
+		// 位置表示
+		float xp, yp;
+		int xhosei_x, xhosei_y;
+		if (isLeftP1)xp = P1.XPos - S.ScroolX;
+		else { xp = P2.XPos - S.ScroolX; }
+		if (isUpP1)yp = P1.YPos - S.ScroolY;
+		else { yp = P2.YPos - S.ScroolY; }
+		
+		// 文字の位置補正
+		xhosei_x = xhosei_y = 0;
+		if (xdist >= 100.0)
+			xhosei_x = -20;
+		else if(xdist > 10.0)
+			xhosei_x = -10;
+
+		DrawFormatString(xp - xdist / 2.0 - 10 + xhosei_x, yp - ydist / 2.0 - 40, Cr, "%.0f", xdist);
+		DrawFormatString(xp - xdist / 2.0 + xhosei_y, yp - ydist / 2.0 - 20, Cr, "%.0f", ydist);
+	}
+	///////////////////
 
 	// 描画、表示オンの時のみ
 	if (S.TSwitch[5] == 0 || S.TSwitch[5] == 1){
@@ -810,20 +989,13 @@ void BoxCheck()
 		else if (S.TSwitch[2] == 3)DrawFormatString(500, 140, Cr, "プレイヤー操作");
 		else if (S.TSwitch[2] == 4)DrawFormatString(500, 140, Cr, "コンピュータ");
 
-		// デバッグ //
-		if (CheckHitKey(KEY_INPUT_F4) != 0)debug_sw++;
-		else { debug_sw = 0; }
+		//-------------
+		// のけぞり
+		//-------------
+		//if (P2.D.nokezori > 0)
+			//DrawBox(340, 80, 340 + (P2.D.nokezori * 2), 80 + 15, Cr, true);
 
-		if (debug_sw == 1) {
-			if (debugDraw)debugDraw = 0;
-			else { debugDraw = 1; }
-		}
-
-		if (debugDraw) {
-			DrawFormatString(500, 160, Cr, "SFLG:%d :%d", P1.SFlg, P2.SFlg);
-			DrawFormatString(500, 180, Cr, "ctrl:%d :%d", P1.ctrl, P2.ctrl);
-			DrawFormatString(500, 200, Cr, "lock:%d :%d", P1.Lock, P2.Lock);
-		}
+		
 
 		// ヘルパー
 		//DrawFormatString(500, 160, Cr, "W.%d time.%d", H1[18].WAtt[1], H1[18].time);
@@ -916,7 +1088,7 @@ void BoxCheck()
 
 		// 時間経過
 		o_nTime++;
-
+		if (o_nTime > 9999)o_nTime = 9999;
 		
 		// キーorボタン開始
 		if (sKey || sButton){
@@ -1361,6 +1533,18 @@ void ObjectDraw_KeyDisplay()
 	DrawGraph((SCREEN_W / 2) + 10, 150, m_Button[3], true);
 
 	NoBlend();
+
+	// リプレイの経過時間
+	SetAlpha(128);
+	DrawBox(0, SCREEN_H - 21, 100, SCREEN_H, GetColor(0, 0, 0), true);
+	DrawBox(198, SCREEN_H - 21, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+	NoBlend();
+	// 経過時間表示
+	DrawFormatString(0, SCREEN_H - 20, Cr, "time:%d", m_ReplayTime);
+	m_ReplayTime++;
+
+	// 説明
+	DrawFormatString(200, SCREEN_H - 20, Cr, "S:リプレイ停止  停止中 S:再生 →:1コマ進める B:終了");
 }
 
 // アドゲージ
@@ -1370,6 +1554,22 @@ void AddGaugeDraw(int power, int side)
 	addGaugePower[side - 1] = power;
 }
 
+// 文字表示
+// 1..カウンター
+// side..3で両方
+void Display_Text(int text, int side)
+{
+	// カウンター
+	if (side == 1) {
+		display_time[0] = 30;
+	}
+	if (side == 2) {
+		display_time[1] = 30;
+	}
+	if (side == 3) {
+		display_time[0] = display_time[1] = 30;
+	}
+}
 // 黒の度合い
 void SetBlack(int b)
 {

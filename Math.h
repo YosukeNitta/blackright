@@ -43,7 +43,8 @@ void FirstPosSet(int n);
 int Tlist_Save(void);
 void StopTime_Add(int n);
 void StopCmd(boolean cmd);
-
+// リプレイを1コマ進める
+void setReplay1Move(int num);
 /****
 * SameParam
 ****/
@@ -124,9 +125,10 @@ void Traning_P2Command(int command[20]);
 //--------
 //int Result();
 //void Load_Result();
-void Result_WinSide(int i, int chara, int chara2);
+void Result_WinSide(int i, int chara, int chara2, char name1[NAME_MAX], char name2[NAME_MAX]);
 void WinCount(int side);
 void Result_GetData(int c1, int c2, int cl1, int cl2, int stage);
+void GetN_Result(std::vector<Name_t>GN);	// 取得
 
 /****
 * Player
